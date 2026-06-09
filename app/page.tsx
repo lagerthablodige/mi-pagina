@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
     <div style={{
@@ -19,12 +17,10 @@ export default function Home() {
       <p style={{ fontSize: "0.85rem", letterSpacing: "0.25em", color: "#888", textTransform: "uppercase", marginBottom: "2.5rem" }}>
         Fibras raras. Para quienes las conocen.
       </p>
-      <p style={{ fontSize: "1.05rem", color: "#444", maxWidth: "500px", lineHeight: "1.9", marginBottom: "3rem" }}>
+      <p style={{ fontSize: "1.05rem", color: "#444", maxWidth: "500px", lineHeight: "1.9" }}>
         Prendas elaboradas con fibras como el yak y el camello,
         seleccionadas para una audiencia que entiende la diferencia.
-        Cada pieza oscila entre los $700 y $1.400 USD.
       </p>
-      <Image src="/perros.png" alt="nirün" width={350} height={440} style={{ opacity: 0.9 }} />
     </div>
   );
 }
