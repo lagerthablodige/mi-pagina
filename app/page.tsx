@@ -113,7 +113,7 @@ export default function Home() {
             textShadow: "0 1px 6px rgba(0,0,0,0.35)",
           }}
         >
-          Fibras raras. Para quienes las conocen.
+          Fibras Naturales. Texturas sedosas. Diseño Atemporal.
         </p>
         <p
           style={{
@@ -127,8 +127,8 @@ export default function Home() {
             textShadow: "0 1px 6px rgba(0,0,0,0.35)",
           }}
         >
-          Prendas elaboradas con fibras como el yak y el camello,
-          seleccionadas para una audiencia que entiende la diferencia.
+          Prendas elaboradas a partir de Baby Camel, Cashmere, Yak y Seda.
+          Seleccionadas para una audiencia que conoce la diferencia.
         </p>
         <a
           href="https://wa.me/56990911592?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20visita%20al%20local%20para%20ver%20las%20prendas."
