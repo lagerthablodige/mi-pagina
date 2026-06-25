@@ -32,7 +32,7 @@ export default function HeroBackground() {
           priority={i === 0}
           style={{
             objectFit: "cover",
-            objectPosition: "center 45%",
+            objectPosition: "center 30%",
             opacity: i === index ? 1 : 0,
             transition: "opacity 1.4s ease-in-out",
           }}
