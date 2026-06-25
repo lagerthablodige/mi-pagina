@@ -60,6 +60,26 @@ const cornerStyle = (
   zIndex: 50,
 });
 
+const FlameOrnament = () => (
+  <svg width="44" height="30" viewBox="0 0 44 30" fill="none" aria-hidden="true" style={{ marginBottom: "1rem", opacity: 0.9 }}>
+    <path d="M10 28 Q 5 17 10 6 Q 15 17 10 28 Z" stroke="#a36b3f" strokeWidth="0.9" fill="#a36b3f" fillOpacity="0.1"/>
+    <path d="M22 30 Q 14 16 22 2 Q 30 16 22 30 Z" stroke="#a36b3f" strokeWidth="1.2" fill="#a36b3f" fillOpacity="0.15"/>
+    <path d="M34 28 Q 29 17 34 6 Q 39 17 34 28 Z" stroke="#a36b3f" strokeWidth="0.9" fill="#a36b3f" fillOpacity="0.1"/>
+  </svg>
+);
+
+const LujoOrnament = () => (
+  <svg width="320" height="22" viewBox="0 0 320 22" fill="none" aria-hidden="true">
+    <line x1="0" y1="11" x2="110" y2="11" stroke="#a36b3f" strokeWidth="0.5" opacity="0.45"/>
+    <path d="M116 11 Q119 7 122 11 Q119 15 116 11 Z" stroke="#a36b3f" strokeWidth="0.8" fill="#a36b3f" fillOpacity="0.12"/>
+    <path d="M125 11 Q128 7 131 11 Q128 15 125 11 Z" stroke="#a36b3f" strokeWidth="0.8" fill="#a36b3f" fillOpacity="0.12"/>
+    <path d="M160 3 L163 9 L169 11 L163 13 L160 19 L157 13 L151 11 L157 9 Z" stroke="#a36b3f" strokeWidth="0.9" fill="#a36b3f" fillOpacity="0.18"/>
+    <path d="M189 11 Q192 7 195 11 Q192 15 189 11 Z" stroke="#a36b3f" strokeWidth="0.8" fill="#a36b3f" fillOpacity="0.12"/>
+    <path d="M198 11 Q201 7 204 11 Q201 15 198 11 Z" stroke="#a36b3f" strokeWidth="0.8" fill="#a36b3f" fillOpacity="0.12"/>
+    <line x1="210" y1="11" x2="320" y2="11" stroke="#a36b3f" strokeWidth="0.5" opacity="0.45"/>
+  </svg>
+);
+
 export default function Home() {
   return (
     <div style={{ backgroundColor: "#fafaf8", fontFamily: "Georgia, serif" }}>
@@ -87,20 +107,21 @@ export default function Home() {
         <div style={cornerStyle(undefined, 10, 10, undefined, 80, 1.5, 0.7, false)} />
         <div style={cornerStyle(undefined, 10, undefined, 10, 80, 1.5, 0.7, false)} />
 
-        <h1
-          style={{
-            position: "relative",
-            zIndex: 10,
-            fontSize: "3rem",
-            letterSpacing: "0.3em",
-            fontWeight: 300,
-            color: "#f5f0e8",
-            marginBottom: "0.5rem",
-            textShadow: "0 2px 10px rgba(0,0,0,0.35)",
-          }}
-        >
-          NIRÜN
-        </h1>
+        <div style={{ position: "relative", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <FlameOrnament />
+          <h1
+            style={{
+              fontSize: "3rem",
+              letterSpacing: "0.3em",
+              fontWeight: 300,
+              color: "#f5f0e8",
+              marginBottom: "0.5rem",
+              textShadow: "0 2px 10px rgba(0,0,0,0.35)",
+            }}
+          >
+            NIRÜN
+          </h1>
+        </div>
         <p
           style={{
             position: "relative",
@@ -205,26 +226,15 @@ export default function Home() {
         </a>
       </div>
 
-      <div id="lujo-silencioso" style={{ textAlign: "center", padding: "1rem 2rem 0" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "1rem",
-          }}
-        >
-          <span style={{ width: "60px", height: "1px", backgroundColor: "#a36b3f", opacity: 0.6 }} />
-          <span style={{ color: "#a36b3f", fontSize: "0.9rem" }}>✦</span>
-          <span style={{ width: "60px", height: "1px", backgroundColor: "#a36b3f", opacity: 0.6 }} />
-        </div>
+      <div id="lujo-silencioso" style={{ textAlign: "center", padding: "2rem 2rem 0" }}>
+        <LujoOrnament />
         <p
           style={{
             fontSize: "0.85rem",
             letterSpacing: "0.35em",
             color: "#a36b3f",
             textTransform: "uppercase",
-            marginTop: "0.8rem",
+            marginTop: "0.6rem",
           }}
         >
           Lujo Silencioso
@@ -257,18 +267,21 @@ export default function Home() {
               maxWidth: "560px",
             }}
           >
-            <h2
-              style={{
-                fontSize: "1.4rem",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                fontWeight: 400,
-                color: "#1a1a1a",
-                marginBottom: "1.2rem",
-              }}
-            >
-              {section.title}
-            </h2>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", marginBottom: "1.2rem" }}>
+              <span style={{ color: "#a36b3f", fontSize: "0.55rem", opacity: 0.7, transform: "rotate(45deg)", display: "inline-block", letterSpacing: 0 }}>■</span>
+              <h2
+                style={{
+                  fontSize: "1.4rem",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  fontWeight: 400,
+                  color: "#1a1a1a",
+                  margin: 0,
+                }}
+              >
+                {section.title}
+              </h2>
+            </div>
             <p
               style={{
                 fontSize: "1rem",
@@ -289,6 +302,11 @@ export default function Home() {
           backgroundColor: "#1a1a1a",
         }}
       >
+        <svg width="36" height="24" viewBox="0 0 44 30" fill="none" aria-hidden="true" style={{ marginBottom: "1.5rem", opacity: 0.35 }}>
+          <path d="M10 28 Q 5 17 10 6 Q 15 17 10 28 Z" stroke="#f5f0e8" strokeWidth="0.9" fill="#f5f0e8" fillOpacity="0.1"/>
+          <path d="M22 30 Q 14 16 22 2 Q 30 16 22 30 Z" stroke="#f5f0e8" strokeWidth="1.2" fill="#f5f0e8" fillOpacity="0.15"/>
+          <path d="M34 28 Q 29 17 34 6 Q 39 17 34 28 Z" stroke="#f5f0e8" strokeWidth="0.9" fill="#f5f0e8" fillOpacity="0.1"/>
+        </svg>
         <p
           style={{
             fontSize: "1.3rem",
