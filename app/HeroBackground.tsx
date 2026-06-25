@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const images = [
-  { src: "/hero/playa.jpg", alt: "Modelo con abrigo de cashmere en la playa" },
-  { src: "/hero/rocas.jpg", alt: "Modelo con abrigo de cashmere y botas de pelo entre rocas" },
-  { src: "/hero/cardigan.jpg", alt: "Modelo con cárdigan de punto cashmere frente al mar" },
-  { src: "/hero/columnas.jpg", alt: "Modelo con abrigo de cashmere gris entre columnas" },
+  { src: "/hero/playa.jpg",    alt: "Modelo con abrigo de cashmere", pos: "center 28%" },
+  { src: "/hero/rocas.jpg",    alt: "Modelo con abrigo de cashmere", pos: "center 15%" },
+  { src: "/hero/cardigan.jpg", alt: "Modelo con cárdigan cashmere",  pos: "center 18%" },
+  { src: "/hero/columnas.jpg", alt: "Modelo con abrigo de cashmere", pos: "center 20%" },
 ];
 
 export default function HeroBackground() {
@@ -32,7 +32,7 @@ export default function HeroBackground() {
           priority={i === 0}
           style={{
             objectFit: "cover",
-            objectPosition: "center 30%",
+            objectPosition: img.pos,
             opacity: i === index ? 1 : 0,
             transition: "opacity 1.4s ease-in-out",
           }}
