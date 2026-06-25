@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const images = [
   { src: "/hero/playa.jpg",    alt: "Modelo con abrigo de cashmere", pos: "center 28%" },
-  { src: "/hero/rocas.jpg",    alt: "Modelo con abrigo de cashmere", pos: "center 15%" },
+  { src: "/hero/rocas.jpg",    alt: "Modelo con abrigo de cashmere", pos: "center 22%" },
   { src: "/hero/cardigan.jpg", alt: "Modelo con cárdigan cashmere",  pos: "center 18%" },
   { src: "/hero/columnas.jpg", alt: "Modelo con abrigo de cashmere", pos: "center 20%" },
 ];
