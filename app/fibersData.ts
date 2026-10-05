@@ -26,7 +26,7 @@ export const fibers: Fiber[] = [
     label: "BABY CAMEL",
     anchor: "detalle-baby-camel",
     images: [
-      ...g("baby-camel", "Bolomaa", "bolomaa", [5497, 5651, 5744, 5765]),
+      ...g("baby-camel", "Bolomaa", "bolomaa", [5497, 5651, 5572, 5765]),
       ...g("baby-camel", "Erdene", "erdene", [5968, 6153, 6178, 6318]),
       ...g("baby-camel", "Sernaí", "sernai", [5826, 5841, 5860, 5877]),
       ...g("baby-camel", "Sernaí Silk", "sernai-silk", [5995, 6029, 6032, 6248]),
