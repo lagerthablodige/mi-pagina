@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Nirün",
   description: "Mongolian Cashmere",
   icons: {
-    icon: "/logo.png",
+    icon: "/logo.png?v=2",
   },
 };
 
