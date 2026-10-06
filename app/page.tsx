@@ -331,6 +331,80 @@ export default function Home() {
         </div>
       ))}
 
+      <div style={{ display: "flex", flexWrap: "wrap", backgroundColor: "#f1efe9" }}>
+        <div
+          style={{
+            flex: "1 1 420px",
+            height: "520px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr",
+            gap: "3px",
+          }}
+        >
+          {[
+            { src: "/fibers/collage/khulan_detail.jpg", alt: "Abrigo cruzado Nirün en lana y yak, detalle", pos: "center" },
+            { src: "/fibers/collage/zaya_detail.jpg", alt: "Cárdigan Nirün en cashmere, detalle", pos: "center" },
+            { src: "/fibers/collage/sernai_silk_detail.jpg", alt: "Conjunto sastre Nirün en baby camel, detalle", pos: "center" },
+            { src: "/fibers/collage/nomin_negro_detail.jpg", alt: "Abrigo largo Nirün en yak negro, detalle", pos: "center" },
+          ].map((img) => (
+            <div key={img.src} style={{ position: "relative" }}>
+              <Image src={img.src} alt={img.alt} fill style={{ objectFit: "cover", objectPosition: img.pos }} />
+            </div>
+          ))}
+        </div>
+        <div
+          style={{
+            flex: "1 1 420px",
+            padding: "3.5rem 3.5rem",
+            maxWidth: "560px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", marginBottom: "1.2rem" }}>
+            <span style={{ color: "#a36b3f", fontSize: "0.55rem", opacity: 0.7, transform: "rotate(45deg)", display: "inline-block" }}>■</span>
+            <h2
+              style={{
+                fontSize: "1.4rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                fontWeight: 400,
+                color: "#1a1a1a",
+                margin: 0,
+              }}
+            >
+              Visítanos
+            </h2>
+          </div>
+          <p style={{ fontSize: "1rem", color: "#444", lineHeight: "1.9", marginBottom: "1.8rem" }}>
+            Nuestras prendas están disponibles para probar en persona dentro del showroom de{" "}
+            <strong>Landa Brands</strong>, en Vitacura. La caída de una fibra como esta se entiende
+            de verdad al tocarla — agenda tu cita y ven a conocerla.
+          </p>
+          <a
+            href={CALENDLY_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: "0.85rem 2.5rem",
+              border: "1px solid #1a1a1a",
+              color: "#1a1a1a",
+              backgroundColor: "transparent",
+              fontSize: "0.85rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              display: "inline-block",
+              width: "fit-content",
+            }}
+          >
+            Agenda tu visita
+          </a>
+        </div>
+      </div>
+
       <div
         style={{
           textAlign: "center",
@@ -350,29 +424,11 @@ export default function Home() {
             color: "#f5f0e8",
             lineHeight: "1.8",
             maxWidth: "600px",
-            margin: "0 auto 2rem",
+            margin: "0 auto",
           }}
         >
           Mongolia como origen. El lujo como visión.
         </p>
-        <a
-          href={CALENDLY_HREF}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            padding: "0.85rem 2.5rem",
-            border: "1px solid #f5f0e8",
-            color: "#f5f0e8",
-            backgroundColor: "transparent",
-            fontSize: "0.85rem",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            display: "inline-block",
-          }}
-        >
-          Agenda tu visita
-        </a>
       </div>
     </div>
   );
