@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Cormorant_Garamond } from "next/font/google";
 import Vitrina from "./Vitrina";
+import TrackedLink from "./TrackedLink";
 import { fibers } from "./fibersData";
 
 const elegant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"] });
@@ -203,8 +204,10 @@ export default function Home() {
           Prendas elaboradas a partir de Baby Camel, Cashmere, Yak y Seda.
           Seleccionadas para una audiencia que conoce la diferencia.
         </p>
-        <a
+        <TrackedLink
           href={CALENDLY_HREF}
+          eventName="calendly_click"
+          eventData={{ location: "hero" }}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -223,7 +226,7 @@ export default function Home() {
           }}
         >
           Agenda tu visita
-        </a>
+        </TrackedLink>
 
         <a
           href="#detalle-yak"
@@ -383,8 +386,10 @@ export default function Home() {
             <strong>Landa Brands</strong>, en Vitacura. La caída de una fibra como esta se entiende
             de verdad al tocarla — agenda tu cita y ven a conocerla.
           </p>
-          <a
+          <TrackedLink
             href={CALENDLY_HREF}
+            eventName="calendly_click"
+            eventData={{ location: "visitanos" }}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -401,7 +406,7 @@ export default function Home() {
             }}
           >
             Agenda tu visita
-          </a>
+          </TrackedLink>
         </div>
       </div>
 
