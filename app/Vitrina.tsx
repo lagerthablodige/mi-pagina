@@ -26,11 +26,9 @@ function Tile({ fiber, offset }: { fiber: (typeof fibers)[number]; offset: numbe
   return (
     <a
       href={`#${fiber.anchor}`}
+      className="vitrina-tile"
       style={{
         position: "relative",
-        flex: "1 1 0",
-        height: "78vh",
-        minHeight: "420px",
         overflow: "hidden",
         display: "block",
         textDecoration: "none",
@@ -90,10 +88,27 @@ function Tile({ fiber, offset }: { fiber: (typeof fibers)[number]; offset: numbe
 
 export default function Vitrina() {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
-      {fibers.map((fiber, i) => (
-        <Tile key={fiber.key} fiber={fiber} offset={i} />
-      ))}
-    </div>
+    <>
+      <div className="vitrina-row">
+        {fibers.map((fiber, i) => (
+          <Tile key={fiber.key} fiber={fiber} offset={i} />
+        ))}
+      </div>
+      <p
+        className="only-mobile"
+        style={{
+          backgroundColor: "#1a1a1a",
+          color: "#b8945f",
+          fontSize: "0.7rem",
+          letterSpacing: "0.25em",
+          textTransform: "uppercase",
+          textAlign: "center",
+          margin: 0,
+          padding: "0.4rem 0 1.4rem",
+        }}
+      >
+        Desliza para ver las 3 fibras →
+      </p>
+    </>
   );
 }

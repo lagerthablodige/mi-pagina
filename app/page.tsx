@@ -59,6 +59,7 @@ export default function Home() {
         }
       `}</style>
       <div
+        className="float-icons"
         style={{
           position: "fixed",
           right: "1.5rem",
@@ -128,7 +129,61 @@ export default function Home() {
           </svg>
         </a>
       </div>
+
+      <div className="only-mobile" style={{ backgroundColor: "#1a1a1a", textAlign: "center" }}>
+        <a
+          href="#landa"
+          style={{
+            display: "block",
+            backgroundColor: "#111",
+            color: "#b8945f",
+            fontSize: "0.62rem",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            padding: "0.6rem 1rem",
+            borderBottom: "1px solid rgba(184,148,95,0.25)",
+          }}
+        >
+          Showroom Landa Brands · Vitacura · Con cita
+        </a>
+        <div
+          className={elegant.className}
+          style={{
+            padding: "1.4rem 1rem 1.2rem",
+            background:
+              "radial-gradient(ellipse 70% 80% at 50% 30%, rgba(184,148,95,0.14) 0%, rgba(184,148,95,0) 70%), #1a1a1a",
+          }}
+        >
+          <Image src="/logo-mark.png" alt="Logo Nirün" width={54} height={36} style={{ opacity: 0.95, margin: "0 auto" }} />
+          <h1
+            style={{
+              fontSize: "2.3rem",
+              letterSpacing: "0.3em",
+              fontWeight: 500,
+              color: "#f5f0e8",
+              margin: "0.4rem 0 0.3rem",
+              paddingLeft: "0.3em",
+            }}
+          >
+            NIRÜN
+          </h1>
+          <p
+            style={{
+              fontSize: "0.82rem",
+              letterSpacing: "0.18em",
+              color: "#d8cdbd",
+              textTransform: "uppercase",
+              margin: 0,
+            }}
+          >
+            Cashmere · Yak · Baby Camel de Mongolia
+          </p>
+        </div>
+      </div>
+
       <div
+        className="only-desktop"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -284,8 +339,64 @@ export default function Home() {
 
       <Vitrina />
 
+      <div
+        id="landa"
+        className="only-mobile"
+        style={{
+          backgroundColor: "#f1efe9",
+          textAlign: "center",
+          padding: "2.2rem 1.5rem 2.4rem",
+          borderTop: "1px solid rgba(184,148,95,0.35)",
+        }}
+      >
+        <p
+          style={{
+            fontSize: "0.7rem",
+            letterSpacing: "0.3em",
+            color: "#b8945f",
+            textTransform: "uppercase",
+            margin: "0 0 0.8rem",
+          }}
+        >
+          Nirün × Landa Brands
+        </p>
+        <p style={{ fontSize: "1.05rem", color: "#1a1a1a", lineHeight: 1.6, margin: "0 0 0.4rem" }}>
+          Pruébalas en persona en el showroom de{" "}
+          <a
+            href="https://www.instagram.com/landa_brands/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#1a1a1a", fontWeight: 600 }}
+          >
+            @landa_brands
+          </a>
+        </p>
+        <p style={{ fontSize: "0.9rem", color: "#555", margin: "0 0 1.4rem" }}>
+          Vitacura, Santiago · Solo con cita
+        </p>
+        <TrackedLink
+          href={CALENDLY_HREF}
+          eventName="calendly_click"
+          eventData={{ location: "mobile_landa" }}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-block",
+            padding: "0.85rem 2rem",
+            border: "1px solid #1a1a1a",
+            color: "#1a1a1a",
+            fontSize: "0.8rem",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+          }}
+        >
+          Agenda tu visita
+        </TrackedLink>
+      </div>
+
       {fibers.map((fiber) => (
-        <div key={fiber.key} id={fiber.anchor} style={{ padding: "3.5rem 2rem", backgroundColor: "#fafaf8" }}>
+        <div key={fiber.key} id={fiber.anchor} className="fiber-section" style={{ padding: "3.5rem 2rem", backgroundColor: "#fafaf8" }}>
           <p
             style={{
               fontSize: "0.85rem",
@@ -313,19 +424,11 @@ export default function Home() {
               >
                 {garment}
               </h3>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                  gap: "4px",
-                  maxWidth: "1100px",
-                  margin: "0 auto",
-                }}
-              >
+              <div className="garment-row">
                 {fiber.images
                   .filter((img) => img.garment === garment)
                   .map((img) => (
-                    <div key={img.src} style={{ position: "relative", height: "460px" }}>
+                    <div key={img.src} className="garment-item">
                       <Image src={img.src} alt={`${garment} — ${fiber.label}`} fill style={{ objectFit: "cover" }} />
                     </div>
                   ))}
@@ -412,6 +515,7 @@ export default function Home() {
       </div>
 
       <div
+        className="nirun-footer"
         style={{
           textAlign: "center",
           padding: "4rem 2rem",
@@ -449,6 +553,91 @@ export default function Home() {
             Déjanos tu correo
           </p>
           <NewsletterForm />
+        </div>
+      </div>
+
+      <div
+        className="only-mobile"
+        style={{
+          position: "fixed",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 90,
+          backgroundColor: "rgba(26,26,26,0.96)",
+          borderTop: "1px solid rgba(184,148,95,0.35)",
+          padding: "0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom))",
+        }}
+      >
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "stretch" }}>
+          <TrackedLink
+            href={CALENDLY_HREF}
+            eventName="calendly_click"
+            eventData={{ location: "mobile_sticky" }}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#b8945f",
+              color: "#1a1a1a",
+              padding: "0.85rem 0.5rem",
+              fontSize: "0.8rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Agenda tu visita
+          </TrackedLink>
+          <a
+            href={WHATSAPP_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Escríbenos por WhatsApp"
+            style={{
+              width: "48px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1px solid rgba(245,240,232,0.35)",
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5 0 1.68.44 3.26 1.21 4.63L2.5 21.5l5.02-1.19a9.46 9.46 0 0 0 4.48 1.14c5.25 0 9.5-4.25 9.5-9.5s-4.25-9.45-9.5-9.45Z"
+                stroke="#f5f0e8"
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8.3 7.6c.2-.45.4-.46.6-.47.16-.01.35-.01.5.01.17.02.4-.02.62.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.3.47-.14.16-.3.36-.43.48-.14.14-.28.28-.13.56.16.29.7 1.2 1.53 1.95 1.06.96 1.94 1.26 2.23 1.4.29.15.46.13.63-.07.17-.2.72-.82.91-1.1.19-.28.38-.23.63-.14.26.1 1.65.79 1.93.94.28.14.47.21.53.34.06.13.06.75-.19 1.47-.25.72-1.42 1.38-1.96 1.44-.5.06-1.13.09-1.83-.11-.42-.12-.96-.31-1.65-.6-2.91-1.24-4.81-4.08-4.96-4.28-.14-.2-1.18-1.56-1.18-2.98 0-1.42.75-2.12 1.02-2.41Z"
+                fill="#f5f0e8"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://www.instagram.com/nirun.cl/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram de Nirün"
+            style={{
+              width: "48px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1px solid rgba(245,240,232,0.35)",
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="#f5f0e8" strokeWidth="1.2" />
+              <circle cx="12" cy="12" r="5" stroke="#f5f0e8" strokeWidth="1.2" />
+              <circle cx="17.6" cy="6.4" r="1.1" fill="#f5f0e8" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>

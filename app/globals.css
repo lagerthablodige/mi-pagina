@@ -43,3 +43,59 @@ html {
 .scroll-cue {
   animation: scrollBounce 2s ease-in-out infinite;
 }
+
+/* Layout de escritorio (por defecto) */
+.only-mobile { display: none; }
+
+.vitrina-row { display: flex; }
+.vitrina-tile { flex: 1 1 0; height: 78vh; min-height: 420px; }
+
+.garment-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 4px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.garment-item { position: relative; height: 460px; }
+
+/* Celular */
+@media (max-width: 768px) {
+  .only-desktop { display: none !important; }
+  .only-mobile { display: block; }
+
+  .nirun-footer { padding-bottom: calc(4rem + 72px) !important; }
+  .float-icons { display: none !important; }
+
+  .vitrina-row {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    padding: 0 16px 8px;
+    background: #1a1a1a;
+    scrollbar-width: none;
+  }
+  .vitrina-row::-webkit-scrollbar { display: none; }
+  .vitrina-tile {
+    flex: 0 0 84%;
+    height: 60vh;
+    min-height: 380px;
+    scroll-snap-align: center;
+  }
+
+  .fiber-section { padding: 2.5rem 0 1rem !important; }
+  .garment-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 8px;
+    padding: 0 16px;
+    scrollbar-width: none;
+  }
+  .garment-row::-webkit-scrollbar { display: none; }
+  .garment-item {
+    flex: 0 0 78%;
+    height: 440px;
+    scroll-snap-align: center;
+  }
+}
