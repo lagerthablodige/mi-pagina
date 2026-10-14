@@ -3,6 +3,7 @@ import { Cormorant_Garamond } from "next/font/google";
 import Vitrina from "./Vitrina";
 import TrackedLink from "./TrackedLink";
 import NewsletterForm from "./NewsletterForm";
+import ZoomableImage from "./ZoomableImage";
 import { fibers } from "./fibersData";
 
 const elegant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"] });
@@ -429,7 +430,11 @@ export default function Home() {
                   .filter((img) => img.garment === garment)
                   .map((img) => (
                     <div key={img.src} className="garment-item">
-                      <Image src={img.src} alt={`${garment} — ${fiber.label}`} fill style={{ objectFit: "cover" }} />
+                      <ZoomableImage
+                        src={img.src}
+                        alt={`${garment} — ${fiber.label}`}
+                        sizes="(max-width: 768px) 80vw, 280px"
+                      />
                     </div>
                   ))}
               </div>
@@ -456,7 +461,12 @@ export default function Home() {
             { src: "/fibers/collage/nomin_negro_detail.jpg", alt: "Abrigo largo Nirün en yak negro, detalle", pos: "center" },
           ].map((img) => (
             <div key={img.src} style={{ position: "relative" }}>
-              <Image src={img.src} alt={img.alt} fill style={{ objectFit: "cover", objectPosition: img.pos }} />
+              <ZoomableImage
+                src={img.src}
+                alt={img.alt}
+                sizes="(max-width: 768px) 50vw, 360px"
+                objectPosition={img.pos}
+              />
             </div>
           ))}
         </div>
