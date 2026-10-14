@@ -15,10 +15,37 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nirün",
-  description: "Mongolian Cashmere",
+  metadataBase: new URL("https://www.nirun.cl"),
+  title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia en Santiago",
+  description:
+    "Prendas de lujo elaboradas con Baby Camel, Cashmere, Yak y Seda, con certificación Mongolian Noble Fiber (MNF). Disponibles en el showroom de Landa Brands, Vitacura, Santiago.",
+  keywords: [
+    "cashmere Chile",
+    "baby camel",
+    "yak",
+    "ropa de lujo Santiago",
+    "showroom Vitacura",
+    "Nirün",
+  ],
   icons: {
     icon: "/logo.png?v=2",
+  },
+  openGraph: {
+    title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",
+    description:
+      "Prendas de lujo elaboradas con fibras naturales de Mongolia. Showroom en Vitacura, Santiago.",
+    url: "https://www.nirun.cl",
+    siteName: "Nirün",
+    images: ["/fibers/collage/khulan_detail.jpg"],
+    locale: "es_CL",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",
+    description:
+      "Prendas de lujo elaboradas con fibras naturales de Mongolia. Showroom en Vitacura, Santiago.",
+    images: ["/fibers/collage/khulan_detail.jpg"],
   },
 };
 
@@ -28,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
