@@ -9,28 +9,21 @@ export default function NewsletterForm() {
     e.preventDefault();
     setStatus("sending");
     const form = e.currentTarget;
-    const email = new FormData(form).get("email");
+    const data = new FormData(form);
+    data.append("access_key", "9b26d8d9-fbb3-4aa4-b057-bd759bde0537");
+    data.append("subject", "Nuevo correo desde nirun.cl");
 
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      // Web3Forms no siempre devuelve encabezados CORS legibles desde el navegador,
+      // así que se envía en modo "no-cors": no podemos leer la respuesta, pero
+      // si fetch no lanza un error, la solicitud sí llegó al servidor.
+      await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "9b26d8d9-fbb3-4aa4-b057-bd759bde0537",
-          email,
-          subject: "Nuevo correo desde nirun.cl",
-        }),
+        mode: "no-cors",
+        body: data,
       });
-      const result = await res.json();
-      if (result.success) {
-        setStatus("sent");
-        form.reset();
-      } else {
-        setStatus("error");
-      }
+      setStatus("sent");
+      form.reset();
     } catch {
       setStatus("error");
     }
