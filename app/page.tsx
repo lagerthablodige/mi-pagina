@@ -24,10 +24,10 @@ const cornerStyle = (
   right,
   width: `${size}px`,
   height: `${size}px`,
-  borderTop: top !== undefined && drawHorizontal ? `${thickness}px solid #a36b3f` : undefined,
-  borderBottom: bottom !== undefined && drawHorizontal ? `${thickness}px solid #a36b3f` : undefined,
-  borderLeft: left !== undefined ? `${thickness}px solid #a36b3f` : undefined,
-  borderRight: right !== undefined ? `${thickness}px solid #a36b3f` : undefined,
+  borderTop: top !== undefined && drawHorizontal ? `${thickness}px solid #b8945f` : undefined,
+  borderBottom: bottom !== undefined && drawHorizontal ? `${thickness}px solid #b8945f` : undefined,
+  borderLeft: left !== undefined ? `${thickness}px solid #b8945f` : undefined,
+  borderRight: right !== undefined ? `${thickness}px solid #b8945f` : undefined,
   opacity,
   pointerEvents: "none" as const,
   zIndex: 50,
@@ -35,9 +35,9 @@ const cornerStyle = (
 
 const FlameOrnament = () => (
   <svg width="44" height="30" viewBox="0 0 44 30" fill="none" aria-hidden="true" style={{ marginBottom: "1rem", opacity: 0.9 }}>
-    <path d="M10 28 Q 5 17 10 6 Q 15 17 10 28 Z" stroke="#a36b3f" strokeWidth="0.9" fill="#a36b3f" fillOpacity="0.1"/>
-    <path d="M22 30 Q 14 16 22 2 Q 30 16 22 30 Z" stroke="#a36b3f" strokeWidth="1.2" fill="#a36b3f" fillOpacity="0.15"/>
-    <path d="M34 28 Q 29 17 34 6 Q 39 17 34 28 Z" stroke="#a36b3f" strokeWidth="0.9" fill="#a36b3f" fillOpacity="0.1"/>
+    <path d="M10 28 Q 5 17 10 6 Q 15 17 10 28 Z" stroke="#b8945f" strokeWidth="0.9" fill="#b8945f" fillOpacity="0.1"/>
+    <path d="M22 30 Q 14 16 22 2 Q 30 16 22 30 Z" stroke="#b8945f" strokeWidth="1.2" fill="#b8945f" fillOpacity="0.15"/>
+    <path d="M34 28 Q 29 17 34 6 Q 39 17 34 28 Z" stroke="#b8945f" strokeWidth="0.9" fill="#b8945f" fillOpacity="0.1"/>
   </svg>
 );
 
@@ -290,7 +290,7 @@ export default function Home() {
             style={{
               fontSize: "0.85rem",
               letterSpacing: "0.3em",
-              color: "#a36b3f",
+              color: "#b8945f",
               textTransform: "uppercase",
               textAlign: "center",
               marginBottom: "2rem",
@@ -368,7 +368,7 @@ export default function Home() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", marginBottom: "1.2rem" }}>
-            <span style={{ color: "#a36b3f", fontSize: "0.55rem", opacity: 0.7, transform: "rotate(45deg)", display: "inline-block" }}>■</span>
+            <span style={{ color: "#b8945f", fontSize: "0.55rem", opacity: 0.7, transform: "rotate(45deg)", display: "inline-block" }}>■</span>
             <h2
               style={{
                 fontSize: "1.4rem",
@@ -441,7 +441,7 @@ export default function Home() {
             style={{
               fontSize: "0.8rem",
               letterSpacing: "0.2em",
-              color: "#a36b3f",
+              color: "#b8945f",
               textTransform: "uppercase",
               marginBottom: "1.2rem",
             }}
