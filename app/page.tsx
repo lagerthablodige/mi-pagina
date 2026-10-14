@@ -139,7 +139,7 @@ export default function Home() {
           textAlign: "center",
           position: "relative",
           background:
-            "radial-gradient(ellipse 60% 55% at 50% 38%, rgba(163,107,63,0.16) 0%, rgba(163,107,63,0) 60%), radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 60%), #1a1a1a",
+            "radial-gradient(ellipse 60% 55% at 50% 38%, rgba(184,148,95,0.16) 0%, rgba(184,148,95,0) 60%), radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 60%), #1a1a1a",
         }}
       >
         <div style={cornerStyle(24, undefined, 24, undefined)} />
