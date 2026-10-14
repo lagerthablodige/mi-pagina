@@ -1,35 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function NewsletterForm() {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [sent, setSent] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("sending");
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    data.append("access_key", "9b26d8d9-fbb3-4aa4-b057-bd759bde0537");
-    data.append("subject", "Nuevo correo desde nirun.cl");
-
-    try {
-      // Web3Forms no siempre devuelve encabezados CORS legibles desde el navegador,
-      // así que se envía en modo "no-cors": no podemos leer la respuesta, pero
-      // si fetch no lanza un error, la solicitud sí llegó al servidor.
-      await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        mode: "no-cors",
-        body: data,
-      });
-      setStatus("sent");
-      form.reset();
-    } catch {
-      setStatus("error");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("gracias") === "1") {
+      setSent(true);
+      window.history.replaceState({}, "", window.location.pathname);
     }
-  }
+  }, []);
 
-  if (status === "sent") {
+  if (sent) {
     return (
       <p style={{ color: "#f5f0e8", fontSize: "1rem", letterSpacing: "0.05em" }}>
         Gracias — te vamos a escribir pronto.
@@ -39,7 +23,8 @@ export default function NewsletterForm() {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      action="https://api.web3forms.com/submit"
+      method="POST"
       style={{
         display: "flex",
         flexWrap: "wrap",
@@ -49,6 +34,9 @@ export default function NewsletterForm() {
         margin: "0 auto",
       }}
     >
+      <input type="hidden" name="access_key" value="9b26d8d9-fbb3-4aa4-b057-bd759bde0537" />
+      <input type="hidden" name="subject" value="Nuevo correo desde nirun.cl" />
+      <input type="hidden" name="redirect" value="https://www.nirun.cl/?gracias=1" />
       <input
         type="email"
         name="email"
@@ -66,7 +54,6 @@ export default function NewsletterForm() {
       />
       <button
         type="submit"
-        disabled={status === "sending"}
         style={{
           padding: "0.85rem 2rem",
           border: "1px solid #f5f0e8",
@@ -78,13 +65,8 @@ export default function NewsletterForm() {
           cursor: "pointer",
         }}
       >
-        {status === "sending" ? "Enviando..." : "Enviar"}
+        Enviar
       </button>
-      {status === "error" && (
-        <p style={{ width: "100%", color: "#e8a0a0", fontSize: "0.85rem" }}>
-          Algo falló, inténtalo de nuevo.
-        </p>
-      )}
     </form>
   );
 }
