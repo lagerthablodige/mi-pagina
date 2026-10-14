@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Cormorant_Garamond } from "next/font/google";
 import Vitrina from "./Vitrina";
 import TrackedLink from "./TrackedLink";
+import NewsletterForm from "./NewsletterForm";
 import { fibers } from "./fibersData";
 
 const elegant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"] });
@@ -434,6 +435,21 @@ export default function Home() {
         >
           Mongolia como origen. El lujo como visión.
         </p>
+
+        <div style={{ marginTop: "3rem", maxWidth: "480px", marginLeft: "auto", marginRight: "auto" }}>
+          <p
+            style={{
+              fontSize: "0.8rem",
+              letterSpacing: "0.2em",
+              color: "#a36b3f",
+              textTransform: "uppercase",
+              marginBottom: "1.2rem",
+            }}
+          >
+            Déjanos tu correo
+          </p>
+          <NewsletterForm />
+        </div>
       </div>
     </div>
   );
