@@ -9,14 +9,20 @@ export default function NewsletterForm() {
     e.preventDefault();
     setStatus("sending");
     const form = e.currentTarget;
-    const data = new FormData(form);
-    data.append("access_key", "9b26d8d9-fbb3-4aa4-b057-bd759bde0537");
-    data.append("subject", "Nuevo correo desde nirun.cl");
+    const email = new FormData(form).get("email");
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: data,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "9b26d8d9-fbb3-4aa4-b057-bd759bde0537",
+          email,
+          subject: "Nuevo correo desde nirun.cl",
+        }),
       });
       const result = await res.json();
       if (result.success) {
