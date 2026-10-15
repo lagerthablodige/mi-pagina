@@ -361,7 +361,10 @@ export default function Home() {
         >
           Nirün × Landa Brands
         </p>
-        <p style={{ fontSize: "1.05rem", color: "#1a1a1a", lineHeight: 1.6, margin: "0 0 0.4rem" }}>
+        <p
+          data-clarity-unmask="true"
+          style={{ fontSize: "1.05rem", color: "#1a1a1a", lineHeight: 1.6, margin: "0 0 0.4rem" }}
+        >
           Pruébalas en persona en el showroom de{" "}
           <a
             href="https://www.instagram.com/landa_brands/"
