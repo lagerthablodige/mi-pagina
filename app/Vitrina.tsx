@@ -49,7 +49,7 @@ function Tile({ fiber, offset }: { fiber: (typeof fibers)[number]; offset: numbe
           alt={i === index ? `${fiber.label} — ${img.garment}` : ""}
           fill
           sizes="(max-width: 768px) 84vw, 34vw"
-          quality={90}
+          quality={80}
           priority={offset === 0 && i === 0}
           style={{
             objectFit: "cover",
@@ -109,14 +109,14 @@ export default function Vitrina() {
           backgroundColor: "#1a1a1a",
           color: "#b8945f",
           fontSize: "0.7rem",
-          letterSpacing: "0.25em",
+          letterSpacing: "0.18em",
           textTransform: "uppercase",
           textAlign: "center",
           margin: 0,
           padding: "0.4rem 0 1.4rem",
         }}
       >
-        Desliza para ver las 3 fibras →
+        Toca una fibra para ver sus prendas ↓
       </p>
     </>
   );

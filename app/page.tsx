@@ -9,6 +9,37 @@ import { WHATSAPP_HREF, CALENDLY_HREF } from "./links";
 
 const elegant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
+// Dorado oscuro para texto chico sobre fondo claro (#b8945f da solo 2,7:1; este da 5,7:1, sobre el mínimo AA de 4,5:1).
+// Sobre fondo oscuro se sigue usando #b8945f.
+const GOLD_TEXT = "#7d5f2e";
+
+function WhatsAppIcon({ color = "#f5f0e8", size = 22 }: { color?: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5 0 1.68.44 3.26 1.21 4.63L2.5 21.5l5.02-1.19a9.46 9.46 0 0 0 4.48 1.14c5.25 0 9.5-4.25 9.5-9.5s-4.25-9.45-9.5-9.45Z"
+        stroke={color}
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.3 7.6c.2-.45.4-.46.6-.47.16-.01.35-.01.5.01.17.02.4-.02.62.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.3.47-.14.16-.3.36-.43.48-.14.14-.28.28-.13.56.16.29.7 1.2 1.53 1.95 1.06.96 1.94 1.26 2.23 1.4.29.15.46.13.63-.07.17-.2.72-.82.91-1.1.19-.28.38-.23.63-.14.26.1 1.65.79 1.93.94.28.14.47.21.53.34.06.13.06.75-.19 1.47-.25.72-1.42 1.38-1.96 1.44-.5.06-1.13.09-1.83-.11-.42-.12-.96-.31-1.65-.6-2.91-1.24-4.81-4.08-4.96-4.28-.14-.2-1.18-1.56-1.18-2.98 0-1.42.75-2.12 1.02-2.41Z"
+        fill={color}
+      />
+    </svg>
+  );
+}
+
+function InstagramIcon({ color = "#f5f0e8", size = 22 }: { color?: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke={color} strokeWidth="1.2" />
+      <circle cx="12" cy="12" r="5" stroke={color} strokeWidth="1.2" />
+      <circle cx="17.6" cy="6.4" r="1.1" fill={color} />
+    </svg>
+  );
+}
+
 const cornerStyle = (
   top?: number,
   bottom?: number,
@@ -79,15 +110,13 @@ export default function Home() {
             color: "#f5f0e8",
           }}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="#f5f0e8" strokeWidth="1.2" />
-            <circle cx="12" cy="12" r="5" stroke="#f5f0e8" strokeWidth="1.2" />
-            <circle cx="17.6" cy="6.4" r="1.1" fill="#f5f0e8" />
-          </svg>
+          <InstagramIcon />
         </a>
 
-        <a
+        <TrackedLink
           href={WHATSAPP_HREF}
+          eventName="whatsapp_click"
+          eventData={{ location: "desktop_float" }}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Escríbenos por WhatsApp"
@@ -105,19 +134,8 @@ export default function Home() {
             color: "#f5f0e8",
           }}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5 0 1.68.44 3.26 1.21 4.63L2.5 21.5l5.02-1.19a9.46 9.46 0 0 0 4.48 1.14c5.25 0 9.5-4.25 9.5-9.5s-4.25-9.45-9.5-9.45Z"
-              stroke="#f5f0e8"
-              strokeWidth="1.2"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M8.3 7.6c.2-.45.4-.46.6-.47.16-.01.35-.01.5.01.17.02.4-.02.62.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.3.47-.14.16-.3.36-.43.48-.14.14-.28.28-.13.56.16.29.7 1.2 1.53 1.95 1.06.96 1.94 1.26 2.23 1.4.29.15.46.13.63-.07.17-.2.72-.82.91-1.1.19-.28.38-.23.63-.14.26.1 1.65.79 1.93.94.28.14.47.21.53.34.06.13.06.75-.19 1.47-.25.72-1.42 1.38-1.96 1.44-.5.06-1.13.09-1.83-.11-.42-.12-.96-.31-1.65-.6-2.91-1.24-4.81-4.08-4.96-4.28-.14-.2-1.18-1.56-1.18-2.98 0-1.42.75-2.12 1.02-2.41Z"
-              fill="#f5f0e8"
-            />
-          </svg>
-        </a>
+          <WhatsAppIcon />
+        </TrackedLink>
       </div>
 
       <div className="only-mobile" style={{ backgroundColor: "#1a1a1a", textAlign: "center" }}>
@@ -127,11 +145,11 @@ export default function Home() {
             display: "block",
             backgroundColor: "#111",
             color: "#b8945f",
-            fontSize: "0.62rem",
-            letterSpacing: "0.22em",
+            fontSize: "clamp(0.62rem, 2.85vw, 0.72rem)",
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
             textDecoration: "none",
-            padding: "0.6rem 1rem",
+            padding: "0.6rem 0.75rem",
             borderBottom: "1px solid rgba(184,148,95,0.25)",
           }}
         >
@@ -167,7 +185,7 @@ export default function Home() {
               margin: 0,
             }}
           >
-            Cashmere · Yak · Baby Camel de Mongolia
+            Prendas de lujo en Cashmere, Yak y Baby Camel de Mongolia
           </p>
         </div>
       </div>
@@ -336,15 +354,15 @@ export default function Home() {
         style={{
           backgroundColor: "#f1efe9",
           textAlign: "center",
-          padding: "2.2rem 1.5rem 2.4rem",
+          padding: "1.9rem 1.5rem 2.1rem",
           borderTop: "1px solid rgba(184,148,95,0.35)",
         }}
       >
         <p
           style={{
-            fontSize: "0.7rem",
+            fontSize: "0.72rem",
             letterSpacing: "0.3em",
-            color: "#b8945f",
+            color: GOLD_TEXT,
             textTransform: "uppercase",
             margin: "0 0 0.8rem",
           }}
@@ -387,22 +405,48 @@ export default function Home() {
         >
           Agenda tu visita
         </TrackedLink>
+        <p style={{ fontSize: "0.9rem", color: "#555", margin: "1.1rem 0 0" }}>
+          ¿Prefieres escribirnos?{" "}
+          <TrackedLink
+            href={WHATSAPP_HREF}
+            eventName="whatsapp_click"
+            eventData={{ location: "mobile_landa" }}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#1a1a1a", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: "3px", padding: "0.5rem 0" }}
+          >
+            Escríbenos por WhatsApp
+          </TrackedLink>
+        </p>
       </div>
 
       {fibers.map((fiber) => (
         <div key={fiber.key} id={fiber.anchor} className="fiber-section" style={{ padding: "3.5rem 2rem", backgroundColor: "#fafaf8" }}>
           <h2
             style={{
-              fontSize: "0.85rem",
+              fontSize: "0.9rem",
               letterSpacing: "0.3em",
-              color: "#b8945f",
+              color: GOLD_TEXT,
               textTransform: "uppercase",
               textAlign: "center",
-              marginBottom: "2rem",
+              marginBottom: "0.9rem",
             }}
           >
             {fiber.label}
           </h2>
+          <p
+            style={{
+              maxWidth: "34rem",
+              margin: "0 auto 2.2rem",
+              padding: "0 1.5rem",
+              textAlign: "center",
+              fontSize: "0.95rem",
+              lineHeight: 1.7,
+              color: "#444",
+            }}
+          >
+            {fiber.intro}
+          </p>
           {Array.from(new Set(fiber.images.map((img) => img.garment))).map((garment) => (
             <div key={garment} style={{ marginBottom: "2rem" }}>
               <h3
@@ -413,11 +457,25 @@ export default function Home() {
                   fontWeight: 400,
                   color: "#1a1a1a",
                   textAlign: "center",
-                  marginBottom: "1rem",
+                  marginBottom: "0.3rem",
                 }}
               >
                 {garment}
               </h3>
+              {fiber.details[garment] && (
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    letterSpacing: "0.04em",
+                    color: "#555",
+                    textAlign: "center",
+                    margin: "0 0 1rem",
+                    padding: "0 1rem",
+                  }}
+                >
+                  {fiber.details[garment]}
+                </p>
+              )}
               <div className="garment-row">
                 {fiber.images
                   .filter((img) => img.garment === garment)
@@ -435,6 +493,45 @@ export default function Home() {
           ))}
         </div>
       ))}
+
+      <section
+        aria-labelledby="lujo-silencioso"
+        style={{
+          backgroundColor: "#fafaf8",
+          padding: "3.5rem 1.5rem 4rem",
+          textAlign: "center",
+          borderTop: "1px solid rgba(184,148,95,0.35)",
+        }}
+      >
+        <div style={{ maxWidth: "36rem", margin: "0 auto" }}>
+          <h2
+            id="lujo-silencioso"
+            style={{
+              fontSize: "0.9rem",
+              letterSpacing: "0.3em",
+              color: GOLD_TEXT,
+              textTransform: "uppercase",
+              margin: "0 0 1.4rem",
+              fontWeight: 400,
+            }}
+          >
+            Lujo silencioso
+          </h2>
+          <p className={elegant.className} style={{ fontSize: "1.4rem", lineHeight: 1.55, color: "#1a1a1a", margin: "0 0 1.3rem" }}>
+            En las estepas de Mongolia, donde el clima alcanza extremos y la naturaleza define el ritmo de la vida,
+            nace una de las fibras más nobles del mundo.
+          </p>
+          <p style={{ fontSize: "1rem", lineHeight: 1.85, color: "#444", margin: "0 0 1rem" }}>
+            Detrás de cada prenda hay manos expertas, principalmente mujeres, cuyo trabajo no solo da forma a la fibra,
+            sino que sostiene comunidades y tradiciones. Cada pieza es ligera, cálida y duradera: una suavidad que no se
+            impone, se percibe.
+          </p>
+          <p style={{ fontSize: "0.9rem", lineHeight: 1.7, color: "#555", fontStyle: "italic", margin: "1.6rem 0 0" }}>
+            Nirün, en el antiguo idioma mongol, significa «linaje puro». En la cultura mongol, los Nirün eran la
+            aristocracia.
+          </p>
+        </div>
+      </section>
 
       <div style={{ display: "flex", flexWrap: "wrap", backgroundColor: "#f1efe9" }}>
         <div
@@ -525,7 +622,7 @@ export default function Home() {
           backgroundColor: "#1a1a1a",
         }}
       >
-        <svg width="36" height="24" viewBox="0 0 44 30" fill="none" aria-hidden="true" style={{ marginBottom: "1.5rem", opacity: 0.35 }}>
+        <svg width="36" height="24" viewBox="0 0 44 30" fill="none" aria-hidden="true" style={{ display: "block", margin: "0 auto 1.5rem", opacity: 0.35 }}>
           <path d="M10 28 Q 5 17 10 6 Q 15 17 10 28 Z" stroke="#f5f0e8" strokeWidth="0.9" fill="#f5f0e8" fillOpacity="0.1"/>
           <path d="M22 30 Q 14 16 22 2 Q 30 16 22 30 Z" stroke="#f5f0e8" strokeWidth="1.2" fill="#f5f0e8" fillOpacity="0.15"/>
           <path d="M34 28 Q 29 17 34 6 Q 39 17 34 28 Z" stroke="#f5f0e8" strokeWidth="0.9" fill="#f5f0e8" fillOpacity="0.1"/>
@@ -579,67 +676,30 @@ export default function Home() {
             eventData={{ location: "mobile_sticky" }}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#b8945f",
-              color: "#1a1a1a",
-              padding: "0.85rem 0.5rem",
-              fontSize: "0.8rem",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              fontWeight: 600,
-            }}
+            className="sticky-agenda"
           >
             Agenda tu visita
           </TrackedLink>
-          <a
+          <TrackedLink
             href={WHATSAPP_HREF}
+            eventName="whatsapp_click"
+            eventData={{ location: "mobile_sticky" }}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Escríbenos por WhatsApp"
-            style={{
-              width: "48px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "1px solid rgba(245,240,232,0.35)",
-            }}
+            className="sticky-wa"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5 0 1.68.44 3.26 1.21 4.63L2.5 21.5l5.02-1.19a9.46 9.46 0 0 0 4.48 1.14c5.25 0 9.5-4.25 9.5-9.5s-4.25-9.45-9.5-9.45Z"
-                stroke="#f5f0e8"
-                strokeWidth="1.2"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8.3 7.6c.2-.45.4-.46.6-.47.16-.01.35-.01.5.01.17.02.4-.02.62.5.24.58.82 2 .89 2.14.07.15.12.32.02.51-.1.19-.15.31-.3.47-.14.16-.3.36-.43.48-.14.14-.28.28-.13.56.16.29.7 1.2 1.53 1.95 1.06.96 1.94 1.26 2.23 1.4.29.15.46.13.63-.07.17-.2.72-.82.91-1.1.19-.28.38-.23.63-.14.26.1 1.65.79 1.93.94.28.14.47.21.53.34.06.13.06.75-.19 1.47-.25.72-1.42 1.38-1.96 1.44-.5.06-1.13.09-1.83-.11-.42-.12-.96-.31-1.65-.6-2.91-1.24-4.81-4.08-4.96-4.28-.14-.2-1.18-1.56-1.18-2.98 0-1.42.75-2.12 1.02-2.41Z"
-                fill="#f5f0e8"
-              />
-            </svg>
-          </a>
+            <WhatsAppIcon color="#1a1a1a" />
+            <span>WhatsApp</span>
+          </TrackedLink>
           <a
             href="https://www.instagram.com/nirun.cl/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram de Nirün"
-            style={{
-              width: "48px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "1px solid rgba(245,240,232,0.35)",
-            }}
+            className="sticky-ig"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="#f5f0e8" strokeWidth="1.2" />
-              <circle cx="12" cy="12" r="5" stroke="#f5f0e8" strokeWidth="1.2" />
-              <circle cx="17.6" cy="6.4" r="1.1" fill="#f5f0e8" />
-            </svg>
+            <InstagramIcon />
           </a>
         </div>
       </div>

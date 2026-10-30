@@ -116,3 +116,46 @@ input:focus-visible {
     scroll-snap-align: center;
   }
 }
+
+/* Barra fija del celular: Agenda (dorado) + WhatsApp (marfil, con texto bien visible) + Instagram */
+.sticky-agenda {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #b8945f;
+  color: #1a1a1a;
+  padding: 0.85rem 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sticky-wa {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #f5f0e8;
+  color: #1a1a1a;
+  padding: 0 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sticky-ig {
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(245, 240, 232, 0.35);
+}
+@media (max-width: 370px) {
+  .sticky-ig { display: none; }
+  .sticky-agenda { font-size: 0.72rem; letter-spacing: 0.1em; }
+}

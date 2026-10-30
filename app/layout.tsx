@@ -92,7 +92,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.nirun.cl"),
   title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia en Santiago",
   description:
-    "Prendas de lujo elaboradas con Baby Camel, Cashmere, Yak y Seda, con certificación Mongolian Noble Fiber (MNF). Disponibles en el showroom de Landa Brands, Vitacura, Santiago.",
+    "Prendas de lujo en Baby Camel, Cashmere, Yak y Seda con certificación Mongolian Noble Fiber (MNF). Showroom en Vitacura, Santiago.",
   keywords: [
     "cashmere Chile",
     "baby camel",
