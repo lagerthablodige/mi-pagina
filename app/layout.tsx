@@ -39,7 +39,7 @@ const jsonLd = {
       url: SITE,
       logo: `${SITE}/logo.png`,
       description:
-        "Marca de ropa de lujo en cashmere, yak y baby camel de Mongolia, con certificación Mongolian Noble Fiber (MNF).",
+        "Marca de ropa de lujo en cashmere, yak y baby camel de Mongolia.",
       sameAs: ["https://www.instagram.com/nirun.cl/"],
       contactPoint: {
         "@type": "ContactPoint",
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.nirun.cl"),
   title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia en Santiago",
   description:
-    "Prendas de lujo en Baby Camel, Cashmere, Yak y Seda con certificación Mongolian Noble Fiber (MNF). Showroom en Vitacura, Santiago.",
+    "Prendas de lujo en baby camel, cashmere, yak y seda de Mongolia. Showroom con cita en Vitacura, Santiago.",
   keywords: [
     "cashmere Chile",
     "baby camel",
