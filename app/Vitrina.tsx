@@ -1,20 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fibers } from "./fibersData";
 
 function Tile({ fiber, offset }: { fiber: (typeof fibers)[number]; offset: number }) {
   const [index, setIndex] = useState(0);
+  // Fotos montadas: la actual + la siguiente. Así no se descargan las 32 fotos de golpe en el celular.
+  const [montadas, setMontadas] = useState(2);
+  const indiceRef = useRef(0);
 
   useEffect(() => {
+    // Quien pide menos movimiento en su celular ve una sola foto fija.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const total = fiber.images.length;
+    const avanzar = () => {
+      const siguiente = (indiceRef.current + 1) % total;
+      indiceRef.current = siguiente;
+      setIndex(siguiente);
+      setMontadas((m) => Math.max(m, siguiente + 2));
+    };
     const period = 3000 + offset * 500; // 3000/3500/4000ms, desincroniza las columnas
-    const start = setTimeout(() => {
-      setIndex((i) => (i + 1) % fiber.images.length);
-    }, offset * 900);
-    const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % fiber.images.length);
-    }, period);
+    const start = setTimeout(avanzar, offset * 900);
+    const interval = setInterval(avanzar, period);
     return () => {
       clearTimeout(start);
       clearInterval(interval);
@@ -34,12 +42,13 @@ function Tile({ fiber, offset }: { fiber: (typeof fibers)[number]; offset: numbe
         textDecoration: "none",
       }}
     >
-      {fiber.images.map((img, i) => (
+      {fiber.images.slice(0, montadas).map((img, i) => (
         <Image
           key={img.src}
           src={img.src}
-          alt={`${fiber.label} — ${img.garment}`}
+          alt={i === index ? `${fiber.label} — ${img.garment}` : ""}
           fill
+          sizes="(max-width: 768px) 84vw, 34vw"
           quality={90}
           priority={offset === 0 && i === 0}
           style={{
