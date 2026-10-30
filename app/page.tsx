@@ -5,6 +5,7 @@ import TrackedLink from "./TrackedLink";
 import NewsletterForm from "./NewsletterForm";
 import ZoomableImage from "./ZoomableImage";
 import { fibers } from "./fibersData";
+import { WHATSAPP_HREF, CALENDLY_HREF } from "./links";
 
 const elegant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -34,21 +35,9 @@ const cornerStyle = (
   zIndex: 50,
 });
 
-const FlameOrnament = () => (
-  <svg width="44" height="30" viewBox="0 0 44 30" fill="none" aria-hidden="true" style={{ marginBottom: "1rem", opacity: 0.9 }}>
-    <path d="M10 28 Q 5 17 10 6 Q 15 17 10 28 Z" stroke="#b8945f" strokeWidth="0.9" fill="#b8945f" fillOpacity="0.1"/>
-    <path d="M22 30 Q 14 16 22 2 Q 30 16 22 30 Z" stroke="#b8945f" strokeWidth="1.2" fill="#b8945f" fillOpacity="0.15"/>
-    <path d="M34 28 Q 29 17 34 6 Q 39 17 34 28 Z" stroke="#b8945f" strokeWidth="0.9" fill="#b8945f" fillOpacity="0.1"/>
-  </svg>
-);
-
-const WHATSAPP_HREF =
-  "https://wa.me/56990911592?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20atenci%C3%B3n%20personalizada%20para%20resolver%20algunas%20dudas.";
-const CALENDLY_HREF = "https://calendly.com/ventas-landabrands/visita-al-showroom-de-landa-brands-cl";
-
 export default function Home() {
   return (
-    <div style={{ backgroundColor: "#fafaf8", fontFamily: "Georgia, serif" }}>
+    <main style={{ backgroundColor: "#fafaf8", fontFamily: "Georgia, serif" }}>
       <style>{`
         .nirun-float-btn {
           transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
@@ -314,6 +303,7 @@ export default function Home() {
           </span>
           <svg
             className="scroll-cue"
+            aria-hidden="true"
             width="20"
             height="28"
             viewBox="0 0 20 28"
@@ -401,7 +391,7 @@ export default function Home() {
 
       {fibers.map((fiber) => (
         <div key={fiber.key} id={fiber.anchor} className="fiber-section" style={{ padding: "3.5rem 2rem", backgroundColor: "#fafaf8" }}>
-          <p
+          <h2
             style={{
               fontSize: "0.85rem",
               letterSpacing: "0.3em",
@@ -412,7 +402,7 @@ export default function Home() {
             }}
           >
             {fiber.label}
-          </p>
+          </h2>
           {Array.from(new Set(fiber.images.map((img) => img.garment))).map((garment) => (
             <div key={garment} style={{ marginBottom: "2rem" }}>
               <h3
@@ -431,11 +421,11 @@ export default function Home() {
               <div className="garment-row">
                 {fiber.images
                   .filter((img) => img.garment === garment)
-                  .map((img) => (
+                  .map((img, n, fotos) => (
                     <div key={img.src} className="garment-item">
                       <ZoomableImage
                         src={img.src}
-                        alt={`${garment} — ${fiber.label}`}
+                        alt={`${garment} — ${fiber.label}, foto ${n + 1} de ${fotos.length}`}
                         sizes="(max-width: 768px) 80vw, 280px"
                       />
                     </div>
@@ -527,7 +517,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div
+      <footer
         className="nirun-footer"
         style={{
           textAlign: "center",
@@ -567,7 +557,7 @@ export default function Home() {
           </p>
           <NewsletterForm />
         </div>
-      </div>
+      </footer>
 
       <div
         className="only-mobile"
@@ -653,6 +643,6 @@ export default function Home() {
           </a>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

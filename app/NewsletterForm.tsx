@@ -41,6 +41,10 @@ export default function NewsletterForm() {
         type="email"
         name="email"
         required
+        aria-label="Tu correo"
+        autoComplete="email"
+        inputMode="email"
+        className="nirun-input"
         placeholder="Tu correo"
         style={{
           flex: "1 1 240px",
@@ -48,8 +52,7 @@ export default function NewsletterForm() {
           backgroundColor: "transparent",
           border: "1px solid #f5f0e8",
           color: "#f5f0e8",
-          fontSize: "0.9rem",
-          outline: "none",
+          fontSize: "1rem",
         }}
       />
       <button

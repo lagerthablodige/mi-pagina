@@ -44,6 +44,23 @@ html {
   animation: scrollBounce 2s ease-in-out infinite;
 }
 
+/* Accesibilidad: contorno visible al navegar con teclado y placeholder legible sobre fondo oscuro */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #b8945f;
+  outline-offset: 3px;
+}
+.nirun-input::placeholder {
+  color: #b9b0a2;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .scroll-cue { animation: none; }
+}
+
 /* Layout de escritorio (por defecto) */
 .only-mobile { display: none; }
 
