@@ -133,7 +133,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
             rel="noopener noreferrer"
             className="boton boton--tinta"
           >
-            Agenda tu visita para probártela
+            {`Agenda tu visita para probárte${producto.lo}`}
           </TrackedLink>
           <TrackedLink
             href={waHref}
@@ -152,7 +152,10 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
           <h2 id="como-comprar" className="eyebrow">
             Cómo comprar
           </h2>
-          <p className="parrafo">Pruébala en el showroom de Landa Brands, Vitacura, solo con cita, o escríbenos por WhatsApp.</p>
+          {/* "Pruébatelo" o "Pruébatelas" según la prenda (campo lo de products.ts). Avisa que la agenda es de Landa Brands. */}
+          <p className="parrafo">
+            {`Pruébate${producto.lo} en el showroom de Landa Brands, en Vitacura, solo con cita. Eliges día y hora en su agenda, o nos escribes por WhatsApp.`}
+          </p>
         </section>
 
         <section className="ficha__bloque" aria-labelledby="sobre-fibra">
