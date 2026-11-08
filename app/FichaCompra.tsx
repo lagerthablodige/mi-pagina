@@ -6,7 +6,7 @@ import BarraFija from "./BarraFija";
 import TrackedLink from "./TrackedLink";
 import { WhatsAppIcon } from "./Iconos";
 import { CALENDLY_HREF, whatsappConMensaje } from "./links";
-import { mensajeWhatsApp, precioCLP, type Pieza, type Producto } from "./products";
+import { mensajeWhatsApp, precioCLP, precioEnLinea, type Pieza, type Producto } from "./products";
 
 type Props = {
   producto: Producto;
@@ -69,7 +69,8 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
 
   return (
     <>
-      <div className="ficha__info">
+      {/* Celular: cartela compacta (nombre y precio en la misma fila). PC: Sernaí Silk pone sus dos piezas lado a lado. */}
+      <div id="ficha-datos" className={`ficha__info${unaPieza ? "" : " ficha__info--piezas"}`}>
         <p className="eyebrow ficha__fibra">{fibraLabel}</p>
         <h1 className="ficha__titulo">{producto.nombreCorto}</h1>
         <p className="ficha__tipo">{producto.tipo}</p>
@@ -164,6 +165,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
 
       <BarraFija
         modo="ficha"
+        resumen={{ nombre: producto.nombreCorto, precio: precioEnLinea(producto) }}
         whatsappHref={waHref}
         ubicacionAgenda={`prenda_sticky_${producto.slug}`}
         ubicacionWhatsapp={`prenda_sticky_${producto.slug}`}

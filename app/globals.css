@@ -1481,6 +1481,77 @@ img[data-nimg="fill"] {
   }
 }
 
+/* === M02 Cartela compacta de la ficha ===
+   Celular: la fibra arriba; el nombre a la izquierda y el precio a la derecha en la misma fila; debajo, el tipo
+   e "IVA incluido". El HTML no cambia (la grilla reubica los mismos elementos), y la foto no se recorta.
+   PC: Sernaí Silk pone sus dos piezas lado a lado, así el botón queda sobre el pliegue y el sticky funciona. */
+@media (max-width: 1023px) {
+  .ficha__info {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    padding-top: 18px; /* el valor final de M07 */
+    scroll-margin-top: var(--alto-encabezado);
+  }
+  .ficha__info > * {
+    grid-column: 1 / -1;
+  }
+  .ficha__info > .ficha__fibra {
+    grid-row: 1;
+  }
+  .ficha__info > .ficha__titulo {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 4px 0 0;
+    align-self: baseline;
+    text-wrap: balance;
+  }
+  .ficha__info > .ficha__precio {
+    display: contents;
+  }
+  .ficha__info > .ficha__precio .precio--grande {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: baseline;
+    text-align: right;
+    font-size: 1rem; /* a 1.25rem el precio compite con el nombre */
+    line-height: 1.4;
+  }
+  .ficha__info > .ficha__precio .ficha__iva {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: baseline;
+    text-align: right;
+    font-size: 0.8125rem;
+  }
+  .ficha__info > .ficha__tipo {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 2px 0 0;
+    align-self: baseline;
+  }
+}
+@media (min-width: 1024px) {
+  .ficha__info--piezas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 32px;
+    align-content: start;
+  }
+  .ficha__info--piezas > :not(.ficha__pieza) {
+    grid-column: 1 / -1;
+  }
+  .ficha__info--piezas .dato {
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 0;
+  }
+  .ficha__info--piezas .dato dt {
+    flex-basis: auto;
+  }
+}
+/* === fin M02 === */
+
 /* ---------- Página 404 ---------- */
 
 .pagina-404 {
