@@ -10,7 +10,8 @@ Se cargan con next/font/local (ver app/layout.tsx) porque next/font/google falla
 
 Modificación (2026-11-08): en cormorant-garamond-latin.woff2 se movió a la izquierda el acento agudo de las minúsculas
 á é í ó ú, porque en el original quedaba corrido hacia la derecha de la vocal (se notaba sobre todo en "Nomín").
-El script se corrió DOS veces sobre el archivo (corrimiento total: á -90, é -120, í -116, ó -110, ú -100 unidades de la fuente);
-no conviene una tercera vez: con más de ese corrimiento la í se va a la izquierda de la letra.
-El script que lo hace es parchear_acentos.py (en esta carpeta; necesita fonttools y brotli; cada corrida mueve una vez). Se partió
-del archivo original de Google Fonts. La OFL permite modificar la fuente; la versión modificada se usa solo dentro de este sitio.
+El script que lo hace es parchear_acentos.py (en esta carpeta; necesita fonttools y brotli). Se partió del archivo original de
+Google Fonts. La OFL permite modificar la fuente; la versión modificada se usa solo dentro de este sitio.
+El parche está aplicado UNA sola vez (corrimiento: á -45, é -60, í -58, ó -55, ú -50 unidades de la fuente). Con una segunda
+pasada (el doble) los acentos quedaban corridos hacia la izquierda de la letra: no volver a correr el script sobre un archivo ya
+parchado. Si hay que repetirlo, partir siempre del archivo original de Google Fonts.
