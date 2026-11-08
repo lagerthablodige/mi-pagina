@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import BarraFija from "./BarraFija";
 import TrackedLink from "./TrackedLink";
-import { WhatsAppIcon } from "./Iconos";
 import { CALENDLY_HREF, whatsappConMensaje } from "./links";
 import { medirPaso } from "./medicion";
 import { mensajeWhatsApp, precioCLP, precioEnLinea, type Pieza, type Producto } from "./products";
@@ -150,7 +149,6 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
             rel="noopener noreferrer"
             className="boton boton--contorno"
           >
-            <WhatsAppIcon color="currentColor" size={20} />
             {tallaUna ? `Talla ${tallaUna} por WhatsApp` : "Consultar por WhatsApp"}
           </TrackedLink>
         </div>
