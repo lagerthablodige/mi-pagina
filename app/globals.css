@@ -1470,16 +1470,28 @@ img[data-nimg="fill"] {
   .seccion--mas {
     padding-block: 112px;
   }
+  /* === M23 "Más en ...": hasta 3 en una fila; con 1 o 2 quedan al centro === */
   .grilla-prendas--mas {
-    max-width: 760px;
+    max-width: 1160px;
     margin-inline: auto;
+    justify-content: center;
     column-gap: 20px;
     row-gap: 56px;
   }
   .grilla-prendas--mas > div {
-    flex-basis: calc(50% - 10px);
+    flex-basis: calc((100% - 40px) / 3);
+  }
+  /* === fin M23 (PC) === */
+}
+
+/* === M23 "Más en ..." en el celular: solo 2 tarjetas, sin una tercera huérfana en media fila ===
+   La tercera prenda sigue a un toque en la colección. Su foto no se descarga (carga diferida y display: none). */
+@media (max-width: 1023px) {
+  .grilla-prendas--mas > div:nth-child(n + 3) {
+    display: none;
   }
 }
+/* === fin M23 (celular) === */
 
 /* === M02 Cartela compacta de la ficha ===
    Celular: la fibra arriba; el nombre a la izquierda y el precio a la derecha en la misma fila; debajo, el tipo

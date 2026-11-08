@@ -111,7 +111,8 @@ export default async function PaginaPrenda({ params }: Props) {
 
   return (
     <>
-      <Encabezado volver={{ href: "/#coleccion", texto: "Colección" }} whatsappHref={waFicha} />
+      {/* "Colección" vuelve a la tarjeta de esta prenda en la grilla del inicio (id por tarjeta de M10). */}
+      <Encabezado volver={{ href: `/#${producto.slug}`, texto: "Colección" }} whatsappHref={waFicha} />
       <main id="contenido" tabIndex={-1}>
         <script
           type="application/ld+json"
@@ -119,7 +120,7 @@ export default async function PaginaPrenda({ params }: Props) {
         />
 
         <div className="ficha__volver">
-          <Link href="/#coleccion">
+          <Link href={`/#${producto.slug}`}>
             <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
               <path d="M17 6H1M5.5 1.5 1 6l4.5 4.5" stroke="currentColor" strokeWidth="1.2" />
             </svg>
@@ -147,7 +148,7 @@ export default async function PaginaPrenda({ params }: Props) {
               </header>
               <div className="grilla-prendas grilla-prendas--mas">
                 {otras.map((o) => (
-                  <div key={o.slug} className="aparece">
+                  <div key={o.slug}>
                     <TarjetaPrenda producto={o} />
                   </div>
                 ))}
