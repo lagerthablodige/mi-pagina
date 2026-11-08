@@ -26,8 +26,8 @@ export const fibers: Fiber[] = [
     },
     images: [
       ...g("yak", "Khulán", "khulan", [5137, 5147, 5164, 5228]),
-      // La primera es la foto de cuerpo entero (misma sesión y mismo abrigo que las demás); reemplaza a _84A4556.
-      { src: "/fibers/yak/nomin-azul/playa.jpg", garment: "Nomín Azul Oscuro" },
+      // La primera es playa.jpg recortada a 2:3 (sin el letrero del fondo): misma sesión y mismo abrigo que las demás; reemplaza a _84A4556.
+      { src: "/fibers/yak/nomin-azul/playa-portada.jpg", garment: "Nomín Azul Oscuro" },
       ...g("yak", "Nomín Azul Oscuro", "nomin-azul", [4609, 4773, 4828]),
       ...g("yak", "Nomín Negro", "nomin-negro", [6342, 6395, 6480, 6582]),
     ],

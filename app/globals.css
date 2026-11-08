@@ -330,6 +330,15 @@ html.con-js .aparece:not(.visible) {
   letter-spacing: 0.02em;
   color: var(--tinta);
 }
+/* Celular: solo se ve la flecha; el texto sigue disponible para lectores de pantalla */
+.encabezado__volver-texto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 .encabezado__interior {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -386,6 +395,13 @@ html.con-js .aparece:not(.visible) {
   }
   .encabezado__volver {
     display: none; /* en PC el enlace "Colección" va en la página */
+  }
+  .encabezado__volver-texto {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
   }
   .encabezado__enlaces {
     display: block;
@@ -1246,7 +1262,8 @@ html.con-js .aparece:not(.visible) {
 .galeria__contador {
   position: absolute;
   right: 12px;
-  bottom: 12px;
+  top: 12px; /* arriba, para que la barra fija no lo tape */
+  bottom: auto;
   margin: 0;
   padding: 4px 10px;
   background: rgba(26, 26, 26, 0.72);

@@ -13,6 +13,8 @@ export default function TarjetaPrenda({ producto, prioridad = false }: Props) {
   const fibra = fibraDe(producto);
   const portada = fotos[producto.portada];
   const segunda = fotos[producto.segunda];
+  // "Nomín · Azul oscuro": el nombre va en el título y el color pasa a la línea del tipo
+  const [nombre, variante] = producto.nombreCorto.split(" · ");
   const color = producto.otroColor ? ` ${producto.piezas[0].color.toLowerCase()}` : "";
   const sizes = "(min-width: 1024px) 22vw, (min-width: 768px) 23vw, 46vw";
 
@@ -32,8 +34,8 @@ export default function TarjetaPrenda({ producto, prioridad = false }: Props) {
         <Image src={segunda} alt="" fill sizes={sizes} quality={70} loading="lazy" className="tarjeta__img tarjeta__img--segunda" />
       </div>
       <p className="eyebrow tarjeta__fibra">{fibra.label}</p>
-      <h3 className="tarjeta__nombre">{producto.nombreCorto}</h3>
-      <p className="tarjeta__tipo">{producto.tipo}</p>
+      <h3 className="tarjeta__nombre">{nombre}</h3>
+      <p className="tarjeta__tipo">{variante ? `${variante} · ${producto.tipo}` : producto.tipo}</p>
       <div className="tarjeta__precios">
         {producto.piezas.length === 1 ? (
           // Una sola pieza: el precio y "IVA incluido" van juntos (en dos líneas si no caben)

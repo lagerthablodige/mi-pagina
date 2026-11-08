@@ -113,7 +113,7 @@ export default function Encabezado({ volver }: Props) {
               <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
                 <path d="M17 6H1M5.5 1.5 1 6l4.5 4.5" stroke="currentColor" strokeWidth="1.2" />
               </svg>
-              {volver.texto}
+              <span className="encabezado__volver-texto">{volver.texto}</span>
             </Link>
           )}
           <nav className="encabezado__enlaces" aria-label="Principal">
