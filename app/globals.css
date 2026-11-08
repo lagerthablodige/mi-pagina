@@ -159,3 +159,87 @@ input:focus-visible {
   .sticky-ig { display: none; }
   .sticky-agenda { font-size: 0.72rem; letter-spacing: 0.1em; }
 }
+
+/* Enlace "Ver prenda →" del inicio */
+.ver-prenda {
+  display: inline-block;
+  padding: 0.8rem 0.4rem 0.5rem;
+  color: #1a1a1a;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: #b8945f;
+  text-underline-offset: 6px;
+}
+
+/* Páginas de prenda (/prenda/[slug]) */
+.prenda-volver {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.prenda-contenido {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 2rem 4.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+.prenda-galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.prenda-foto { position: relative; aspect-ratio: 2 / 3; background: #ece9e1; }
+.prenda-info { position: sticky; top: 2rem; }
+
+.prenda-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.9rem 1rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.prenda-btn-principal { background-color: #1a1a1a; border: 1px solid #1a1a1a; color: #f5f0e8; }
+.prenda-btn-principal:hover { background-color: #3a322c; }
+.prenda-btn-secundario { background-color: transparent; border: 1px solid #1a1a1a; color: #1a1a1a; }
+.prenda-btn-secundario:hover { background-color: #1a1a1a; color: #f5f0e8; }
+.prenda-btn-secundario:hover svg path:first-child { stroke: #f5f0e8; }
+.prenda-btn-secundario:hover svg path:last-child { fill: #f5f0e8; }
+
+.mas-card {
+  flex: 0 0 220px;
+  display: block;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+/* Celular: la ficha de prenda va en una columna, con las fotos deslizables */
+@media (max-width: 768px) {
+  .prenda-contenido { display: block; padding: 0 0 2rem; }
+  .prenda-galeria {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 8px;
+    padding: 0 16px;
+    scrollbar-width: none;
+  }
+  .prenda-galeria::-webkit-scrollbar { display: none; }
+  .prenda-foto {
+    flex: 0 0 78%;
+    aspect-ratio: auto;
+    height: 420px;
+    scroll-snap-align: center;
+  }
+  .prenda-info { position: static; padding: 1.8rem 1.5rem 0; }
+  .prenda-volver { padding: 0 1rem; }
+  .mas-card { flex: 0 0 calc(50% - 0.5rem); }
+}

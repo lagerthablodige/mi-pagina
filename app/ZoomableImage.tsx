@@ -11,9 +11,10 @@ type Props = {
   alt: string;
   sizes: string;
   objectPosition?: string;
+  priority?: boolean; // foto principal de una página: se carga de inmediato
 };
 
-export default function ZoomableImage({ src, alt, sizes, objectPosition = "center" }: Props) {
+export default function ZoomableImage({ src, alt, sizes, objectPosition = "center", priority = false }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -33,7 +34,7 @@ export default function ZoomableImage({ src, alt, sizes, objectPosition = "cente
           cursor: "zoom-in",
         }}
       >
-        <Image src={src} alt={alt} fill sizes={sizes} style={{ objectFit: "cover", objectPosition }} />
+        <Image src={src} alt={alt} fill sizes={sizes} priority={priority} style={{ objectFit: "cover", objectPosition }} />
       </button>
       {open && createPortal(<Lightbox src={src} alt={alt} onClose={() => setOpen(false)} />, document.body)}
     </>
