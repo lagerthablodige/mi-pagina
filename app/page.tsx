@@ -219,11 +219,11 @@ export default function Home() {
             <div className="showroom__texto aparece">
               <p className="eyebrow eyebrow--dorado">Nirün × Landa Brands</p>
               <h2 id="titulo-showroom" className="titulo-seccion">
-                Pruébalas en persona
+                Descubre Nirün en persona
               </h2>
               <p className="parrafo">
-                Nuestras prendas están disponibles para probar en el showroom de Landa Brands, en Vitacura. La caída de
-                una fibra como esta se entiende de verdad al tocarla.
+                Te invitamos a descubrir y probar nuestras prendas en el showroom de Landa Brands, en Vitacura. La caída
+                de una fibra como esta se entiende de verdad al tocarla.
               </p>
               <p className="showroom__datos" data-clarity-unmask="true">
                 <span className="showroom__cita">Solo con cita</span>
