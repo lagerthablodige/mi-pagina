@@ -1,9 +1,14 @@
 Fuentes del sitio (subset latin, formato woff2), descargadas de Google Fonts el 2026-11-08:
 
-- cormorant-garamond-latin.woff2         Cormorant Garamond, variable (300 a 700), normal
+- cormorant-garamond-latin.woff2         Cormorant Garamond, variable (300 a 700), normal. MODIFICADA (ver abajo)
 - cormorant-garamond-italic-latin.woff2  Cormorant Garamond, cursiva 400
 - instrument-sans-latin.woff2            Instrument Sans, variable (400 a 700)
 
 Licencia: SIL Open Font License 1.1 (permite uso comercial y redistribución con el sitio).
 Cormorant Garamond: Christian Thalmann (Catharsis Fonts). Instrument Sans: Instrument.
 Se cargan con next/font/local (ver app/layout.tsx) porque next/font/google falla en este proyecto.
+
+Modificación (2026-11-08): en cormorant-garamond-latin.woff2 se movió a la izquierda el acento agudo de las minúsculas
+á é í ó ú, porque en el original quedaba corrido hacia la derecha de la vocal (se notaba sobre todo en "Nomín").
+El script que lo hace es parchear_acentos.py (en esta carpeta; necesita fonttools y brotli). Se partió del archivo original de
+Google Fonts. La OFL permite modificar la fuente; la versión modificada se usa solo dentro de este sitio.

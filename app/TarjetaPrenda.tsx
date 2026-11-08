@@ -36,15 +36,21 @@ export default function TarjetaPrenda({ producto, prioridad = false }: Props) {
       <p className="tarjeta__tipo">{producto.tipo}</p>
       <div className="tarjeta__precios">
         {producto.piezas.length === 1 ? (
-          <p className="precio">{precioCLP(producto.piezas[0].precio)}</p>
+          // Una sola pieza: el precio y "IVA incluido" van juntos (en dos líneas si no caben)
+          <p className="tarjeta__linea-precio">
+            <span className="precio">{precioCLP(producto.piezas[0].precio)}</span>
+            <span className="tarjeta__iva">IVA incluido</span>
+          </p>
         ) : (
-          producto.piezas.map((pieza) => (
-            <p key={pieza.nombre} className="precio">
-              <span className="precio__pieza">{etiquetaPieza(pieza)}</span> {precioCLP(pieza.precio)}
-            </p>
-          ))
+          <>
+            {producto.piezas.map((pieza) => (
+              <p key={pieza.nombre} className="precio">
+                <span className="precio__pieza">{etiquetaPieza(pieza)}</span> {precioCLP(pieza.precio)}
+              </p>
+            ))}
+            <p className="tarjeta__iva">IVA incluido</p>
+          </>
         )}
-        <p className="tarjeta__iva">IVA incluido</p>
       </div>
     </Link>
   );

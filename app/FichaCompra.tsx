@@ -71,7 +71,8 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
     <>
       <div className="ficha__info">
         <p className="eyebrow ficha__fibra">{fibraLabel}</p>
-        <h1 className="ficha__titulo">{producto.nombre}</h1>
+        <h1 className="ficha__titulo">{producto.nombreCorto}</h1>
+        <p className="ficha__tipo">{producto.tipo}</p>
 
         {unaPieza ? (
           <>

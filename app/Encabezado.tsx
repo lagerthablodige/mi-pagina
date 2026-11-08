@@ -16,15 +16,44 @@ const ENLACES = [
 
 const FOCUSABLES = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
 
-// Encabezado de todas las páginas. En el celular el menú abre una pantalla completa; en PC los enlaces van en línea.
-export default function Encabezado() {
+type Props = {
+  // Enlace de "volver" que en el celular ocupa el lado izquierdo (en PC se muestra aparte, en la página).
+  volver?: { href: string; texto: string };
+};
+
+// Encabezado de todas las páginas. En el celular el menú abre una pantalla completa y la barra se esconde al bajar
+// (y reaparece al subir); en PC los enlaces van en línea y la barra queda fija.
+export default function Encabezado({ volver }: Props) {
   const [abierto, setAbierto] = useState(false);
+  const [escondido, setEscondido] = useState(false);
   const botonMenu = useRef<HTMLButtonElement>(null);
   const botonCerrar = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const estabaAbierto = useRef(false);
 
   const cerrar = useCallback(() => setAbierto(false), []);
+
+  // Celular: se esconde al bajar y vuelve al subir. En PC no se esconde nunca.
+  useEffect(() => {
+    let anterior = window.scrollY;
+    let pendiente = 0;
+    const revisar = () => {
+      const y = window.scrollY;
+      if (window.innerWidth >= 1024 || y < 80) setEscondido(false);
+      else if (y > anterior + 6) setEscondido(true);
+      else if (y < anterior - 6) setEscondido(false);
+      anterior = y;
+    };
+    const alMover = () => {
+      cancelAnimationFrame(pendiente);
+      pendiente = requestAnimationFrame(revisar);
+    };
+    window.addEventListener("scroll", alMover, { passive: true });
+    return () => {
+      cancelAnimationFrame(pendiente);
+      window.removeEventListener("scroll", alMover);
+    };
+  }, []);
 
   useEffect(() => {
     if (!abierto) {
@@ -77,8 +106,16 @@ export default function Encabezado() {
       <a href="#contenido" className="saltar">
         Saltar al contenido
       </a>
-      <header className="encabezado">
+      <header className={`encabezado${escondido && !abierto ? " encabezado--oculto" : ""}`}>
         <div className="encabezado__interior">
+          {volver && (
+            <Link href={volver.href} className="encabezado__volver">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+                <path d="M17 6H1M5.5 1.5 1 6l4.5 4.5" stroke="currentColor" strokeWidth="1.2" />
+              </svg>
+              {volver.texto}
+            </Link>
+          )}
           <nav className="encabezado__enlaces" aria-label="Principal">
             <ul>
               {ENLACES.map((e) => (

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const ZOOM = 2.5;
@@ -17,10 +17,18 @@ type Props = {
 
 export default function ZoomableImage({ src, alt, sizes, objectPosition = "center", priority = false, quality }: Props) {
   const [open, setOpen] = useState(false);
+  const boton = useRef<HTMLButtonElement>(null);
+
+  // Al cerrar el zoom, el foco vuelve al botón que lo abrió.
+  const cerrar = useCallback(() => {
+    setOpen(false);
+    boton.current?.focus();
+  }, []);
 
   return (
     <>
       <button
+        ref={boton}
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Ampliar foto: ${alt}`}
@@ -37,7 +45,7 @@ export default function ZoomableImage({ src, alt, sizes, objectPosition = "cente
       >
         <Image src={src} alt={alt} fill sizes={sizes} priority={priority} quality={quality} style={{ objectFit: "cover", objectPosition }} />
       </button>
-      {open && createPortal(<Lightbox src={src} alt={alt} onClose={() => setOpen(false)} />, document.body)}
+      {open && createPortal(<Lightbox src={src} alt={alt} onClose={cerrar} />, document.body)}
     </>
   );
 }

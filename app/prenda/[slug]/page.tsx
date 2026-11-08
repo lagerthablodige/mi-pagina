@@ -13,6 +13,7 @@ import {
   fotosDe,
   masEnLaFibra,
   nombreFibra,
+  otrasPrendas,
   precioCLP,
   productoPorSlug,
   productos,
@@ -98,12 +99,15 @@ export default async function PaginaPrenda({ params }: Props) {
 
   const fibra = fibraDe(producto);
   const fotos = fotosDe(producto);
-  const otras = masEnLaFibra(producto);
+  // Si la fibra no tiene más prendas (Záya), se muestran prendas de otras fibras.
+  const masDeLaFibra = masEnLaFibra(producto);
+  const otras = masDeLaFibra.length > 0 ? masDeLaFibra : otrasPrendas(producto);
+  const tituloOtras = masDeLaFibra.length > 0 ? `Más en ${nombreFibra(fibra)}` : "Otras prendas";
   const jsonLd = datosEstructurados(producto, fotos);
 
   return (
     <>
-      <Encabezado />
+      <Encabezado volver={{ href: "/#coleccion", texto: "Colección" }} />
       <main id="contenido" tabIndex={-1}>
         <script
           type="application/ld+json"
@@ -134,7 +138,7 @@ export default async function PaginaPrenda({ params }: Props) {
             <div className="contenedor">
               <header className="cabecera aparece">
                 <h2 id="mas-en-fibra" className="titulo-seccion titulo-seccion--chico">
-                  Más en {nombreFibra(fibra)}
+                  {tituloOtras}
                 </h2>
               </header>
               <div className="grilla-prendas grilla-prendas--mas">

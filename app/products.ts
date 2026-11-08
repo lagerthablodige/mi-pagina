@@ -142,14 +142,21 @@ export const productos: Producto[] = [
   },
 ];
 
-// Orden en que se muestra la colección (inicio y listas por fibra).
-const ORDEN_COLECCION = ["khulan", "nomin-negro", "nomin-azul-oscuro", "zaya", "erdene", "bolomaa", "sernai-silk", "sernai"];
+// Orden de la grilla de la colección (pensado para que cada fila tenga una escala de encuadre parecida).
+const ORDEN_COLECCION = ["khulan", "nomin-negro", "zaya", "bolomaa", "nomin-azul-oscuro", "erdene", "sernai-silk", "sernai"];
+// Orden dentro de cada fibra (índices del inicio y "Más en ...").
+const ORDEN_FIBRAS = ["khulan", "nomin-negro", "nomin-azul-oscuro", "zaya", "erdene", "bolomaa", "sernai-silk", "sernai"];
 
-export const productosEnOrden: Producto[] = ORDEN_COLECCION.map((slug) => {
-  const p = productos.find((x) => x.slug === slug);
-  if (!p) throw new Error(`Falta el producto "${slug}"`);
-  return p;
-});
+function enOrden(slugs: string[]): Producto[] {
+  return slugs.map((slug) => {
+    const p = productos.find((x) => x.slug === slug);
+    if (!p) throw new Error(`Falta el producto "${slug}"`);
+    return p;
+  });
+}
+
+export const productosEnOrden: Producto[] = enOrden(ORDEN_COLECCION);
+const productosPorFibra: Producto[] = enOrden(ORDEN_FIBRAS);
 
 export const SITE = "https://www.nirun.cl";
 
@@ -184,7 +191,7 @@ export function nombreFibra(fibra: Fiber): string {
 
 // Prendas de una fibra, en el orden de la colección.
 export function prendasDeFibra(fibra: Fiber): Producto[] {
-  return productosEnOrden.filter((p) => fibraDe(p).key === fibra.key);
+  return productosPorFibra.filter((p) => fibraDe(p).key === fibra.key);
 }
 
 export function fotosDe(producto: Producto): string[] {
@@ -202,7 +209,7 @@ export function altDeFoto(producto: Producto, n: number, total: number): string 
 // Prendas de la misma fibra, sin la actual ni su otro color (ese ya sale como "También en ...").
 export function masEnLaFibra(producto: Producto): Producto[] {
   const fibra = fibraDe(producto);
-  return productosEnOrden.filter(
+  return productosPorFibra.filter(
     (p) => p.slug !== producto.slug && p.slug !== producto.otroColor?.slug && fibraDe(p).key === fibra.key
   );
 }
@@ -215,6 +222,21 @@ function nombreConColor(producto: Producto): string {
 // "Chaqueta Sernaí" -> "Chaqueta" (para mostrar el precio de cada pieza en dos líneas).
 export function etiquetaPieza(pieza: Pieza): string {
   return pieza.nombre.split(" ")[0];
+}
+
+// Respaldo cuando una prenda no tiene otras de su fibra (Záya): una prenda de cada una de las otras fibras.
+export function otrasPrendas(producto: Producto, cantidad = 2): Producto[] {
+  const fibra = fibraDe(producto);
+  const vistas = new Set<string>([fibra.key]);
+  const elegidas: Producto[] = [];
+  for (const p of productosEnOrden) {
+    const clave = fibraDe(p).key;
+    if (vistas.has(clave)) continue;
+    vistas.add(clave);
+    elegidas.push(p);
+    if (elegidas.length === cantidad) break;
+  }
+  return elegidas;
 }
 
 // Mensaje precargado de WhatsApp con el nombre de la prenda y, si ya la eligió, la talla.

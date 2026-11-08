@@ -43,6 +43,7 @@ const OG_IMAGE = {
 
 export const viewport: Viewport = {
   themeColor: "#faf8f4",
+  viewportFit: "cover", // para que env(safe-area-inset-bottom) funcione en la barra fija
 };
 
 // Datos estructurados para Google: marca, sitio y showroom (sin calle exacta: no inventar datos).
@@ -163,11 +164,13 @@ export default function RootLayout({
         <Analytics />
         <Script id="clarity-script" strategy="afterInteractive">
           {`
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "yxccu0h8wm");
+            if (location.hostname.endsWith("nirun.cl")) {
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "yxccu0h8wm");
+            }
           `}
         </Script>
       </body>

@@ -28,7 +28,7 @@
   --margen: 20px; /* margen lateral */
   --entre-secciones: 88px;
   --alto-encabezado: 56px;
-  --alto-barra: 72px; /* barra fija del celular */
+  --alto-barra: 64px; /* barra fija del celular */
   --ancho-texto: 34rem;
   --ancho-max: 1440px;
 }
@@ -56,6 +56,7 @@ html {
 
 body {
   margin: 0;
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right); /* 0 salvo en iPhone horizontal */
   background: var(--papel);
   color: var(--tinta);
   font-family: var(--fuente-texto);
@@ -75,8 +76,7 @@ main:focus {
   outline-offset: 3px;
 }
 .fondo-oscuro :focus-visible,
-.menu :focus-visible,
-.barra-fija :focus-visible {
+.menu :focus-visible {
   outline-color: var(--marfil);
 }
 
@@ -163,14 +163,14 @@ img[data-nimg="fill"] {
 .precio {
   margin: 0;
   font-family: var(--fuente-texto);
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1rem;
   line-height: 1.4;
   font-variant-numeric: tabular-nums;
   color: var(--tinta);
 }
 .precio--grande {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   line-height: 1.2;
 }
 
@@ -251,7 +251,7 @@ img[data-nimg="fill"] {
   padding-inline: var(--margen);
 }
 .contenedor--texto {
-  max-width: calc(var(--ancho-texto) + 2 * var(--margen));
+  max-width: calc(40rem + 2 * var(--margen));
   text-align: center;
 }
 
@@ -265,6 +265,15 @@ img[data-nimg="fill"] {
 .cabecera {
   margin-bottom: 48px;
   text-align: center;
+}
+/* La colección empieza más cerca del hero en el celular */
+#coleccion {
+  padding-top: 56px;
+}
+@media (min-width: 1024px) {
+  #coleccion {
+    padding-top: var(--entre-secciones);
+  }
 }
 .cabecera__eyebrow {
   margin-bottom: 14px;
@@ -297,10 +306,29 @@ html.con-js .aparece:not(.visible) {
 /* ---------- Encabezado ---------- */
 
 .encabezado {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 40;
   background: var(--papel);
   border-bottom: 1px solid var(--linea);
+  transition: transform 300ms ease;
+}
+/* Celular: al bajar se esconde y al subir vuelve */
+.encabezado--oculto {
+  transform: translateY(-100%);
+}
+.encabezado__volver {
+  grid-column: 1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  min-width: 48px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  color: var(--tinta);
 }
 .encabezado__interior {
   display: grid;
@@ -353,9 +381,11 @@ html.con-js .aparece:not(.visible) {
 }
 
 @media (min-width: 1024px) {
-  .encabezado {
-    position: sticky;
-    top: 0;
+  .encabezado--oculto {
+    transform: none; /* en PC la barra nunca se esconde */
+  }
+  .encabezado__volver {
+    display: none; /* en PC el enlace "Colección" va en la página */
   }
   .encabezado__enlaces {
     display: block;
@@ -496,21 +526,25 @@ html.con-js .aparece:not(.visible) {
   }
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero ----------
+   Celular y tablet: "cartela de galería". La foto va limpia arriba, sin nada encima, y el texto debajo sobre papel.
+   PC: tríptico de tres fotos con el texto sobre la foto del centro. */
 
 .hero {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   height: calc(100vh - var(--alto-encabezado));
   height: calc(100svh - var(--alto-encabezado));
   min-height: 560px;
   overflow: hidden;
-  background: var(--tinta);
-  color: var(--marfil);
+  background: var(--papel);
+  color: var(--tinta);
 }
 .hero__fotos {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
   gap: 4px;
 }
 .hero__foto {
@@ -522,40 +556,30 @@ html.con-js .aparece:not(.visible) {
   display: none; /* en el celular no existen: así no se descargan */
 }
 .hero__img-centro {
-  object-position: 42% center;
+  object-position: 50% 18%;
 }
-/* Velo de tinta transparente solo en la parte baja, para que se lea el texto */
 .hero__velo {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 45%;
-  background: linear-gradient(to top, rgba(26, 26, 26, 0.86) 0%, rgba(26, 26, 26, 0.76) 72%, rgba(26, 26, 26, 0) 100%);
-  pointer-events: none;
+  display: none; /* el velo solo existe en PC */
 }
 .hero__texto {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  max-width: 46rem;
-  margin-inline: auto;
-  padding: 0 var(--margen) 28px;
+  position: relative;
+  flex: 0 0 auto;
+  padding: 20px var(--margen) 24px;
   text-align: center;
 }
 .hero__texto .eyebrow {
-  color: var(--marfil);
+  color: var(--dorado-texto);
 }
 .hero__texto .titulo-hero {
-  margin-top: 10px;
+  margin-top: 8px;
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
 }
 .hero__bajada {
   max-width: 26rem;
-  margin: 12px auto 22px;
+  margin: 8px auto 18px;
   font-size: 1rem;
-  line-height: 1.55;
-  color: var(--marfil);
+  line-height: 1.5;
+  color: var(--tinta-suave);
 }
 .hero__botones {
   display: flex;
@@ -565,16 +589,26 @@ html.con-js .aparece:not(.visible) {
 .hero__botones .boton {
   padding-inline: 14px;
 }
+/* En la cartela los botones son de tinta (en PC, de marfil sobre la foto) */
 .hero__botones .boton--marfil {
   flex: 1 1 auto;
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--marfil);
+}
+.hero__botones .boton--marfil:hover {
+  background: var(--tinta-suave);
+  border-color: var(--tinta-suave);
+}
+.hero__botones .boton--contorno-marfil {
+  border-color: var(--tinta);
+  color: var(--tinta);
+}
+.hero__botones .boton--contorno-marfil:hover {
+  background: var(--tinta);
+  color: var(--marfil);
 }
 
-/* Celulares bajos (SE, 360x640): el velo sube un poco para que el texto se lea igual */
-@media (max-height: 700px) and (max-width: 1023px) {
-  .hero__velo {
-    height: 56%;
-  }
-}
 /* Tablet vertical: los botones no se estiran */
 @media (min-width: 560px) and (max-width: 1023px) {
   .hero__botones .boton {
@@ -587,30 +621,91 @@ html.con-js .aparece:not(.visible) {
 
 @media (min-width: 1024px) {
   .hero {
+    display: block;
+    position: relative;
     height: calc(100vh - var(--alto-encabezado));
     min-height: 640px;
+    background: var(--tinta);
+    color: var(--marfil);
+  }
+  .hero__fotos {
+    position: absolute;
+    inset: 0;
   }
   .hero__foto--lateral {
     display: block;
   }
-  .hero__texto {
-    max-width: 52rem;
-    padding-bottom: 56px;
+  .hero__img-centro {
+    object-position: 42% center;
   }
+  /* Velo de tinta transparente solo sobre la foto del centro, que es donde va el texto */
   .hero__velo {
-    height: 60%;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: calc(33.333% + 2px);
+    right: calc(33.333% + 2px);
+    height: 55%;
     background: linear-gradient(to top, rgba(26, 26, 26, 0.86) 0%, rgba(26, 26, 26, 0.74) 78%, rgba(26, 26, 26, 0) 100%);
+    pointer-events: none;
+  }
+  .hero__texto {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: calc(33.333vw - 24px); /* no se sale de la foto del centro */
+    margin-inline: auto;
+    padding: 0 0 48px;
+  }
+  .hero__texto .eyebrow {
+    color: var(--marfil);
+  }
+  .hero__texto .titulo-hero {
+    margin-top: 10px;
+    font-size: min(4.5rem, 4.4vw);
   }
   .hero__bajada {
-    max-width: 27rem; /* se queda dentro de la foto del centro, sin cruzar la separación */
-    margin: 16px auto 28px;
+    max-width: none;
+    margin: 14px auto 24px;
     font-size: 1.0625rem;
+    color: var(--marfil);
   }
   .hero__botones .boton {
-    padding-inline: 28px;
+    padding-inline: 24px;
   }
   .hero__botones .boton--marfil {
     flex: 0 0 auto;
+    background: var(--marfil);
+    border-color: var(--marfil);
+    color: var(--tinta);
+  }
+  .hero__botones .boton--marfil:hover {
+    background: var(--papel);
+    border-color: var(--papel);
+  }
+  .hero__botones .boton--contorno-marfil {
+    border-color: var(--marfil);
+    color: var(--marfil);
+  }
+  .hero__botones .boton--contorno-marfil:hover {
+    background: rgba(245, 240, 232, 0.14);
+    color: var(--marfil);
+  }
+}
+
+/* PC angosto: botones en columna para que nada cruce las líneas entre fotos */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .hero__velo {
+    height: 64%;
+  }
+  .hero__botones {
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero__botones .boton {
+    width: 100%;
+    max-width: 280px;
   }
 }
 
@@ -619,7 +714,7 @@ html.con-js .aparece:not(.visible) {
 .grilla-prendas {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 10px;
+  column-gap: 14px;
   row-gap: 32px;
 }
 .grilla-prendas > div {
@@ -691,15 +786,24 @@ html.con-js .aparece:not(.visible) {
   color: var(--gris);
   font-weight: 400;
 }
+.tarjeta__linea-precio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  margin: 0;
+}
 .tarjeta__iva {
-  margin: 2px 0 0;
-  font-size: 0.8125rem;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
   line-height: 1.4;
   color: var(--gris);
 }
 
 /* ---------- Origen ---------- */
 
+/* La foto va limpia (sin velo ni texto encima): el cielo rosado se ve como es. Solo lleva el pie "Mongolia". */
 .origen__foto {
   position: relative;
   height: 85vh;
@@ -713,36 +817,6 @@ html.con-js .aparece:not(.visible) {
 .origen__img {
   object-position: 80% 50%; /* en el celular la ger queda a la vista */
 }
-.origen__velo {
-  position: absolute;
-  inset: 0;
-  /* Más oscuro arriba, donde va el texto; abajo se deja ver el color de la estepa */
-  background: linear-gradient(
-    to bottom,
-    rgba(26, 26, 26, 0.6) 0%,
-    rgba(26, 26, 26, 0.56) 36%,
-    rgba(26, 26, 26, 0.14) 58%,
-    rgba(26, 26, 26, 0) 74%,
-    rgba(26, 26, 26, 0) 88%,
-    rgba(26, 26, 26, 0.4) 100%
-  );
-  pointer-events: none;
-}
-.origen__frase {
-  position: absolute;
-  left: var(--margen);
-  right: var(--margen);
-  top: 13%;
-  max-width: 44rem;
-  margin: 0 auto;
-  text-align: center;
-  font-family: var(--fuente-titulo);
-  font-weight: 300;
-  font-size: clamp(1.625rem, 6.6vw, 2.75rem);
-  line-height: 1.26;
-  text-wrap: balance;
-  color: var(--marfil);
-}
 .origen__pie {
   position: absolute;
   left: 0;
@@ -754,6 +828,7 @@ html.con-js .aparece:not(.visible) {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--marfil);
+  text-shadow: 0 1px 8px rgba(26, 26, 26, 0.4);
 }
 @media (min-width: 1024px) {
   .origen__foto {
@@ -762,24 +837,21 @@ html.con-js .aparece:not(.visible) {
   .origen__img {
     object-position: center 62%;
   }
-  .origen__velo {
-    background: linear-gradient(
-      to bottom,
-      rgba(26, 26, 26, 0.6) 0%,
-      rgba(26, 26, 26, 0.56) 46%,
-      rgba(26, 26, 26, 0.14) 66%,
-      rgba(26, 26, 26, 0) 80%,
-      rgba(26, 26, 26, 0) 90%,
-      rgba(26, 26, 26, 0.4) 100%
-    );
-  }
-  .origen__frase {
-    top: 15%;
-  }
+}
+/* La frase del dueño va en el bloque crema, entre el eyebrow y el párrafo */
+.origen__frase-texto {
+  max-width: 40rem;
+  margin: 18px auto 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 6.6vw, 2.5rem);
+  line-height: 1.25;
+  text-wrap: balance;
+  color: var(--tinta);
 }
 .origen__parrafo {
   max-width: var(--ancho-texto);
-  margin: 24px auto 0;
+  margin: 28px auto 0;
   font-size: 1.0625rem;
   line-height: 1.7;
   color: var(--tinta-suave);
@@ -797,33 +869,29 @@ html.con-js .aparece:not(.visible) {
 
 /* ---------- Las fibras ---------- */
 
+/* Celular: primero la foto, luego el texto y luego el índice de prendas */
 .capitulo {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  row-gap: 32px;
+  grid-template-areas: "foto" "texto" "indice";
+  row-gap: 28px;
   scroll-margin-top: 16px;
 }
 .capitulo + .capitulo {
   margin-top: 88px;
 }
-.capitulo__numeral {
-  margin: 0;
-  font-family: var(--fuente-titulo);
-  font-weight: 300;
-  font-size: clamp(4.5rem, 20vw, 7rem);
-  line-height: 0.9;
-  font-feature-settings: "lnum" 1; /* números de altura completa: "01" y no "OI" */
-  font-variant-numeric: lining-nums;
-  color: var(--dorado-texto);
+.capitulo__numero {
+  margin: 0 0 10px;
 }
 .capitulo__nombre {
-  margin: 8px 0 16px;
+  margin: 0 0 16px;
   font-family: var(--fuente-titulo);
   font-weight: 400;
   font-size: clamp(2rem, 6vw, 2.75rem);
   line-height: 1.1;
 }
 .capitulo__foto {
+  grid-area: foto;
   margin: 0;
 }
 .capitulo__marco {
@@ -831,6 +899,10 @@ html.con-js .aparece:not(.visible) {
   aspect-ratio: 3 / 2;
   background: var(--fondo-foto);
   overflow: hidden;
+}
+/* Las fotos de banco se acercan a la paleta del sitio */
+.capitulo__marco img {
+  filter: saturate(0.72) contrast(0.96);
 }
 .capitulo__foto figcaption {
   margin-top: 10px;
@@ -843,14 +915,8 @@ html.con-js .aparece:not(.visible) {
 .capitulo__texto {
   grid-area: texto;
 }
-.capitulo__foto {
-  grid-area: foto;
-}
 .capitulo__indice {
   grid-area: indice;
-}
-.capitulo {
-  grid-template-areas: "texto" "foto" "indice";
 }
 
 /* Índice de prendas, como un catálogo */
@@ -1025,8 +1091,8 @@ html.con-js .aparece:not(.visible) {
   align-items: center;
   min-height: 48px;
   font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--marfil);
   text-decoration: underline;
@@ -1039,7 +1105,7 @@ html.con-js .aparece:not(.visible) {
 }
 .pie__legal {
   margin: 24px 0 0;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: rgba(245, 240, 232, 0.72);
 }
 @media (min-width: 1024px) {
@@ -1091,10 +1157,11 @@ html.con-js .aparece:not(.visible) {
   bottom: 0;
   z-index: 90;
   display: flex;
+  justify-content: center;
   gap: 10px;
-  padding: 10px var(--margen) calc(10px + env(safe-area-inset-bottom));
-  background: rgba(26, 26, 26, 0.96);
-  border-top: 1px solid rgba(184, 148, 95, 0.35);
+  padding: 8px var(--margen) calc(8px + env(safe-area-inset-bottom));
+  background: rgba(250, 248, 244, 0.97);
+  border-top: 1px solid var(--linea);
   transform: translateY(100%);
   visibility: hidden;
   transition:
@@ -1107,10 +1174,8 @@ html.con-js .aparece:not(.visible) {
   transition-delay: 0s;
 }
 .barra-fija .boton {
+  min-height: 48px;
   padding-inline: 14px;
-}
-.barra-fija {
-  justify-content: center;
 }
 .barra-fija__agenda {
   flex: 1 1 auto;
@@ -1129,6 +1194,7 @@ html.con-js .aparece:not(.visible) {
 /* ---------- Ficha de prenda ---------- */
 
 .ficha__volver {
+  display: none; /* en el celular el enlace "Colección" va en el encabezado */
   max-width: var(--ancho-max);
   margin-inline: auto;
   padding: 4px var(--margen) 0;
@@ -1173,7 +1239,7 @@ html.con-js .aparece:not(.visible) {
 .galeria__foto {
   position: relative;
   flex: 0 0 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 2 / 3; /* las fotos son 2:3: no se corta nada en el celular */
   background: var(--fondo-foto);
   scroll-snap-align: start;
 }
@@ -1196,12 +1262,20 @@ html.con-js .aparece:not(.visible) {
   color: var(--dorado-texto);
 }
 .ficha__titulo {
-  margin: 8px 0 18px;
+  margin: 8px 0 14px;
   font-family: var(--fuente-titulo);
   font-weight: 400;
   font-size: clamp(2rem, 6vw, 2.75rem);
   line-height: 1.1;
   text-wrap: balance;
+}
+.ficha__tipo {
+  display: block;
+  margin: -6px 0 18px;
+  font-family: var(--fuente-texto);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--tinta-suave);
 }
 .ficha__precio {
   display: flex;
@@ -1354,10 +1428,10 @@ html.con-js .aparece:not(.visible) {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 32px 10px;
+  gap: 32px 14px;
 }
 .grilla-prendas--mas > div {
-  flex: 0 0 calc(50% - 5px);
+  flex: 0 0 calc(50% - 7px);
   min-width: 0;
 }
 .grilla-prendas--mas > div:only-child {
@@ -1365,6 +1439,9 @@ html.con-js .aparece:not(.visible) {
 }
 
 @media (min-width: 1024px) {
+  .ficha__volver {
+    display: block;
+  }
   .ficha {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);

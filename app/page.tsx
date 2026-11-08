@@ -45,7 +45,7 @@ export default function Home() {
                 src="/hero/cardigan.jpg"
                 alt="Modelo con un cárdigan largo blanco y un bolso beige, de pie en una esquina de muros claros"
                 fill
-                sizes="34vw"
+                sizes="44vw"
                 quality={70}
                 style={{ objectPosition: "center 12%" }}
               />
@@ -57,7 +57,7 @@ export default function Home() {
                 fill
                 priority
                 fetchPriority="high"
-                sizes="(min-width: 1024px) 34vw, 100vw"
+                sizes="(min-width: 1024px) 44vw, 100vw"
                 quality={75}
                 className="hero__img-centro"
               />
@@ -67,7 +67,7 @@ export default function Home() {
                 src="/hero/rocas.jpg"
                 alt="Modelo con un abrigo gris con cinturón y botines, frente a un muro claro"
                 fill
-                sizes="34vw"
+                sizes="44vw"
                 quality={70}
                 style={{ objectPosition: "center 12%" }}
               />
@@ -112,7 +112,6 @@ export default function Home() {
         <section id="coleccion" className="seccion" aria-labelledby="titulo-coleccion">
           <div className="contenedor">
             <header className="cabecera aparece">
-              <p className="eyebrow cabecera__eyebrow">Colección</p>
               <h2 id="titulo-coleccion" className="titulo-seccion">
                 La colección
               </h2>
@@ -128,22 +127,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3. Origen: el momento de impacto */}
+        {/* 3. Origen: el momento de impacto (la foto va limpia; la frase, debajo) */}
         <section id="origen" aria-labelledby="titulo-origen">
           <figure className="origen__foto fondo-oscuro">
             <Image
               src="/origen/ger-amanecer.jpg"
               alt="Una ger solitaria en la estepa de Mongolia, bajo nubes rosadas al amanecer"
               fill
-              sizes="100vw"
+              sizes="(min-width: 1024px) 100vw, 250vw"
               quality={75}
               className="origen__img"
             />
-            <div className="origen__velo" aria-hidden="true" />
-            <p className="origen__frase aparece">
-              En las estepas de Mongolia, donde el clima alcanza extremos y la naturaleza define el ritmo de la vida, nace
-              una de las fibras más nobles del mundo.
-            </p>
             <figcaption className="origen__pie">Mongolia</figcaption>
           </figure>
           <div className="seccion seccion--crema">
@@ -151,6 +145,10 @@ export default function Home() {
               <h2 id="titulo-origen" className="eyebrow eyebrow--dorado">
                 Lujo silencioso
               </h2>
+              <p className="origen__frase-texto">
+                En las estepas de Mongolia, donde el clima alcanza extremos y la naturaleza define el ritmo de la vida, nace
+                una de las fibras más nobles del mundo.
+              </p>
               <p className="origen__parrafo">
                 Detrás de cada prenda hay manos expertas, principalmente mujeres, cuyo trabajo no solo da forma a la
                 fibra, sino que sostiene comunidades y tradiciones. Cada pieza es ligera, cálida y duradera: una suavidad
@@ -185,8 +183,8 @@ export default function Home() {
                   aria-label={nombre}
                 >
                   <div className="capitulo__texto aparece">
-                    <p className="capitulo__numeral" aria-hidden="true">
-                      {String(i + 1).padStart(2, "0")}
+                    <p className="eyebrow eyebrow--dorado capitulo__numero" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")} / {String(fibers.length).padStart(2, "0")}
                     </p>
                     <h3 className="capitulo__nombre">{nombre}</h3>
                     <p className="parrafo">{fibra.intro}</p>
@@ -260,7 +258,7 @@ export default function Home() {
             <div className="showroom__collage aparece">
               {COLLAGE.map((img) => (
                 <div key={img.src} className="showroom__detalle">
-                  <ZoomableImage src={img.src} alt={img.alt} sizes="(min-width: 1024px) 24vw, 46vw" objectPosition={img.pos} />
+                  <ZoomableImage src={img.src} alt={img.alt} sizes="(min-width: 1024px) 31vw, 70vw" objectPosition={img.pos} />
                 </div>
               ))}
             </div>

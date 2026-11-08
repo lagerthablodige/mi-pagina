@@ -6,30 +6,39 @@ import { CALENDLY_HREF } from "./links";
 import { WhatsAppIcon } from "./Iconos";
 
 type Props = {
-  // En el inicio aparece sola cuando el hero sale de la pantalla; en la ficha se ve siempre.
+  // Inicio y ficha usan la misma barra; solo cambian los bloques que, si se ven, la esconden.
   modo: "inicio" | "ficha";
   whatsappHref: string;
   ubicacionAgenda: string; // eventData.location de Calendly
   ubicacionWhatsapp: string; // eventData.location de WhatsApp
 };
 
+// Bloques de la página que ya tienen los mismos botones: mientras alguno se ve, la barra no se muestra.
+const BLOQUES_CON_BOTONES = [".hero__botones", ".showroom__botones", ".ficha__botones", ".pie"];
+
 // Barra fija inferior del celular: Agenda tu visita + WhatsApp. En PC no existe.
 export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicacionWhatsapp }: Props) {
+  // Antes de saber qué se ve, en la ficha ya se muestra y en el inicio no (el hero trae sus botones).
   const [visible, setVisible] = useState(modo === "ficha");
 
   useEffect(() => {
-    if (modo !== "inicio") return;
-    const hero = document.getElementById("inicio");
-    if (!hero) {
+    const bloques = BLOQUES_CON_BOTONES.flatMap((sel) => Array.from(document.querySelectorAll(sel)));
+    if (bloques.length === 0) {
       setVisible(true);
       return;
     }
-    // Aparece cuando el hero ya quedó arriba, fuera de la pantalla.
+    const viendose = new Set<Element>();
     const observador = new IntersectionObserver(
-      ([entrada]) => setVisible(!entrada.isIntersecting && entrada.boundingClientRect.bottom <= 0),
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (entrada.isIntersecting) viendose.add(entrada.target);
+          else viendose.delete(entrada.target);
+        }
+        setVisible(viendose.size === 0);
+      },
       { threshold: 0 }
     );
-    observador.observe(hero);
+    bloques.forEach((el) => observador.observe(el));
     return () => observador.disconnect();
   }, [modo]);
 
@@ -41,7 +50,7 @@ export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicaci
         eventData={{ location: ubicacionAgenda }}
         target="_blank"
         rel="noopener noreferrer"
-        className="boton boton--marfil barra-fija__agenda"
+        className="boton boton--tinta barra-fija__agenda"
       >
         Agenda tu visita
       </TrackedLink>
@@ -51,7 +60,7 @@ export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicaci
         eventData={{ location: ubicacionWhatsapp }}
         target="_blank"
         rel="noopener noreferrer"
-        className="boton boton--contorno-marfil barra-fija__whatsapp"
+        className="boton boton--contorno barra-fija__whatsapp"
       >
         <WhatsAppIcon color="currentColor" size={20} />
         WhatsApp
