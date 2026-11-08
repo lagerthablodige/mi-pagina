@@ -14,6 +14,7 @@ type Props = {
   fibraLabel: string; // "YAK"
   fibraNombre: string; // "Yak"
   fibraIntro: string;
+  fibraCaracter?: string; // "El lujo funcional": palabras del dueño (fibersData)
 };
 
 // Selector de talla con botones tipo radio (se maneja con teclado y lo lee el lector de pantalla).
@@ -62,7 +63,7 @@ function Precio({ pieza }: { pieza: Pieza }) {
 }
 
 // Datos de compra de la ficha: precio, color, talla y botones. Guarda la talla elegida y la usa en WhatsApp.
-export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIntro }: Props) {
+export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIntro, fibraCaracter }: Props) {
   const [tallas, setTallas] = useState<Record<string, string>>({});
   const unaPieza = producto.piezas.length === 1;
   const waHref = whatsappConMensaje(mensajeWhatsApp(producto, tallas));
@@ -168,6 +169,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
           <h2 id="sobre-fibra" className="eyebrow">
             Sobre el {fibraNombre}
           </h2>
+          {fibraCaracter && <p className="ficha__caracter">{fibraCaracter}.</p>}
           <p className="parrafo">{fibraIntro}</p>
         </section>
       </div>

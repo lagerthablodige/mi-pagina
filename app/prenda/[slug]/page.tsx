@@ -135,6 +135,7 @@ export default async function PaginaPrenda({ params }: Props) {
             fibraLabel={fibra.label}
             fibraNombre={nombreFibra(fibra)}
             fibraIntro={fibra.intro}
+            fibraCaracter={fibra.caracter}
           />
         </div>
 

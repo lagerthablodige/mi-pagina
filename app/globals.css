@@ -1575,6 +1575,17 @@ img[data-nimg="fill"] {
 }
 /* === fin M29 === */
 
+/* === M28 Carácter de la fibra en "Sobre el ...", con las palabras del dueño, en cursiva === */
+.ficha__caracter {
+  margin: 0 0 8px;
+  font-family: var(--fuente-cursiva);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.3;
+  color: var(--tinta);
+}
+/* === fin M28 === */
+
 /* ---------- Página 404 ---------- */
 
 .pagina-404 {
