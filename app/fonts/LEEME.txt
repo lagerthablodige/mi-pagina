@@ -8,10 +8,25 @@ Licencia: SIL Open Font License 1.1 (permite uso comercial y redistribución con
 Cormorant Garamond: Christian Thalmann (Catharsis Fonts). Instrument Sans: Instrument.
 Se cargan con next/font/local (ver app/layout.tsx) porque next/font/google falla en este proyecto.
 
-Modificación (2026-11-08): en cormorant-garamond-latin.woff2 se movió a la izquierda el acento agudo de las minúsculas
-á é í ó ú, porque en el original quedaba corrido hacia la derecha de la vocal (se notaba sobre todo en "Nomín").
-El script que lo hace es parchear_acentos.py (en esta carpeta; necesita fonttools y brotli). Se partió del archivo original de
-Google Fonts. La OFL permite modificar la fuente; la versión modificada se usa solo dentro de este sitio.
-El parche está aplicado UNA sola vez (corrimiento: á -45, é -60, í -58, ó -55, ú -50 unidades de la fuente). Con una segunda
-pasada (el doble) los acentos quedaban corridos hacia la izquierda de la letra: no volver a correr el script sobre un archivo ya
-parchado. Si hay que repetirlo, partir siempre del archivo original de Google Fonts.
+Modificación de cormorant-garamond-latin.woff2 (versión actual: 2026-11-08, segunda medición)
+En el original de Google el acento agudo de é í ó ú queda corrido a la derecha de la vocal (se notaba sobre todo en
+"Nomín"). El script parchear_acentos.py (en esta carpeta; necesita fonttools y brotli) mueve solo el acento de esas
+minúsculas, en unidades de la fuente (1000 por eme):
+
+    á 0    é -60    í -30    ó -33    ú -18
+
+Los valores salen de medir el centro del acento contra el centro de la letra, comparado con Georgia, Garamond y
+Book Antiqua. La á del original ya estaba bien y no se toca. Las mayúsculas, la ü y la ñ tampoco.
+La OFL permite modificar la fuente; la versión modificada se usa solo dentro de este sitio.
+
+Historia: la primera versión del parche (á -45, é -60, í -58, ó -55, ú -50) dejaba la á, la í, la ó y la ú corridas a
+la izquierda, y en "Khulán", "Záya", "más" y "visión" el acento parecía un apóstrofo antes de la vocal. Se reemplazó por
+la de arriba.
+
+Cómo repetirlo
+1. Partir SIEMPRE del archivo original de Google Fonts, nunca del que está en esta carpeta (ya está parchado).
+   Hay una copia del original en
+   C:\Users\benja\AppData\Local\Temp\claude\a7c387a5253f4ffc\682f0e3e-8e19-47bd-a81d-621cbb8626d2\scratchpad\rework\revision-diseno\fuente\cg-var-google.woff2
+   (SHA-256 d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235).
+2. python parchear_acentos.py cg-var-google.woff2 cormorant-garamond-latin.woff2
+El script revisa la é antes de empezar y se detiene si el acento ya está corrido, para que nunca se aplique dos veces.
