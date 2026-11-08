@@ -159,7 +159,8 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
           </h2>
           {/* "Pruébatelo" o "Pruébatelas" según la prenda (campo lo de products.ts). Avisa que la agenda es de Landa Brands. */}
           <p className="parrafo">
-            {`Pruébate${producto.lo} en el showroom de Landa Brands, en Vitacura, solo con cita. Eliges día y hora en su agenda, o nos escribes por WhatsApp.`}
+            Pruébate{producto.lo} en el showroom de Landa&nbsp;Brands, en Vitacura, solo con cita. Eliges día y hora en su agenda, o nos
+            escribes por WhatsApp.
           </p>
         </section>
 
