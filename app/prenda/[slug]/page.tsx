@@ -6,12 +6,14 @@ import FichaCompra from "../../FichaCompra";
 import GaleriaPrenda from "../../GaleriaPrenda";
 import Pie from "../../Pie";
 import TarjetaPrenda from "../../TarjetaPrenda";
+import { whatsappConMensaje } from "../../links";
 import {
   SITE,
   altDeFoto,
   fibraDe,
   fotosDe,
   masEnLaFibra,
+  mensajeWhatsApp,
   nombreFibra,
   otrasPrendas,
   precioCLP,
@@ -104,10 +106,12 @@ export default async function PaginaPrenda({ params }: Props) {
   const otras = masDeLaFibra.length > 0 ? masDeLaFibra : otrasPrendas(producto);
   const tituloOtras = masDeLaFibra.length > 0 ? `Más en ${nombreFibra(fibra)}` : "Otras prendas";
   const jsonLd = datosEstructurados(producto, fotos);
+  // WhatsApp del encabezado, del menú y del pie: el mensaje de esta prenda, con el enlace a la ficha.
+  const waFicha = whatsappConMensaje(mensajeWhatsApp(producto));
 
   return (
     <>
-      <Encabezado volver={{ href: "/#coleccion", texto: "Colección" }} />
+      <Encabezado volver={{ href: "/#coleccion", texto: "Colección" }} whatsappHref={waFicha} />
       <main id="contenido" tabIndex={-1}>
         <script
           type="application/ld+json"
@@ -153,7 +157,7 @@ export default async function PaginaPrenda({ params }: Props) {
         )}
       </main>
 
-      <Pie />
+      <Pie whatsappHref={waFicha} />
     </>
   );
 }
