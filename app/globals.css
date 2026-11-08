@@ -1552,6 +1552,17 @@ img[data-nimg="fill"] {
 }
 /* === fin M02 === */
 
+/* === M29 Talla elegida visible en el modo de alto contraste de Windows ===
+   Ahí el fondo tinta de la talla elegida desaparece: se marca con un contorno del color del sistema. */
+@media (forced-colors: active) {
+  .talla input:checked + span {
+    outline: 3px solid Highlight;
+    outline-offset: -5px;
+    text-decoration: underline;
+  }
+}
+/* === fin M29 === */
+
 /* ---------- Página 404 ---------- */
 
 .pagina-404 {

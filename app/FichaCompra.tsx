@@ -6,6 +6,7 @@ import BarraFija from "./BarraFija";
 import TrackedLink from "./TrackedLink";
 import { WhatsAppIcon } from "./Iconos";
 import { CALENDLY_HREF, whatsappConMensaje } from "./links";
+import { medirPaso } from "./medicion";
 import { mensajeWhatsApp, precioCLP, precioEnLinea, type Pieza, type Producto } from "./products";
 
 type Props = {
@@ -65,7 +66,12 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
   const [tallas, setTallas] = useState<Record<string, string>>({});
   const unaPieza = producto.piezas.length === 1;
   const waHref = whatsappConMensaje(mensajeWhatsApp(producto, tallas));
-  const elegir = (pieza: Pieza) => (talla: string) => setTallas((t) => ({ ...t, [pieza.nombre]: talla }));
+  const elegir = (pieza: Pieza) => (talla: string) => {
+    setTallas((t) => ({ ...t, [pieza.nombre]: talla }));
+    medirPaso("talla_elegida", { prenda: producto.slug, talla: unaPieza ? talla : `${pieza.nombre} · ${talla}` });
+  };
+  // Talla elegida en una prenda de una pieza con varias tallas: el botón de WhatsApp la confirma ("Talla M por WhatsApp").
+  const tallaUna = unaPieza && producto.piezas[0].tallas.length > 1 ? tallas[producto.piezas[0].nombre] : undefined;
 
   return (
     <>
@@ -144,7 +150,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
             className="boton boton--contorno"
           >
             <WhatsAppIcon color="currentColor" size={20} />
-            Consultar por WhatsApp
+            {tallaUna ? `Talla ${tallaUna} por WhatsApp` : "Consultar por WhatsApp"}
           </TrackedLink>
         </div>
 
