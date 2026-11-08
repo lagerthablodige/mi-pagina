@@ -11,13 +11,15 @@ type Props = {
   whatsappHref: string;
   ubicacionAgenda: string; // eventData.location de Calendly
   ubicacionWhatsapp: string; // eventData.location de WhatsApp
+  // Ficha: nombre y precio en una línea sobre los botones (M03). Solo se ve; el lector de pantalla ya tiene el h1.
+  resumen?: { nombre: string; precio: string };
 };
 
 // Bloques de la página que ya tienen los mismos botones: mientras alguno se ve, la barra no se muestra.
 const BLOQUES_CON_BOTONES = [".hero__botones", ".showroom__botones", ".ficha__botones", ".pie"];
 
 // Barra fija inferior del celular: Agenda tu visita + WhatsApp. En PC no existe.
-export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicacionWhatsapp }: Props) {
+export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicacionWhatsapp, resumen }: Props) {
   // Antes de saber qué se ve, en la ficha ya se muestra y en el inicio no (el hero trae sus botones).
   const [visible, setVisible] = useState(modo === "ficha");
 
@@ -44,6 +46,12 @@ export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicaci
 
   return (
     <div className={`barra-fija${visible ? " barra-fija--visible" : ""}`} data-modo={modo} inert={!visible}>
+      {resumen && (
+        <p className="barra-fija__resumen" aria-hidden="true">
+          <span className="barra-fija__resumen-nombre">{resumen.nombre}</span>
+          <span className="barra-fija__resumen-precio">{resumen.precio}</span>
+        </p>
+      )}
       <TrackedLink
         href={CALENDLY_HREF}
         eventName="calendly_click"

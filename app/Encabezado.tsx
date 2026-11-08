@@ -19,11 +19,13 @@ const FOCUSABLES = 'a[href], button:not([disabled]), input, [tabindex]:not([tabi
 type Props = {
   // Enlace de "volver" que en el celular ocupa el lado izquierdo (en PC se muestra aparte, en la página).
   volver?: { href: string; texto: string };
+  // WhatsApp del ícono de PC y del menú. En la ficha lleva el mensaje con la prenda; si no se pasa, el general.
+  whatsappHref?: string;
 };
 
 // Encabezado de todas las páginas. En el celular el menú abre una pantalla completa y la barra se esconde al bajar
 // (y reaparece al subir); en PC los enlaces van en línea y la barra queda fija.
-export default function Encabezado({ volver }: Props) {
+export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Props) {
   const [abierto, setAbierto] = useState(false);
   const [escondido, setEscondido] = useState(false);
   const botonMenu = useRef<HTMLButtonElement>(null);
@@ -143,7 +145,7 @@ export default function Encabezado({ volver }: Props) {
               Agenda tu visita
             </TrackedLink>
             <TrackedLink
-              href={WHATSAPP_HREF}
+              href={whatsappHref}
               eventName="whatsapp_click"
               eventData={{ location: "header_desktop" }}
               target="_blank"
@@ -203,7 +205,7 @@ export default function Encabezado({ volver }: Props) {
               Agenda tu visita
             </TrackedLink>
             <TrackedLink
-              href={WHATSAPP_HREF}
+              href={whatsappHref}
               eventName="whatsapp_click"
               eventData={{ location: "menu" }}
               target="_blank"

@@ -3,8 +3,13 @@ import NewsletterForm from "./NewsletterForm";
 import TrackedLink from "./TrackedLink";
 import { CALENDLY_HREF, INSTAGRAM_HREF, WHATSAPP_HREF } from "./links";
 
+type Props = {
+  // En la ficha lleva el mensaje con la prenda; si no se pasa, el general.
+  whatsappHref?: string;
+};
+
 // Pie de página (fondo tinta). Lleva espacio abajo en el celular para que la barra fija no tape nada.
-export default function Pie() {
+export default function Pie({ whatsappHref = WHATSAPP_HREF }: Props) {
   return (
     <footer className="pie fondo-oscuro">
       <div className="pie__interior">
@@ -24,7 +29,7 @@ export default function Pie() {
           </li>
           <li>
             <TrackedLink
-              href={WHATSAPP_HREF}
+              href={whatsappHref}
               eventName="whatsapp_click"
               eventData={{ location: "footer" }}
               target="_blank"

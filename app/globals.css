@@ -31,6 +31,14 @@
   --alto-barra: 64px; /* barra fija del celular */
   --ancho-texto: 34rem;
   --ancho-max: 1440px;
+
+  /* === M15 Movimiento: una curva de entrada, una de salida y pocas duraciones === */
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
+  --curva-sale: cubic-bezier(0.4, 0, 1, 1);
+  --dur-corta: 200ms; /* cambios de color: botones, tallas, subrayados */
+  --dur-media: 380ms; /* entra el encabezado */
+  --dur-salida: 240ms; /* sale el encabezado */
+  --dur-larga: 600ms; /* fundidos de foto y de aparición */
 }
 
 @media (min-width: 1024px) {
@@ -196,50 +204,47 @@ img[data-nimg="fill"] {
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color 300ms ease,
-    color 300ms ease,
-    border-color 300ms ease;
+    background-color var(--dur-corta) var(--curva),
+    color var(--dur-corta) var(--curva),
+    border-color var(--dur-corta) var(--curva);
 }
 .boton--tinta {
   background: var(--tinta);
   border-color: var(--tinta);
   color: var(--marfil);
 }
-.boton--tinta:hover {
-  background: var(--tinta-suave);
-  border-color: var(--tinta-suave);
-}
 .boton--contorno {
   background: transparent;
   border-color: var(--tinta);
   color: var(--tinta);
-}
-.boton--contorno:hover {
-  background: var(--tinta);
-  color: var(--marfil);
 }
 .boton--marfil {
   background: var(--marfil);
   border-color: var(--marfil);
   color: var(--tinta);
 }
-.boton--marfil:hover {
-  background: var(--papel);
-  border-color: var(--papel);
-}
 .boton--contorno-marfil {
   background: transparent;
   border-color: var(--marfil);
   color: var(--marfil);
-}
-.boton--contorno-marfil:hover {
-  background: rgba(245, 240, 232, 0.14);
 }
 .boton--chico {
   min-height: 40px;
   padding: 0 16px;
   font-size: 0.75rem;
   letter-spacing: 0.14em;
+}
+/* === M13 Respuesta al tocar (los :hover van en el bloque "Hover solo con mouse", al final) === */
+.boton--contorno:active {
+  background: var(--tinta);
+  color: var(--marfil);
+}
+.boton--tinta:active {
+  background: var(--tinta-suave);
+  border-color: var(--tinta-suave);
+}
+.boton--marfil:active {
+  background: var(--papel);
 }
 
 /* ---------- Estructura de secciones ---------- */
@@ -291,16 +296,18 @@ img[data-nimg="fill"] {
 }
 
 /* ---------- Aparición suave al hacer scroll ----------
-   El contenido se ve sin JS: solo se oculta si el JS marcó el <html> con "con-js". */
+   === M15 === Todo se ve por defecto. Aparicion.tsx solo esconde (con "por-aparecer") lo que está más abajo
+   de la pantalla; esconder es instantáneo y fuera de la vista, y solo se anima el revelado. */
 
 .aparece {
   transition:
-    opacity 700ms ease,
-    transform 700ms ease;
+    opacity var(--dur-larga) var(--curva),
+    transform 900ms var(--curva);
 }
-html.con-js .aparece:not(.visible) {
+.aparece.por-aparecer {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(16px);
+  transition: none;
 }
 
 /* ---------- Encabezado ---------- */
@@ -311,11 +318,13 @@ html.con-js .aparece:not(.visible) {
   z-index: 40;
   background: var(--papel);
   border-bottom: 1px solid var(--linea);
-  transition: transform 300ms ease;
+  transition: transform var(--dur-media) var(--curva);
 }
 /* Celular: al bajar se esconde y al subir vuelve */
 .encabezado--oculto {
   transform: translateY(-100%);
+  transition-duration: var(--dur-salida);
+  transition-timing-function: var(--curva-sale);
 }
 .encabezado__volver {
   grid-column: 1;
@@ -435,9 +444,8 @@ html.con-js .aparece:not(.visible) {
     background: var(--dorado);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 400ms ease;
+    transition: transform 400ms var(--curva);
   }
-  .encabezado__enlaces a:hover::after,
   .encabezado__enlaces a:focus-visible::after {
     transform: scaleX(1);
   }
@@ -612,17 +620,9 @@ html.con-js .aparece:not(.visible) {
   border-color: var(--tinta);
   color: var(--marfil);
 }
-.hero__botones .boton--marfil:hover {
-  background: var(--tinta-suave);
-  border-color: var(--tinta-suave);
-}
 .hero__botones .boton--contorno-marfil {
   border-color: var(--tinta);
   color: var(--tinta);
-}
-.hero__botones .boton--contorno-marfil:hover {
-  background: var(--tinta);
-  color: var(--marfil);
 }
 
 /* Tablet vertical: los botones no se estiran */
@@ -696,16 +696,8 @@ html.con-js .aparece:not(.visible) {
     border-color: var(--marfil);
     color: var(--tinta);
   }
-  .hero__botones .boton--marfil:hover {
-    background: var(--papel);
-    border-color: var(--papel);
-  }
   .hero__botones .boton--contorno-marfil {
     border-color: var(--marfil);
-    color: var(--marfil);
-  }
-  .hero__botones .boton--contorno-marfil:hover {
-    background: rgba(245, 240, 232, 0.14);
     color: var(--marfil);
   }
 }
@@ -768,7 +760,7 @@ html.con-js .aparece:not(.visible) {
 .tarjeta__img--segunda {
   display: none;
   opacity: 0;
-  transition: opacity 700ms ease;
+  transition: opacity var(--dur-larga) var(--curva);
 }
 @media (hover: hover) and (min-width: 1024px) {
   .tarjeta__img--segunda {
@@ -962,10 +954,7 @@ html.con-js .aparece:not(.visible) {
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 6px;
-  transition: text-decoration-color 300ms ease;
-}
-.indice__fila:hover .indice__nombre {
-  text-decoration-color: var(--dorado);
+  transition: text-decoration-color var(--dur-corta) var(--curva);
 }
 
 @media (min-width: 1024px) {
@@ -1114,10 +1103,7 @@ html.con-js .aparece:not(.visible) {
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 6px;
-  transition: text-decoration-color 300ms ease;
-}
-.pie__enlaces a:hover {
-  text-decoration-color: var(--dorado);
+  transition: text-decoration-color var(--dur-corta) var(--curva);
 }
 .pie__legal {
   margin: 24px 0 0;
@@ -1386,12 +1372,9 @@ html.con-js .aparece:not(.visible) {
   letter-spacing: 0.06em;
   color: var(--tinta);
   transition:
-    background-color 250ms ease,
-    color 250ms ease,
-    border-color 250ms ease;
-}
-.talla:hover span {
-  border-color: var(--tinta);
+    background-color var(--dur-corta) var(--curva),
+    color var(--dur-corta) var(--curva),
+    border-color var(--dur-corta) var(--curva);
 }
 .talla input:checked + span {
   background: var(--tinta);
@@ -1531,6 +1514,61 @@ html.con-js .aparece:not(.visible) {
   }
 }
 
+/* ---------- Hover solo con mouse ----------
+   === M13 === iOS activa :hover al tocar y no lo suelta hasta tocar otra cosa (el botón queda "pegado").
+   Todos los :hover van aquí, solo para pantallas con mouse, con los mismos valores de antes.
+   La segunda foto de la tarjeta ya estaba dentro de (hover: hover) en su sección. */
+
+@media (hover: hover) {
+  .boton--tinta:hover {
+    background: var(--tinta-suave);
+    border-color: var(--tinta-suave);
+  }
+  .boton--contorno:hover {
+    background: var(--tinta);
+    color: var(--marfil);
+  }
+  .boton--marfil:hover {
+    background: var(--papel);
+    border-color: var(--papel);
+  }
+  .boton--contorno-marfil:hover {
+    background: rgba(245, 240, 232, 0.14);
+  }
+  /* Hero del celular y tablet: botones de tinta sobre papel */
+  .hero__botones .boton--marfil:hover {
+    background: var(--tinta-suave);
+    border-color: var(--tinta-suave);
+  }
+  .hero__botones .boton--contorno-marfil:hover {
+    background: var(--tinta);
+    color: var(--marfil);
+  }
+  .indice__fila:hover .indice__nombre {
+    text-decoration-color: var(--dorado);
+  }
+  .pie__enlaces a:hover {
+    text-decoration-color: var(--dorado);
+  }
+  .talla:hover span {
+    border-color: var(--tinta);
+  }
+  @media (min-width: 1024px) {
+    .encabezado__enlaces a:hover::after {
+      transform: scaleX(1);
+    }
+    /* Hero de PC: botones de marfil sobre la foto */
+    .hero__botones .boton--marfil:hover {
+      background: var(--papel);
+      border-color: var(--papel);
+    }
+    .hero__botones .boton--contorno-marfil:hover {
+      background: rgba(245, 240, 232, 0.14);
+      color: var(--marfil);
+    }
+  }
+}
+
 /* ---------- Pantallas muy angostas ---------- */
 
 @media (max-width: 380px) {
@@ -1556,7 +1594,8 @@ html.con-js .aparece:not(.visible) {
     animation-duration: 0.01ms !important;
     transition-delay: 0s !important;
   }
-  html.con-js .aparece:not(.visible) {
+  /* M15: con "reducir movimiento" Aparicion.tsx no esconde nada; esto cubre si se activa con la página abierta */
+  .aparece.por-aparecer {
     opacity: 1;
     transform: none;
   }
