@@ -1,17 +1,35 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import Aparicion from "./Aparicion";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// Títulos y wordmark: Cormorant Garamond. Texto, etiquetas, precios y botones: Instrument Sans.
+// Los archivos están en app/fonts (ver LEEME.txt). Se usan locales porque next/font/google falla en este
+// proyecto: Google Fonts ahora entrega las fuentes con una dirección que Next 15.5 no entiende (build con webpack)
+// y el AVG de este PC corta la descarga (build con turbopack).
+const cormorant = localFont({
+  src: [{ path: "./fonts/cormorant-garamond-latin.woff2", weight: "300 700", style: "normal" }],
+  variable: "--font-cormorant",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// La cursiva solo se usa en una frase del Origen: no se precarga.
+const cormorantCursiva = localFont({
+  src: [{ path: "./fonts/cormorant-garamond-italic-latin.woff2", weight: "400", style: "italic" }],
+  variable: "--font-cormorant-cursiva",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: "Times New Roman",
+});
+
+const instrument = localFont({
+  src: [{ path: "./fonts/instrument-sans-latin.woff2", weight: "400 700", style: "normal" }],
+  variable: "--font-instrument",
+  display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 // Imagen para compartir el link (1200x630, ~150 KB): WhatsApp e Instagram descartan imágenes muy pesadas.
@@ -24,7 +42,7 @@ const OG_IMAGE = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1a1a1a",
+  themeColor: "#faf8f4",
 };
 
 // Datos estructurados para Google: marca, sitio y showroom (sin calle exacta: no inventar datos).
@@ -134,15 +152,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es-CL">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="es-CL" className={`${cormorant.variable} ${cormorantCursiva.variable} ${instrument.variable}`}>
+      <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
         {children}
+        <Aparicion />
         <Analytics />
         <Script id="clarity-script" strategy="afterInteractive">
           {`

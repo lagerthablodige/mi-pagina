@@ -1,245 +1,1469 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   NIRÜN · sistema de diseño "Galería"
+   Sitio silencioso: la foto manda. Sin sombras, sin esquinas redondeadas, sin degradés de color.
+   Lo único que se superpone a una foto es un velo de tinta transparente.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colores */
+  --tinta: #1a1a1a;
+  --tinta-suave: #3d3833; /* texto de párrafo */
+  --gris: #6b635b; /* texto secundario */
+  --marfil: #f5f0e8;
+  --crema: #f1efe9; /* fondo de secciones alternas */
+  --papel: #faf8f4; /* fondo principal */
+  --dorado: #b8945f; /* solo filetes de 1 px, numerales grandes y detalles sobre fondo oscuro */
+  --dorado-texto: #7d5f2e; /* texto chico dorado sobre fondo claro */
+  --linea: rgba(26, 26, 26, 0.12);
+  --fondo-foto: #ece9e1; /* lo que se ve mientras carga una foto */
+
+  /* Tipografía (las variables --font-* las pone next/font en layout.tsx) */
+  --fuente-titulo: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --fuente-cursiva: var(--font-cormorant-cursiva), "Cormorant Garamond", Georgia, serif;
+  --fuente-texto: var(--font-instrument), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Espacios */
+  --margen: 20px; /* margen lateral */
+  --entre-secciones: 88px;
+  --alto-encabezado: 56px;
+  --alto-barra: 72px; /* barra fija del celular */
+  --ancho-texto: 34rem;
+  --ancho-max: 1440px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 1024px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --margen: 48px;
+    --entre-secciones: 128px;
+    --alto-encabezado: 64px;
+  }
+}
+
+/* ---------- Base ---------- */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: var(--alto-encabezado);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  scroll-behavior: smooth;
+main:focus {
+  outline: none;
 }
 
-@keyframes scrollBounce {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: 0.6;
+/* Foco visible al navegar con teclado */
+:focus-visible {
+  outline: 2px solid var(--dorado-texto);
+  outline-offset: 3px;
+}
+.fondo-oscuro :focus-visible,
+.menu :focus-visible,
+.barra-fija :focus-visible {
+  outline-color: var(--marfil);
+}
+
+/* Las fotos con "fill" de next/image llenan su marco recortando */
+img[data-nimg="fill"] {
+  object-fit: cover;
+}
+
+/* Enlace para saltar al contenido (solo se ve con el teclado) */
+.saltar {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 300;
+  padding: 12px 16px;
+  background: var(--tinta);
+  color: var(--marfil);
+  font-size: 0.875rem;
+}
+.saltar:focus {
+  left: 8px;
+}
+
+/* ---------- Tipografía ---------- */
+
+.wordmark {
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  margin-right: -0.32em; /* le quita el espacio que el tracking deja después de la última letra */
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+.eyebrow--dorado {
+  color: var(--dorado-texto);
+}
+
+.titulo-hero {
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.titulo-seccion {
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  line-height: 1.1;
+  color: var(--tinta);
+  text-wrap: balance;
+}
+@media (min-width: 1024px) {
+  .titulo-seccion {
+    font-weight: 300;
   }
-  50% {
-    transform: translateY(10px);
+}
+.titulo-seccion--chico {
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+}
+
+.parrafo {
+  margin: 0;
+  max-width: var(--ancho-texto);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--tinta-suave);
+}
+
+.precio {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--tinta);
+}
+.precio--grande {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+/* ---------- Botones: un solo sistema ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease;
+}
+.boton--tinta {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--marfil);
+}
+.boton--tinta:hover {
+  background: var(--tinta-suave);
+  border-color: var(--tinta-suave);
+}
+.boton--contorno {
+  background: transparent;
+  border-color: var(--tinta);
+  color: var(--tinta);
+}
+.boton--contorno:hover {
+  background: var(--tinta);
+  color: var(--marfil);
+}
+.boton--marfil {
+  background: var(--marfil);
+  border-color: var(--marfil);
+  color: var(--tinta);
+}
+.boton--marfil:hover {
+  background: var(--papel);
+  border-color: var(--papel);
+}
+.boton--contorno-marfil {
+  background: transparent;
+  border-color: var(--marfil);
+  color: var(--marfil);
+}
+.boton--contorno-marfil:hover {
+  background: rgba(245, 240, 232, 0.14);
+}
+.boton--chico {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+}
+
+/* ---------- Estructura de secciones ---------- */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+.contenedor--texto {
+  max-width: calc(var(--ancho-texto) + 2 * var(--margen));
+  text-align: center;
+}
+
+.seccion {
+  padding-block: var(--entre-secciones);
+}
+.seccion--crema {
+  background: var(--crema);
+}
+
+.cabecera {
+  margin-bottom: 48px;
+  text-align: center;
+}
+.cabecera__eyebrow {
+  margin-bottom: 14px;
+  color: var(--dorado-texto);
+}
+.cabecera__nota {
+  margin: 14px 0 0;
+  font-size: 0.875rem;
+  color: var(--gris);
+}
+@media (min-width: 1024px) {
+  .cabecera {
+    margin-bottom: 72px;
+  }
+}
+
+/* ---------- Aparición suave al hacer scroll ----------
+   El contenido se ve sin JS: solo se oculta si el JS marcó el <html> con "con-js". */
+
+.aparece {
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease;
+}
+html.con-js .aparece:not(.visible) {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* ---------- Encabezado ---------- */
+
+.encabezado {
+  position: relative;
+  z-index: 40;
+  background: var(--papel);
+  border-bottom: 1px solid var(--linea);
+}
+.encabezado__interior {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--alto-encabezado);
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+.encabezado__marca {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  color: var(--tinta);
+}
+.encabezado__marca img {
+  width: 32px;
+  height: auto;
+}
+.encabezado__enlaces,
+.encabezado__agenda,
+.encabezado__whatsapp {
+  display: none;
+}
+.encabezado__acciones {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.encabezado__menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 64px;
+  min-height: var(--alto-encabezado);
+  margin-right: -8px;
+  padding: 0 8px;
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .encabezado {
+    position: sticky;
+    top: 0;
+  }
+  .encabezado__enlaces {
+    display: block;
+    grid-column: 1;
+  }
+  .encabezado__enlaces ul {
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+  }
+  .encabezado__enlaces a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    min-height: var(--alto-encabezado);
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tinta);
+  }
+  .encabezado__enlaces a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0.18em;
+    bottom: 18px;
+    height: 1px;
+    background: var(--dorado);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 400ms ease;
+  }
+  .encabezado__enlaces a:hover::after,
+  .encabezado__enlaces a:focus-visible::after {
+    transform: scaleX(1);
+  }
+  .encabezado__agenda {
+    display: inline-flex;
+  }
+  .encabezado__whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    color: var(--tinta);
+  }
+  .encabezado__menu {
+    display: none;
+  }
+}
+
+/* PC angosto (1024 a 1279 px): enlaces más juntos para que no choquen con el logo */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .encabezado__enlaces ul {
+    gap: 18px;
+  }
+  .encabezado__enlaces a {
+    letter-spacing: 0.14em;
+  }
+}
+
+/* Menú del celular: pantalla completa */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--margen) calc(24px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  background: var(--tinta);
+  color: var(--marfil);
+}
+.menu__barra {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--alto-encabezado);
+}
+.menu__marca {
+  color: var(--marfil);
+}
+.menu__cerrar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-right: -16px;
+  color: var(--marfil);
+  cursor: pointer;
+}
+.menu__lista {
+  margin: 16px 0 0;
+  padding: 0;
+  border-top: 1px solid rgba(245, 240, 232, 0.16);
+}
+.menu__lista li {
+  border-bottom: 1px solid rgba(245, 240, 232, 0.16);
+}
+.menu__lista a {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: var(--marfil);
+}
+.menu__pie {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 32px;
+}
+.menu__instagram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--marfil);
+}
+@media (min-width: 1024px) {
+  .menu {
+    display: none;
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  height: calc(100vh - var(--alto-encabezado));
+  height: calc(100svh - var(--alto-encabezado));
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--tinta);
+  color: var(--marfil);
+}
+.hero__fotos {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 4px;
+}
+.hero__foto {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.hero__foto--lateral {
+  display: none; /* en el celular no existen: así no se descargan */
+}
+.hero__img-centro {
+  object-position: 42% center;
+}
+/* Velo de tinta transparente solo en la parte baja, para que se lea el texto */
+.hero__velo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45%;
+  background: linear-gradient(to top, rgba(26, 26, 26, 0.86) 0%, rgba(26, 26, 26, 0.76) 72%, rgba(26, 26, 26, 0) 100%);
+  pointer-events: none;
+}
+.hero__texto {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: 0 var(--margen) 28px;
+  text-align: center;
+}
+.hero__texto .eyebrow {
+  color: var(--marfil);
+}
+.hero__texto .titulo-hero {
+  margin-top: 10px;
+}
+.hero__bajada {
+  max-width: 26rem;
+  margin: 12px auto 22px;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--marfil);
+}
+.hero__botones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.hero__botones .boton {
+  padding-inline: 14px;
+}
+.hero__botones .boton--marfil {
+  flex: 1 1 auto;
+}
+
+/* Celulares bajos (SE, 360x640): el velo sube un poco para que el texto se lea igual */
+@media (max-height: 700px) and (max-width: 1023px) {
+  .hero__velo {
+    height: 56%;
+  }
+}
+/* Tablet vertical: los botones no se estiran */
+@media (min-width: 560px) and (max-width: 1023px) {
+  .hero__botones .boton {
+    padding-inline: 24px;
+  }
+  .hero__botones .boton--marfil {
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    height: calc(100vh - var(--alto-encabezado));
+    min-height: 640px;
+  }
+  .hero__foto--lateral {
+    display: block;
+  }
+  .hero__texto {
+    max-width: 52rem;
+    padding-bottom: 56px;
+  }
+  .hero__velo {
+    height: 60%;
+    background: linear-gradient(to top, rgba(26, 26, 26, 0.86) 0%, rgba(26, 26, 26, 0.74) 78%, rgba(26, 26, 26, 0) 100%);
+  }
+  .hero__bajada {
+    max-width: 27rem; /* se queda dentro de la foto del centro, sin cruzar la separación */
+    margin: 16px auto 28px;
+    font-size: 1.0625rem;
+  }
+  .hero__botones .boton {
+    padding-inline: 28px;
+  }
+  .hero__botones .boton--marfil {
+    flex: 0 0 auto;
+  }
+}
+
+/* ---------- Colección y tarjetas ---------- */
+
+.grilla-prendas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 10px;
+  row-gap: 32px;
+}
+.grilla-prendas > div {
+  display: flex;
+}
+@media (min-width: 768px) {
+  .grilla-prendas {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 14px;
+    row-gap: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  .grilla-prendas {
+    column-gap: 20px;
+    row-gap: 64px;
+  }
+}
+
+.tarjeta {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--tinta);
+}
+.tarjeta__foto {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  margin-bottom: 14px;
+  overflow: hidden;
+  background: var(--fondo-foto);
+}
+/* La segunda foto solo existe donde hay mouse: en el celular no se descarga */
+.tarjeta__img--segunda {
+  display: none;
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+@media (hover: hover) and (min-width: 1024px) {
+  .tarjeta__img--segunda {
+    display: block;
+  }
+  .tarjeta:hover .tarjeta__img--segunda,
+  .tarjeta:focus-visible .tarjeta__img--segunda {
     opacity: 1;
   }
 }
-
-.scroll-cue {
-  animation: scrollBounce 2s ease-in-out infinite;
+.tarjeta__fibra {
+  color: var(--dorado-texto);
+}
+.tarjeta__nombre {
+  margin: 2px 0 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+.tarjeta__tipo {
+  margin: 4px 0 10px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--tinta-suave);
+}
+.tarjeta__precios {
+  margin-top: auto; /* los precios de una fila quedan alineados abajo */
+}
+.precio__pieza {
+  color: var(--gris);
+  font-weight: 400;
+}
+.tarjeta__iva {
+  margin: 2px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--gris);
 }
 
-/* Accesibilidad: contorno visible al navegar con teclado y placeholder legible sobre fondo oscuro */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
-  outline: 2px solid #b8945f;
-  outline-offset: 3px;
+/* ---------- Origen ---------- */
+
+.origen__foto {
+  position: relative;
+  height: 85vh;
+  height: 85svh;
+  min-height: 560px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--tinta);
+  color: var(--marfil);
 }
-.nirun-input::placeholder {
+.origen__img {
+  object-position: 80% 50%; /* en el celular la ger queda a la vista */
+}
+.origen__velo {
+  position: absolute;
+  inset: 0;
+  /* Más oscuro arriba, donde va el texto; abajo se deja ver el color de la estepa */
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 26, 26, 0.6) 0%,
+    rgba(26, 26, 26, 0.56) 36%,
+    rgba(26, 26, 26, 0.14) 58%,
+    rgba(26, 26, 26, 0) 74%,
+    rgba(26, 26, 26, 0) 88%,
+    rgba(26, 26, 26, 0.4) 100%
+  );
+  pointer-events: none;
+}
+.origen__frase {
+  position: absolute;
+  left: var(--margen);
+  right: var(--margen);
+  top: 13%;
+  max-width: 44rem;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--fuente-titulo);
+  font-weight: 300;
+  font-size: clamp(1.625rem, 6.6vw, 2.75rem);
+  line-height: 1.26;
+  text-wrap: balance;
+  color: var(--marfil);
+}
+.origen__pie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--marfil);
+}
+@media (min-width: 1024px) {
+  .origen__foto {
+    height: 90vh;
+  }
+  .origen__img {
+    object-position: center 62%;
+  }
+  .origen__velo {
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 26, 26, 0.6) 0%,
+      rgba(26, 26, 26, 0.56) 46%,
+      rgba(26, 26, 26, 0.14) 66%,
+      rgba(26, 26, 26, 0) 80%,
+      rgba(26, 26, 26, 0) 90%,
+      rgba(26, 26, 26, 0.4) 100%
+    );
+  }
+  .origen__frase {
+    top: 15%;
+  }
+}
+.origen__parrafo {
+  max-width: var(--ancho-texto);
+  margin: 24px auto 0;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--tinta-suave);
+}
+.origen__cursiva {
+  max-width: 30rem;
+  margin: 36px auto 0;
+  font-family: var(--fuente-cursiva);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--tinta);
+}
+
+/* ---------- Las fibras ---------- */
+
+.capitulo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 32px;
+  scroll-margin-top: 16px;
+}
+.capitulo + .capitulo {
+  margin-top: 88px;
+}
+.capitulo__numeral {
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 300;
+  font-size: clamp(4.5rem, 20vw, 7rem);
+  line-height: 0.9;
+  font-feature-settings: "lnum" 1; /* números de altura completa: "01" y no "OI" */
+  font-variant-numeric: lining-nums;
+  color: var(--dorado-texto);
+}
+.capitulo__nombre {
+  margin: 8px 0 16px;
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  line-height: 1.1;
+}
+.capitulo__foto {
+  margin: 0;
+}
+.capitulo__marco {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background: var(--fondo-foto);
+  overflow: hidden;
+}
+.capitulo__foto figcaption {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+.capitulo__texto {
+  grid-area: texto;
+}
+.capitulo__foto {
+  grid-area: foto;
+}
+.capitulo__indice {
+  grid-area: indice;
+}
+.capitulo {
+  grid-template-areas: "texto" "foto" "indice";
+}
+
+/* Índice de prendas, como un catálogo */
+.indice {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--linea);
+}
+.indice li {
+  border-bottom: 1px solid var(--linea);
+}
+.indice__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding-block: 6px;
+  color: var(--tinta);
+}
+.indice__nombre {
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+  transition: text-decoration-color 300ms ease;
+}
+.indice__fila:hover .indice__nombre {
+  text-decoration-color: var(--dorado);
+}
+
+@media (min-width: 1024px) {
+  .capitulo {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "foto texto" "foto indice";
+    grid-template-rows: auto auto;
+    column-gap: 96px;
+    row-gap: 0;
+  }
+  .capitulo--invertido {
+    grid-template-areas: "texto foto" "indice foto";
+  }
+  .capitulo + .capitulo {
+    margin-top: 128px;
+  }
+  .capitulo__texto {
+    align-self: end;
+    padding-bottom: 32px;
+  }
+  .capitulo__indice {
+    align-self: start;
+  }
+  .capitulo__foto {
+    align-self: center;
+  }
+}
+
+/* ---------- Showroom ---------- */
+
+.showroom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 48px;
+}
+.showroom__texto .titulo-seccion {
+  margin: 14px 0 24px;
+}
+.showroom__datos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 20px;
+  margin: 24px 0 0;
+}
+.showroom__cita {
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dorado-texto);
+}
+.showroom__datos a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: var(--tinta);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--dorado);
+  text-underline-offset: 6px;
+}
+.showroom__botones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+.showroom__collage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.showroom__detalle {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--fondo-foto);
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  .showroom {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 96px;
+    align-items: center;
+  }
+  .showroom__collage {
+    order: -1;
+  }
+  .showroom__botones {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- Pie ---------- */
+
+.pie {
+  padding: 88px var(--margen) calc(88px + var(--alto-barra) + env(safe-area-inset-bottom));
+  background: var(--tinta);
+  color: var(--marfil);
+  text-align: center;
+}
+.pie__interior {
+  max-width: 34rem;
+  margin-inline: auto;
+}
+.pie__nudo {
+  width: 64px;
+  height: auto;
+  margin-inline: auto;
+}
+.pie__frase {
+  margin: 24px auto 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  line-height: 1.2;
+  text-wrap: balance;
+  color: var(--marfil);
+}
+.pie__correo {
+  margin-top: 56px;
+}
+.pie__correo-titulo {
+  margin-bottom: 16px;
+  color: var(--dorado);
+}
+.pie__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 18px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pie__enlaces a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--marfil);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+  transition: text-decoration-color 300ms ease;
+}
+.pie__enlaces a:hover {
+  text-decoration-color: var(--dorado);
+}
+.pie__legal {
+  margin: 24px 0 0;
+  font-size: 0.8125rem;
+  color: rgba(245, 240, 232, 0.72);
+}
+@media (min-width: 1024px) {
+  .pie {
+    padding: 128px var(--margen) 48px;
+  }
+}
+
+/* Formulario de correo (sobre fondo oscuro) */
+.newsletter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  text-align: left;
+}
+.newsletter__campo {
+  flex: 1 1 14rem;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid rgba(245, 240, 232, 0.6);
+  border-radius: 0;
+  background: transparent;
+  color: var(--marfil);
+  font-family: var(--fuente-texto);
+  font-size: 1rem; /* 16 px: evita el zoom automático en el celular */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.newsletter__campo::placeholder {
   color: #b9b0a2;
   opacity: 1;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .scroll-cue { animation: none; }
+.newsletter__boton {
+  flex: 1 1 auto;
+}
+.newsletter__gracias {
+  margin: 0;
+  font-size: 1.0625rem;
+  color: var(--marfil);
 }
 
-/* Layout de escritorio (por defecto) */
-.only-mobile { display: none; }
+/* ---------- Barra fija del celular ---------- */
 
-.vitrina-row { display: flex; }
-.vitrina-tile { flex: 1 1 0; height: 78vh; min-height: 420px; }
-
-.garment-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 4px;
-  max-width: 1100px;
-  margin: 0 auto;
+.barra-fija {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  display: flex;
+  gap: 10px;
+  padding: 10px var(--margen) calc(10px + env(safe-area-inset-bottom));
+  background: rgba(26, 26, 26, 0.96);
+  border-top: 1px solid rgba(184, 148, 95, 0.35);
+  transform: translateY(100%);
+  visibility: hidden;
+  transition:
+    transform 500ms ease,
+    visibility 0s linear 500ms;
 }
-.garment-item { position: relative; height: 460px; }
-
-/* Celular */
-@media (max-width: 768px) {
-  .only-desktop { display: none !important; }
-  .only-mobile { display: block; }
-
-  .nirun-footer { padding-bottom: calc(4rem + 72px) !important; }
-  .float-icons { display: none !important; }
-
-  .vitrina-row {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 10px;
-    padding: 0 16px 8px;
-    background: #1a1a1a;
-    scrollbar-width: none;
-  }
-  .vitrina-row::-webkit-scrollbar { display: none; }
-  .vitrina-tile {
-    flex: 0 0 84%;
-    height: 60vh;
-    min-height: 380px;
-    scroll-snap-align: center;
-  }
-
-  .fiber-section { padding: 2.5rem 0 1rem !important; }
-  .garment-row {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 8px;
-    padding: 0 16px;
-    scrollbar-width: none;
-  }
-  .garment-row::-webkit-scrollbar { display: none; }
-  .garment-item {
-    flex: 0 0 78%;
-    height: 440px;
-    scroll-snap-align: center;
-  }
+.barra-fija--visible {
+  transform: none;
+  visibility: visible;
+  transition-delay: 0s;
 }
-
-/* Barra fija del celular: Agenda (dorado) + WhatsApp (marfil, con texto bien visible) + Instagram */
-.sticky-agenda {
-  flex: 1 1 0;
+.barra-fija .boton {
+  padding-inline: 14px;
+}
+.barra-fija {
+  justify-content: center;
+}
+.barra-fija__agenda {
+  flex: 1 1 auto;
   min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #b8945f;
-  color: #1a1a1a;
-  padding: 0.85rem 0.4rem;
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
+  max-width: 28rem;
 }
-.sticky-wa {
+.barra-fija__whatsapp {
   flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  background-color: #f5f0e8;
-  color: #1a1a1a;
-  padding: 0 0.85rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  white-space: nowrap;
 }
-.sticky-ig {
-  flex: 0 0 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(245, 240, 232, 0.35);
-}
-@media (max-width: 370px) {
-  .sticky-ig { display: none; }
-  .sticky-agenda { font-size: 0.72rem; letter-spacing: 0.1em; }
+@media (min-width: 1024px) {
+  .barra-fija {
+    display: none;
+  }
 }
 
-/* Enlace "Ver prenda →" del inicio */
-.ver-prenda {
-  display: inline-block;
-  padding: 0.8rem 0.4rem 0.5rem;
-  color: #1a1a1a;
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
+/* ---------- Ficha de prenda ---------- */
+
+.ficha__volver {
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding: 4px var(--margen) 0;
+}
+.ficha__volver a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--tinta);
+}
+
+.ficha {
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+}
+.ficha__info {
+  padding: 32px var(--margen) var(--entre-secciones);
+}
+
+/* Galería: celular con una foto por pantalla; PC en 2x2 */
+.galeria {
+  position: relative;
+}
+.galeria__pista {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.galeria__pista::-webkit-scrollbar {
+  display: none;
+}
+.galeria__pista:focus-visible {
+  outline-offset: -4px;
+}
+.galeria__foto {
+  position: relative;
+  flex: 0 0 100%;
+  aspect-ratio: 4 / 5;
+  background: var(--fondo-foto);
+  scroll-snap-align: start;
+}
+.galeria__contador {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  margin: 0;
+  padding: 4px 10px;
+  background: rgba(26, 26, 26, 0.72);
+  color: var(--marfil);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.ficha__fibra {
+  color: var(--dorado-texto);
+}
+.ficha__titulo {
+  margin: 8px 0 18px;
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.ficha__precio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0;
+}
+.ficha__iva {
+  font-size: 0.875rem;
+  color: var(--gris);
+}
+.ficha__nota {
+  margin: 0 0 8px;
+  max-width: var(--ancho-texto);
+  color: var(--tinta-suave);
+}
+
+.datos {
+  margin: 24px 0 0;
+}
+.dato {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--linea);
+}
+.dato:last-child {
+  border-bottom: 1px solid var(--linea);
+}
+.dato dt {
+  flex: 0 0 5rem;
+}
+.dato dd {
+  flex: 1;
+  margin: 0;
+  color: var(--tinta);
+}
+.ficha__otro-color {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  margin-top: 2px;
+  color: var(--tinta);
+  font-size: 0.9375rem;
   text-decoration: underline;
-  text-decoration-color: #b8945f;
+  text-decoration-color: var(--dorado);
   text-underline-offset: 6px;
 }
 
-/* Páginas de prenda (/prenda/[slug]) */
-.prenda-volver {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+.tallas {
+  min-width: 0;
+  margin: 24px 0 0;
+  padding: 0;
+  border: 0;
 }
-.prenda-contenido {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.5rem 2rem 4.5rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 3.5rem;
-  align-items: start;
+.tallas__titulo {
+  display: block;
+  margin-bottom: 12px;
+  padding: 0;
 }
-.prenda-galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.prenda-foto { position: relative; aspect-ratio: 2 / 3; background: #ece9e1; }
-.prenda-info { position: sticky; top: 2rem; }
-
-.prenda-btn {
+.tallas__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.talla {
+  position: relative;
+  display: block;
+}
+.talla input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.talla span {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  width: 100%;
-  min-height: 52px;
-  padding: 0.9rem 1rem;
-  font-size: 0.82rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-decoration: none;
+  min-width: 56px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(26, 26, 26, 0.55);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: 0.06em;
+  color: var(--tinta);
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
+    border-color 250ms ease;
+}
+.talla:hover span {
+  border-color: var(--tinta);
+}
+.talla input:checked + span {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--marfil);
+}
+.talla input:focus-visible + span {
+  outline: 2px solid var(--dorado-texto);
+  outline-offset: 3px;
+}
+
+.ficha__pieza {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--linea);
+}
+.ficha__pieza-nombre {
+  margin: 0 0 8px;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+.ficha__pieza .datos {
+  margin-top: 16px;
+}
+
+.ficha__botones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+.ficha__botones .boton {
+  padding-inline: 16px;
+}
+.ficha__bloque {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--linea);
+}
+.ficha__bloque .eyebrow {
+  margin-bottom: 10px;
+}
+
+/* "Más en ..." */
+.seccion--mas {
+  padding-block: 72px;
+}
+.grilla-prendas--mas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 32px 10px;
+}
+.grilla-prendas--mas > div {
+  flex: 0 0 calc(50% - 5px);
+  min-width: 0;
+}
+.grilla-prendas--mas > div:only-child {
+  margin-inline: auto; /* una sola prenda queda al centro */
+}
+
+@media (min-width: 1024px) {
+  .ficha {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 64px;
+    align-items: start;
+    padding: 8px var(--margen) var(--entre-secciones);
+  }
+  .ficha__info {
+    position: sticky;
+    top: calc(var(--alto-encabezado) + 32px);
+    padding: 0;
+  }
+  .galeria__pista {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    overflow: visible;
+  }
+  .galeria__foto {
+    flex: none;
+    aspect-ratio: 2 / 3;
+  }
+  .galeria__contador {
+    display: none;
+  }
+  .seccion--mas {
+    padding-block: 112px;
+  }
+  .grilla-prendas--mas {
+    max-width: 760px;
+    margin-inline: auto;
+    column-gap: 20px;
+    row-gap: 56px;
+  }
+  .grilla-prendas--mas > div {
+    flex-basis: calc(50% - 10px);
+  }
+}
+
+/* ---------- Página 404 ---------- */
+
+.pagina-404 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--alto-encabezado));
+  min-height: calc(100svh - var(--alto-encabezado));
+  padding: 64px var(--margen);
+}
+.pagina-404__interior {
+  max-width: var(--ancho-texto);
   text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.prenda-btn-principal { background-color: #1a1a1a; border: 1px solid #1a1a1a; color: #f5f0e8; }
-.prenda-btn-principal:hover { background-color: #3a322c; }
-.prenda-btn-secundario { background-color: transparent; border: 1px solid #1a1a1a; color: #1a1a1a; }
-.prenda-btn-secundario:hover { background-color: #1a1a1a; color: #f5f0e8; }
-.prenda-btn-secundario:hover svg path:first-child { stroke: #f5f0e8; }
-.prenda-btn-secundario:hover svg path:last-child { fill: #f5f0e8; }
-
-.mas-card {
-  flex: 0 0 220px;
-  display: block;
-  color: #1a1a1a;
-  text-decoration: none;
+.pagina-404__interior .titulo-seccion {
+  margin: 14px 0 20px;
+}
+.pagina-404__interior .parrafo {
+  margin-inline: auto;
+}
+.pagina-404__botones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 36px;
+}
+@media (min-width: 640px) {
+  .pagina-404__botones {
+    flex-direction: row;
+    justify-content: center;
+  }
 }
 
-/* Celular: la ficha de prenda va en una columna, con las fotos deslizables */
-@media (max-width: 768px) {
-  .prenda-contenido { display: block; padding: 0 0 2rem; }
-  .prenda-galeria {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 8px;
-    padding: 0 16px;
-    scrollbar-width: none;
+/* ---------- Pantallas muy angostas ---------- */
+
+@media (max-width: 380px) {
+  .boton {
+    letter-spacing: 0.12em;
   }
-  .prenda-galeria::-webkit-scrollbar { display: none; }
-  .prenda-foto {
-    flex: 0 0 78%;
-    aspect-ratio: auto;
-    height: 420px;
-    scroll-snap-align: center;
+  .hero__botones .boton,
+  .barra-fija .boton {
+    padding-inline: 10px;
   }
-  .prenda-info { position: static; padding: 1.8rem 1.5rem 0; }
-  .prenda-volver { padding: 0 1rem; }
-  .mas-card { flex: 0 0 calc(50% - 0.5rem); }
+}
+
+/* ---------- Quien pide menos movimiento ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  html.con-js .aparece:not(.visible) {
+    opacity: 1;
+    transform: none;
+  }
 }

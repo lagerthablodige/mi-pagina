@@ -15,6 +15,10 @@ export type Producto = {
   slug: string;
   garment: string; // nombre de la prenda en fibersData
   nombre: string; // nombre completo para mostrar
+  nombreCorto: string; // nombre para tarjetas e índices ("Nomín · Negro")
+  tipo: string; // qué prenda es, en pocas palabras
+  portada: number; // índice de la foto de portada (en el orden de fotosDe)
+  segunda: number; // índice de la foto que aparece al pasar el mouse
   // Casi todas las prendas son una sola pieza. Sernaí Silk son dos que se venden por separado (sin precio de conjunto).
   piezas: Pieza[];
   // Nomín existe en dos colores: enlaza al otro color.
@@ -22,15 +26,21 @@ export type Producto = {
 };
 
 // Prenda de una sola pieza.
-function simple(datos: Pieza & { slug: string; garment: string; otroColor?: Producto["otroColor"] }): Producto {
-  const { slug, garment, otroColor, ...pieza } = datos;
-  return { slug, garment, nombre: pieza.nombre, piezas: [pieza], otroColor };
+type DatosSimples = Pieza & Pick<Producto, "slug" | "garment" | "nombreCorto" | "tipo" | "portada" | "segunda" | "otroColor">;
+
+function simple(datos: DatosSimples): Producto {
+  const { slug, garment, nombreCorto, tipo, portada, segunda, otroColor, ...pieza } = datos;
+  return { slug, garment, nombreCorto, tipo, portada, segunda, nombre: pieza.nombre, piezas: [pieza], otroColor };
 }
 
 export const productos: Producto[] = [
   simple({
     slug: "khulan",
     garment: "Khulán",
+    nombreCorto: "Khulán",
+    tipo: "Abrigo envolvente reversible",
+    portada: 0,
+    segunda: 1,
     nombre: "Abrigo envolvente Khulán reversible",
     material: "100% Yak",
     color: "Gris espiga",
@@ -40,6 +50,10 @@ export const productos: Producto[] = [
   simple({
     slug: "nomin-azul-oscuro",
     garment: "Nomín Azul Oscuro",
+    nombreCorto: "Nomín · Azul oscuro",
+    tipo: "Abrigo corte evasé oversize",
+    portada: 0,
+    segunda: 3,
     nombre: "Abrigo Nomín corte evasé oversize",
     material: "100% Yak",
     color: "Azul oscuro",
@@ -50,6 +64,10 @@ export const productos: Producto[] = [
   simple({
     slug: "nomin-negro",
     garment: "Nomín Negro",
+    nombreCorto: "Nomín · Negro",
+    tipo: "Abrigo corte evasé oversize",
+    portada: 1,
+    segunda: 3,
     nombre: "Abrigo Nomín corte evasé oversize",
     material: "100% Yak",
     color: "Negro",
@@ -60,6 +78,10 @@ export const productos: Producto[] = [
   simple({
     slug: "zaya",
     garment: "Záya",
+    nombreCorto: "Záya",
+    tipo: "Cárdigan largo tejido",
+    portada: 0,
+    segunda: 1,
     nombre: "Cárdigan largo tejido Záya",
     material: "100% Cashmere",
     color: "Blanco",
@@ -69,6 +91,10 @@ export const productos: Producto[] = [
   simple({
     slug: "bolomaa",
     garment: "Bolomaa",
+    nombreCorto: "Bolomaa",
+    tipo: "Vest",
+    portada: 1,
+    segunda: 3,
     nombre: "Vest Bolomaa",
     material: "100% Baby Camel",
     color: "Rosa",
@@ -78,6 +104,10 @@ export const productos: Producto[] = [
   simple({
     slug: "erdene",
     garment: "Erdene",
+    nombreCorto: "Erdene",
+    tipo: "Abrigo envolvente reversible",
+    portada: 2,
+    segunda: 0,
     nombre: "Abrigo envolvente Erdene reversible",
     material: "100% Baby Camel",
     color: "Beige",
@@ -87,6 +117,10 @@ export const productos: Producto[] = [
   simple({
     slug: "sernai",
     garment: "Sernaí",
+    nombreCorto: "Sernaí",
+    tipo: "Pantalón",
+    portada: 3,
+    segunda: 1,
     nombre: "Pantalón Sernaí",
     material: "100% Baby Camel",
     color: "Beige",
@@ -97,12 +131,25 @@ export const productos: Producto[] = [
     slug: "sernai-silk",
     garment: "Sernaí Silk",
     nombre: "Chaqueta y falda Sernaí Silk",
+    nombreCorto: "Sernaí Silk",
+    tipo: "Chaqueta y falda",
+    portada: 0,
+    segunda: 2,
     piezas: [
       { nombre: "Chaqueta Sernaí", material: "Baby Camel y seda", color: "Rosa", tallas: ["S", "M", "L"], precio: 450000 },
       { nombre: "Falda Sernaí", material: "Baby Camel", color: "Rosa", tallas: ["S", "M", "L"], precio: 250000 },
     ],
   },
 ];
+
+// Orden en que se muestra la colección (inicio y listas por fibra).
+const ORDEN_COLECCION = ["khulan", "nomin-negro", "nomin-azul-oscuro", "zaya", "erdene", "bolomaa", "sernai-silk", "sernai"];
+
+export const productosEnOrden: Producto[] = ORDEN_COLECCION.map((slug) => {
+  const p = productos.find((x) => x.slug === slug);
+  if (!p) throw new Error(`Falta el producto "${slug}"`);
+  return p;
+});
 
 export const SITE = "https://www.nirun.cl";
 
@@ -126,25 +173,65 @@ export function fibraDe(producto: Producto): Fiber {
   return fibra;
 }
 
+// "BABY CAMEL" -> "Baby Camel"
+export function nombreFibra(fibra: Fiber): string {
+  return fibra.label
+    .toLowerCase()
+    .split(" ")
+    .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+    .join(" ");
+}
+
+// Prendas de una fibra, en el orden de la colección.
+export function prendasDeFibra(fibra: Fiber): Producto[] {
+  return productosEnOrden.filter((p) => fibraDe(p).key === fibra.key);
+}
+
 export function fotosDe(producto: Producto): string[] {
   return fibraDe(producto)
     .images.filter((img) => img.garment === producto.garment)
     .map((img) => img.src);
 }
 
+// Texto alternativo de una foto de la prenda. Nomín lleva el color para que no se repita entre las dos fichas.
+export function altDeFoto(producto: Producto, n: number, total: number): string {
+  const color = producto.otroColor ? ` ${producto.piezas[0].color.toLowerCase()}` : "";
+  return `${producto.nombre}${color}, foto ${n + 1} de ${total}`;
+}
+
 // Prendas de la misma fibra, sin la actual ni su otro color (ese ya sale como "También en ...").
 export function masEnLaFibra(producto: Producto): Producto[] {
   const fibra = fibraDe(producto);
-  return productos.filter(
+  return productosEnOrden.filter(
     (p) => p.slug !== producto.slug && p.slug !== producto.otroColor?.slug && fibraDe(p).key === fibra.key
   );
 }
 
-// Mensaje precargado de WhatsApp con el nombre de la prenda.
-export function mensajeWhatsApp(producto: Producto): string {
+// Nombre con el color cuando la prenda existe en dos colores (Nomín), para que el mensaje no sea ambiguo.
+function nombreConColor(producto: Producto): string {
+  return producto.otroColor ? `${producto.nombre} (${producto.piezas[0].color.toLowerCase()})` : producto.nombre;
+}
+
+// "Chaqueta Sernaí" -> "Chaqueta" (para mostrar el precio de cada pieza en dos líneas).
+export function etiquetaPieza(pieza: Pieza): string {
+  return pieza.nombre.split(" ")[0];
+}
+
+// Mensaje precargado de WhatsApp con el nombre de la prenda y, si ya la eligió, la talla.
+// `tallas` guarda la talla elegida de cada pieza (clave: nombre de la pieza).
+export function mensajeWhatsApp(producto: Producto, tallas: Record<string, string> = {}): string {
   if (producto.piezas.length > 1) {
-    const piezas = producto.piezas.map((p) => p.nombre).join(" y la ");
-    return `Hola, me interesan la ${piezas} (Sernaí Silk). ¿Qué tallas tienen disponibles?`;
+    const elegidas = producto.piezas.filter((p) => tallas[p.nombre]);
+    const lista = producto.piezas
+      .map((p) => (tallas[p.nombre] ? `${p.nombre} (talla ${tallas[p.nombre]})` : p.nombre))
+      .join(" y la ");
+    const cierre = elegidas.length === producto.piezas.length ? "¿Están disponibles?" : "¿Qué tallas tienen disponibles?";
+    return `Hola, me interesan la ${lista} (Sernaí Silk). ${cierre}`;
   }
-  return `Hola, me interesa el ${producto.nombre}. ¿Qué tallas tienen disponibles?`;
+  const [pieza] = producto.piezas;
+  const talla = tallas[pieza.nombre] ?? (pieza.tallas.length === 1 ? pieza.tallas[0] : "");
+  if (talla) {
+    return `Hola, me interesa el ${nombreConColor(producto)}, ${talla === "Talla única" ? "talla única" : `talla ${talla}`}. ¿Está disponible?`;
+  }
+  return `Hola, me interesa el ${nombreConColor(producto)}. ¿Qué tallas tienen disponibles?`;
 }

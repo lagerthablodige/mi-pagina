@@ -1,0 +1,9 @@
+Fuentes del sitio (subset latin, formato woff2), descargadas de Google Fonts el 2026-11-08:
+
+- cormorant-garamond-latin.woff2         Cormorant Garamond, variable (300 a 700), normal
+- cormorant-garamond-italic-latin.woff2  Cormorant Garamond, cursiva 400
+- instrument-sans-latin.woff2            Instrument Sans, variable (400 a 700)
+
+Licencia: SIL Open Font License 1.1 (permite uso comercial y redistribución con el sitio).
+Cormorant Garamond: Christian Thalmann (Catharsis Fonts). Instrument Sans: Instrument.
+Se cargan con next/font/local (ver app/layout.tsx) porque next/font/google falla en este proyecto.

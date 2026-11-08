@@ -12,9 +12,10 @@ type Props = {
   sizes: string;
   objectPosition?: string;
   priority?: boolean; // foto principal de una página: se carga de inmediato
+  quality?: number;
 };
 
-export default function ZoomableImage({ src, alt, sizes, objectPosition = "center", priority = false }: Props) {
+export default function ZoomableImage({ src, alt, sizes, objectPosition = "center", priority = false, quality }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -34,7 +35,7 @@ export default function ZoomableImage({ src, alt, sizes, objectPosition = "cente
           cursor: "zoom-in",
         }}
       >
-        <Image src={src} alt={alt} fill sizes={sizes} priority={priority} style={{ objectFit: "cover", objectPosition }} />
+        <Image src={src} alt={alt} fill sizes={sizes} priority={priority} quality={quality} style={{ objectFit: "cover", objectPosition }} />
       </button>
       {open && createPortal(<Lightbox src={src} alt={alt} onClose={() => setOpen(false)} />, document.body)}
     </>
@@ -89,7 +90,7 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        backgroundColor: "#0c0a08",
+        backgroundColor: "var(--tinta)",
         display: "flex",
         flexDirection: "column",
       }}
@@ -102,15 +103,7 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
           padding: "0.5rem 0.5rem 0.5rem 1rem",
         }}
       >
-        <p
-          style={{
-            margin: 0,
-            color: "#b8945f",
-            fontSize: "0.7rem",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-          }}
-        >
+        <p className="eyebrow" style={{ margin: 0, color: "var(--marfil)" }}>
           {zoomed ? "Toca para alejar" : "Toca la foto para acercar"}
         </p>
         <button
@@ -125,12 +118,12 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
             alignItems: "center",
             justifyContent: "center",
             background: "none",
-            border: "1px solid rgba(245,240,232,0.35)",
+            border: "1px solid rgba(245,240,232,0.45)",
             cursor: "pointer",
           }}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 5 L19 19 M19 5 L5 19" stroke="#f5f0e8" strokeWidth="1.6" strokeLinecap="round" />
+            <path d="M5 5 L19 19 M19 5 L5 19" stroke="#f5f0e8" strokeWidth="1.4" strokeLinecap="square" />
           </svg>
         </button>
       </div>
