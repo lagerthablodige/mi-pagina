@@ -1542,6 +1542,10 @@ img[data-nimg="fill"] {
     margin: 2px 0 0;
     align-self: baseline;
   }
+  /* Sernaí Silk: la nota de las dos piezas viene justo después del tipo; sin este aire se leen como un solo párrafo. */
+  .ficha__info--piezas > .ficha__tipo {
+    margin-bottom: 18px;
+  }
 }
 @media (min-width: 1024px) {
   .ficha__info--piezas {
@@ -1571,6 +1575,11 @@ img[data-nimg="fill"] {
     outline: 3px solid Highlight;
     outline-offset: -5px;
     text-decoration: underline;
+  }
+  /* Con foco, el contorno exterior vuelve a marcar el foco; el subrayado sigue marcando la talla elegida. */
+  .talla input:checked:focus-visible + span {
+    outline: 2px solid CanvasText;
+    outline-offset: 3px;
   }
 }
 /* === fin M29 === */
