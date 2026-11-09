@@ -552,6 +552,31 @@ img[data-nimg="fill"] {
   }
 }
 
+/* === M09 Menú del celular: un solo fundido al abrir y al salir ===
+   Al elegir una sección, el salto ocurre detrás del menú y después el menú se desvanece sobre ella (Encabezado.tsx). */
+.menu {
+  animation: menu-entra 280ms var(--curva) both;
+}
+@keyframes menu-entra {
+  from {
+    opacity: 0;
+  }
+}
+.menu--saliendo {
+  animation: menu-sale 320ms var(--curva-sale) forwards;
+  pointer-events: none;
+}
+@keyframes menu-sale {
+  to {
+    opacity: 0;
+  }
+}
+/* La sección a la que se salta recibe el foco (Tab y el lector de pantalla siguen desde ahí) sin dibujar un marco */
+section[tabindex="-1"]:focus {
+  outline: none;
+}
+/* === fin M09 === */
+
 /* ---------- Hero ----------
    Celular y tablet: "cartela de galería". La foto va limpia arriba, sin nada encima, y el texto debajo sobre papel.
    PC: tríptico de tres fotos con el texto sobre la foto del centro. */
