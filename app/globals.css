@@ -1111,6 +1111,15 @@ img[data-nimg="fill"] {
   margin: 24px 0 0;
   font-size: 0.875rem;
   color: rgba(245, 240, 232, 0.72);
+  text-wrap: balance; /* M33: si la dirección no cabe (pantallas de 320 px), dos líneas parejas */
+}
+/* M33: en el celular y la tablet el © va en su propia línea; el punto medio que lo separa solo se ve en PC */
+.pie__legal-texto,
+.pie__legal-copy {
+  display: block;
+}
+.pie__legal-sep {
+  display: none;
 }
 /* === M33 Pie en PC: frase a la izquierda, correo a la derecha y una línea de enlaces y datos al pie ===
    Si M19 agrega .pie__datos, va en grid-column 1 / -1, debajo de estas dos filas. */
@@ -1158,6 +1167,10 @@ img[data-nimg="fill"] {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+  }
+  .pie__legal-copy,
+  .pie__legal-sep {
+    display: inline;
   }
 }
 

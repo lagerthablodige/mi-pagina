@@ -58,8 +58,16 @@ export default function Pie({ whatsappHref = WHATSAPP_HREF }: Props) {
           </li>
         </ul>
 
-        {/* Solo datos ya publicados. El año sale de la fecha del build: se actualiza solo con el próximo deploy. */}
-        <p className="pie__legal">Showroom Landa Brands, Vitacura · Solo con cita · © {new Date().getFullYear()} Nirün</p>
+        {/* Solo datos ya publicados. El año sale de la fecha del build: se actualiza solo con el próximo deploy.
+            En el celular el © va en su propia línea y el punto medio de antes se esconde (M33). Los espacios
+            duros (\u00a0) dejan cada «·» pegado a la palabra anterior y el © junto al año y a Nirün. */}
+        <p className="pie__legal">
+          <span className="pie__legal-texto">
+            {"Showroom Landa Brands, Vitacura\u00a0· Solo con cita"}
+            <span className="pie__legal-sep">{"\u00a0· "}</span>
+            <span className="pie__legal-copy">{`©\u00a0${new Date().getFullYear()}\u00a0Nirün`}</span>
+          </span>
+        </p>
       </div>
     </footer>
   );
