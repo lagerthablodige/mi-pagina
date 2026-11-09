@@ -88,6 +88,19 @@ main:focus {
   outline-color: var(--marfil);
 }
 
+/* === M34 Foco visible en el hero del celular y sin modo oscuro forzado === */
+/* El sitio es solo claro: el oscurecimiento automático de Chromium (WebView de Android, Instagram) no lo invierte */
+:root {
+  color-scheme: only light;
+}
+/* Bajo 1024 px (y en PC con zoom de 150 % o más) el hero es papel, no oscuro: el anillo vuelve a dorado */
+@media (max-width: 1023px) {
+  .hero.fondo-oscuro :focus-visible {
+    outline-color: var(--dorado-texto);
+  }
+}
+/* === fin M34 === */
+
 /* Las fotos con "fill" de next/image llenan su marco recortando */
 img[data-nimg="fill"] {
   object-fit: cover;
@@ -104,7 +117,9 @@ img[data-nimg="fill"] {
   color: var(--marfil);
   font-size: 0.875rem;
 }
-.saltar:focus {
+/* === M01 === :focus-visible y no :focus: al navegar, Next pone el foco en este enlace y con :focus tapaba la flecha
+   «Colección» del celular. Con el teclado (Tab) sigue apareciendo. */
+.saltar:focus-visible {
   left: 8px;
 }
 
@@ -549,6 +564,31 @@ img[data-nimg="fill"] {
     display: none;
   }
 }
+
+/* === M09 Menú del celular: un solo fundido al abrir y al salir ===
+   Al elegir una sección, el salto ocurre detrás del menú y después el menú se desvanece sobre ella (Encabezado.tsx). */
+.menu {
+  animation: menu-entra 280ms var(--curva) both;
+}
+@keyframes menu-entra {
+  from {
+    opacity: 0;
+  }
+}
+.menu--saliendo {
+  animation: menu-sale 320ms var(--curva-sale) forwards;
+  pointer-events: none;
+}
+@keyframes menu-sale {
+  to {
+    opacity: 0;
+  }
+}
+/* La sección a la que se salta recibe el foco (Tab y el lector de pantalla siguen desde ahí) sin dibujar un marco */
+section[tabindex="-1"]:focus {
+  outline: none;
+}
+/* === fin M09 === */
 
 /* ---------- Hero ----------
    Celular y tablet: "cartela de galería". La foto va limpia arriba, sin nada encima, y el texto debajo sobre papel.
@@ -1572,6 +1612,38 @@ img[data-nimg="fill"] {
     }
   }
 }
+
+/* === M14 Botones que no se cortan (zoom de pantalla del iPhone, letra grande de Android, 320 px) ===
+   Si el texto no cabe, baja a una segunda línea en vez de salirse de la caja o de la pantalla.
+   Con el ancho y la letra normales todo sigue en una línea: a 390 px no cambia nada a la vista. */
+.boton {
+  white-space: normal;
+  text-wrap: balance;
+  padding-block: 10px;
+}
+/* Hero del celular: si los dos botones no caben lado a lado, WhatsApp pasa a la línea de abajo */
+.hero__botones {
+  flex-wrap: wrap;
+}
+.barra-fija__agenda {
+  flex: 1 1 0;
+}
+/* El botón chico del encabezado de PC, con el mismo espaciado que los enlaces de al lado */
+.boton--chico {
+  letter-spacing: 0.18em;
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .boton--chico {
+    letter-spacing: 0.14em;
+  }
+}
+/* A 360 px el texto largo de la ficha invadía el relleno: con 8 px sigue en una línea */
+@media (max-width: 380px) {
+  .ficha__botones .boton {
+    padding-inline: 8px;
+  }
+}
+/* === fin M14 === */
 
 /* ---------- Pantallas muy angostas ---------- */
 

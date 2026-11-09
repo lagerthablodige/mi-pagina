@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import TrackedLink from "./TrackedLink";
 import { CALENDLY_HREF, INSTAGRAM_HREF, WHATSAPP_HREF } from "./links";
 import { InstagramIcon, WhatsAppIcon } from "./Iconos";
+import { useCerrarConAtras } from "./useCerrarConAtras";
 
 const ENLACES = [
   { href: "/#coleccion", texto: "Colección" },
@@ -15,6 +18,20 @@ const ENLACES = [
 ];
 
 const FOCUSABLES = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
+
+// === M09 === Duración del fundido de salida del menú (igual que menu-sale en globals.css).
+const SALIDA_MENU_MS = 320;
+// Después de saltar a una sección, el encabezado del celular no reaparece por el scroll del salto.
+const PAUSA_TRAS_SALTO_MS = 1200;
+
+// Clic con Ctrl, Cmd, Shift o botón del medio: se deja al navegador (pestaña nueva, etc.).
+function esClicEspecial(ev: ReactMouseEvent<HTMLAnchorElement>) {
+  return ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey;
+}
+
+function pideMenosMovimiento() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 type Props = {
   // Enlace de "volver" que en el celular ocupa el lado izquierdo (en PC se muestra aparte, en la página).
@@ -27,13 +44,19 @@ type Props = {
 // (y reaparece al subir); en PC los enlaces van en línea y la barra queda fija.
 export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Props) {
   const [abierto, setAbierto] = useState(false);
+  const [saliendo, setSaliendo] = useState(false);
   const [escondido, setEscondido] = useState(false);
   const botonMenu = useRef<HTMLButtonElement>(null);
   const botonCerrar = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const estabaAbierto = useRef(false);
+  const saltando = useRef(0);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const cerrar = useCallback(() => setAbierto(false), []);
+  // El menú abierto ocupa una entrada del historial: «Atrás» lo cierra sin salir del sitio.
+  const empujado = useCerrarConAtras(abierto, cerrar);
 
   // Celular: se esconde al bajar y vuelve al subir. En PC no se esconde nunca.
   useEffect(() => {
@@ -41,6 +64,13 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
     let pendiente = 0;
     const revisar = () => {
       const y = window.scrollY;
+      // === M09 === Justo después de saltar a una sección, el encabezado del celular queda escondido aunque el salto
+      // haya sido hacia arriba: así no tapa el título de la sección.
+      if (Date.now() - saltando.current < PAUSA_TRAS_SALTO_MS) {
+        setEscondido(window.innerWidth < 1024 && y >= 80);
+        anterior = y;
+        return;
+      }
       if (window.innerWidth >= 1024 || y < 80) setEscondido(false);
       else if (y > anterior + 6) setEscondido(true);
       else if (y < anterior - 6) setEscondido(false);
@@ -103,12 +133,74 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
     };
   }, [abierto]);
 
+  // === M09 === Lleva a una sección del inicio sin recorrer todo lo de en medio y deja el foco en ella, así Tab
+  // y el lector de pantalla siguen desde ahí.
+  const saltarA = (destino: HTMLElement, suave: boolean) => {
+    saltando.current = Date.now();
+    if (suave) {
+      destino.scrollIntoView({ behavior: pideMenosMovimiento() ? "auto" : "smooth", block: "start" });
+    } else {
+      const html = document.documentElement;
+      const antes = html.style.scrollBehavior;
+      html.style.scrollBehavior = "auto";
+      destino.scrollIntoView({ block: "start" });
+      html.style.scrollBehavior = antes;
+    }
+    destino.setAttribute("tabindex", "-1");
+    destino.focus({ preventScroll: true });
+  };
+
+  // Sección del inicio a la que apunta un enlace, si ya estamos en el inicio.
+  const seccionDe = (href: string) => {
+    const id = href.split("#")[1];
+    const destino = pathname === "/" && id ? document.getElementById(id) : null;
+    return destino ? { id, destino } : null;
+  };
+
+  // Enlaces del menú del celular. En el inicio, el salto ocurre detrás del menú opaco y luego el menú se desvanece
+  // sobre la sección; la entrada del menú en el historial pasa a ser /#seccion, así «Atrás» vuelve al inicio y no
+  // reabre el menú. Desde otra página, se reemplaza la entrada del menú por la página de destino.
+  const irA = (href: string) => (ev: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (esClicEspecial(ev)) return;
+    ev.preventDefault();
+    empujado.current = false;
+    const seccion = seccionDe(href);
+    if (!seccion) {
+      setAbierto(false);
+      router.replace(href);
+      return;
+    }
+    // Sin copiar history.state: Next agrega lo suyo y sincroniza su URL.
+    history.replaceState({}, "", `#${seccion.id}`);
+    saltarA(seccion.destino, false);
+    estabaAbierto.current = false; // el foco queda en la sección, no vuelve al botón «Menú»
+    setSaliendo(true);
+    window.setTimeout(
+      () => {
+        setSaliendo(false);
+        setAbierto(false);
+      },
+      pideMenosMovimiento() ? 0 : SALIDA_MENU_MS,
+    );
+  };
+
+  // Enlaces del encabezado de PC: en el inicio, el mismo salto (suave) con su entrada en el historial.
+  const irEnPc = (href: string) => (ev: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (esClicEspecial(ev)) return;
+    const seccion = seccionDe(href);
+    if (!seccion) return; // desde otra página, la navegación normal de Next
+    ev.preventDefault();
+    // Como un enlace normal: la misma sección dos veces no agrega otra entrada al historial.
+    if (window.location.hash !== `#${seccion.id}`) history.pushState(null, "", `#${seccion.id}`);
+    saltarA(seccion.destino, true);
+  };
+
   return (
     <>
       <a href="#contenido" className="saltar">
         Saltar al contenido
       </a>
-      <header className={`encabezado${escondido && !abierto ? " encabezado--oculto" : ""}`}>
+      <header className={`encabezado${escondido && (!abierto || saliendo) ? " encabezado--oculto" : ""}`}>
         <div className="encabezado__interior">
           {volver && (
             <Link href={volver.href} className="encabezado__volver">
@@ -122,14 +214,17 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
             <ul>
               {ENLACES.map((e) => (
                 <li key={e.href}>
-                  <Link href={e.href}>{e.texto}</Link>
+                  <Link href={e.href} onClick={irEnPc(e.href)}>
+                    {e.texto}
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
           <Link href="/" className="encabezado__marca" aria-label="Nirün, ir al inicio">
-            <Image src="/logo-mark.png" alt="" width={32} height={21} sizes="32px" />
+            {/* M05: eager y no priority, para no sumar un preload que compita con la foto principal */}
+            <Image src="/logo-mark.png" alt="" width={32} height={21} sizes="32px" loading="eager" />
             <span className="wordmark">NIRÜN</span>
           </Link>
 
@@ -161,7 +256,7 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
               className="encabezado__menu"
               aria-haspopup="dialog"
               aria-expanded={abierto}
-              aria-controls="menu-movil"
+              aria-controls={abierto ? "menu-movil" : undefined}
               onClick={() => setAbierto(true)}
             >
               Menú
@@ -171,7 +266,14 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
       </header>
 
       {abierto && (
-        <div ref={panel} id="menu-movil" className="menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <div
+          ref={panel}
+          id="menu-movil"
+          className={`menu${saliendo ? " menu--saliendo" : ""}`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menú"
+        >
           <div className="menu__barra">
             <span className="wordmark menu__marca">NIRÜN</span>
             <button ref={botonCerrar} type="button" className="menu__cerrar" onClick={cerrar} aria-label="Cerrar menú">
@@ -185,7 +287,7 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
             <ul className="menu__lista">
               {ENLACES.map((e) => (
                 <li key={e.href}>
-                  <Link href={e.href} onClick={cerrar}>
+                  <Link href={e.href} onClick={irA(e.href)}>
                     {e.texto}
                   </Link>
                 </li>
@@ -212,13 +314,19 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
               rel="noopener noreferrer"
               className="boton boton--contorno-marfil"
             >
-              <WhatsAppIcon color="currentColor" size={20} />
               WhatsApp
             </TrackedLink>
-            <a href={INSTAGRAM_HREF} target="_blank" rel="noopener noreferrer" className="menu__instagram">
+            <TrackedLink
+              href={INSTAGRAM_HREF}
+              eventName="instagram_click"
+              eventData={{ location: "menu" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="menu__instagram"
+            >
               <InstagramIcon color="currentColor" size={20} />
               Instagram
-            </a>
+            </TrackedLink>
           </div>
         </div>
       )}
