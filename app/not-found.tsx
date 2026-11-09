@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Encabezado from "./Encabezado";
 import TrackedLink from "./TrackedLink";
-import { WhatsAppIcon } from "./Iconos";
 import { WHATSAPP_HREF } from "./links";
 
 // M38: la 404 con su propio título, fuera de Google (pero sus enlaces se siguen) y sin el canonical del inicio.
@@ -34,7 +33,6 @@ export default function NotFound() {
               rel="noopener noreferrer"
               className="boton boton--contorno"
             >
-              <WhatsAppIcon color="currentColor" size={20} />
               WhatsApp
             </TrackedLink>
           </div>

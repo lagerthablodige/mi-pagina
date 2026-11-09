@@ -314,7 +314,6 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
               rel="noopener noreferrer"
               className="boton boton--contorno-marfil"
             >
-              <WhatsAppIcon color="currentColor" size={20} />
               WhatsApp
             </TrackedLink>
             <TrackedLink
