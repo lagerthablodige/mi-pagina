@@ -159,3 +159,23 @@ Estos datos no son obligatorios. Si no están, el sitio usa uno automático.
 Regla de oro: **escribe solo datos reales**. Si no estás seguro de un dato, déjalo afuera.
 
 Opcional, para las mediciones: en `app/medicion.ts` está la lista `FIBRA`. Puedes agregar ahí el `slug` nuevo con su fibra.
+
+---
+
+## 4. Cambiar una foto
+
+Regla: **foto nueva = nombre de archivo nuevo**.
+
+1. No reemplaces una foto con otra del mismo nombre.
+2. Guarda la foto nueva con su propio número. Por ejemplo, `_84A9999.jpg`.
+3. Cambia el número en `app/fibersData.ts`.
+4. Si la prenda tiene `alts` en `app/products.ts`, cambia ahí también el nombre del archivo.
+
+Las fotos grandes del inicio (`public/hero/`) siguen la misma regla. Su nombre está en `app/page.tsx` y en `app/sitemap.ts`: cámbialo en los dos.
+
+Por qué: los teléfonos y Vercel guardan las fotos en la memoria (la caché) hasta 30 días.
+Si el nombre no cambia, una clienta puede seguir viendo la foto vieja.
+
+Lo mismo vale para la imagen para compartir de una prenda (`public/og/prenda/`).
+Si la cambias, guárdala con otro nombre (por ejemplo, `khulan-2.jpg`) y escríbelo en la prenda:
+`imagenCompartir: "/og/prenda/khulan-2.jpg",`.
