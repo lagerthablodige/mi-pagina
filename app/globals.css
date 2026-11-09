@@ -1051,8 +1051,10 @@ img[data-nimg="fill"] {
 
 /* ---------- Pie ---------- */
 
+/* === M33 Pie sin franja vacía al final ===
+   .pie está en BLOQUES_CON_BOTONES de BarraFija: si se saca de ahí, la barra tapa el ©. */
 .pie {
-  padding: 88px var(--margen) calc(88px + var(--alto-barra) + env(safe-area-inset-bottom));
+  padding: 88px var(--margen) calc(88px + env(safe-area-inset-bottom));
   background: var(--tinta);
   color: var(--marfil);
   text-align: center;
@@ -1086,7 +1088,7 @@ img[data-nimg="fill"] {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0 18px;
+  gap: 0 28px; /* M33 */
   margin: 40px 0 0;
   padding: 0;
   list-style: none;
@@ -1096,10 +1098,10 @@ img[data-nimg="fill"] {
   align-items: center;
   min-height: 48px;
   font-weight: 500;
-  font-size: 0.875rem;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem; /* M33: mismo estilo que las etiquetas */
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--marfil);
+  color: rgba(245, 240, 232, 0.86);
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 6px;
@@ -1110,9 +1112,52 @@ img[data-nimg="fill"] {
   font-size: 0.875rem;
   color: rgba(245, 240, 232, 0.72);
 }
+/* === M33 Pie en PC: frase a la izquierda, correo a la derecha y una línea de enlaces y datos al pie ===
+   Si M19 agrega .pie__datos, va en grid-column 1 / -1, debajo de estas dos filas. */
 @media (min-width: 1024px) {
   .pie {
-    padding: 128px var(--margen) 48px;
+    padding: 112px var(--margen) 40px;
+    text-align: left;
+  }
+  .pie__interior {
+    max-width: calc(var(--ancho-max) - 2 * var(--margen));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    column-gap: 96px;
+    align-items: end;
+  }
+  .pie__nudo {
+    grid-column: 1;
+    margin: 0;
+  }
+  .pie__frase {
+    grid-column: 1;
+    margin: 28px 0 0;
+    font-size: clamp(2.25rem, 3.4vw, 3.25rem);
+    line-height: 1.1;
+  }
+  .pie__correo {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+  .pie__enlaces {
+    grid-column: 1;
+    justify-content: flex-start;
+    gap: 0 32px;
+    margin: 96px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(184, 148, 95, 0.35);
+  }
+  .pie__legal {
+    grid-column: 2;
+    margin: 96px 0 0 -96px;
+    padding: 20px 0 0 96px;
+    border-top: 1px solid rgba(184, 148, 95, 0.35);
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 
@@ -1147,6 +1192,24 @@ img[data-nimg="fill"] {
 .newsletter__gracias {
   margin: 0;
   font-size: 1.0625rem;
+  color: var(--marfil);
+}
+/* === M24 Correo sin salir del sitio ===
+   El «Gracias» ocupa el alto que tenía el formulario (lo pone NewsletterForm) y queda centrado en ese espacio. */
+.newsletter__gracias {
+  display: grid;
+  align-content: center;
+}
+.newsletter__gracias:focus {
+  outline: none;
+}
+.newsletter__boton:disabled {
+  cursor: progress;
+}
+.newsletter__error {
+  margin: 12px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
   color: var(--marfil);
 }
 
