@@ -25,6 +25,8 @@ from fotos_color import abrir_srgb, gradar_banco, guardar_jpg, por_franjas, quit
 RECORTES = {
     "fibers/yak/nomin-negro/_84A6395.jpg": (25, 75, 1974, 2999),  # 1949x2924
     "fibers/baby-camel/sernai-silk/_84A5995.jpg": (32, 88, 1640, 2500),  # 1608x2412
+    # M10 punto 5: portada de Bolomaa acercada 1,12 veces, centrada en x y con origen vertical al 95 %.
+    "fibers/baby-camel/bolomaa/_84A5651.jpg": (107, 304, 1893, 2983),  # 1786x2679
 }
 CIELO = {"fibers/yak/nomin-azul/playa-portada.jpg"}
 BANCO = ["origen/yak.jpg", "origen/cabras.jpg", "origen/camellos.jpg"]
