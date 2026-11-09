@@ -223,7 +223,8 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
           </nav>
 
           <Link href="/" className="encabezado__marca" aria-label="Nirün, ir al inicio">
-            <Image src="/logo-mark.png" alt="" width={32} height={21} sizes="32px" />
+            {/* M05: eager y no priority, para no sumar un preload que compita con la foto principal */}
+            <Image src="/logo-mark.png" alt="" width={32} height={21} sizes="32px" loading="eager" />
             <span className="wordmark">NIRÜN</span>
           </Link>
 
@@ -316,10 +317,17 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
               <WhatsAppIcon color="currentColor" size={20} />
               WhatsApp
             </TrackedLink>
-            <a href={INSTAGRAM_HREF} target="_blank" rel="noopener noreferrer" className="menu__instagram">
+            <TrackedLink
+              href={INSTAGRAM_HREF}
+              eventName="instagram_click"
+              eventData={{ location: "menu" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="menu__instagram"
+            >
               <InstagramIcon color="currentColor" size={20} />
               Instagram
-            </a>
+            </TrackedLink>
           </div>
         </div>
       )}
