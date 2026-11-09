@@ -88,6 +88,19 @@ main:focus {
   outline-color: var(--marfil);
 }
 
+/* === M34 Foco visible en el hero del celular y sin modo oscuro forzado === */
+/* El sitio es solo claro: el oscurecimiento automático de Chromium (WebView de Android, Instagram) no lo invierte */
+:root {
+  color-scheme: only light;
+}
+/* Bajo 1024 px (y en PC con zoom de 150 % o más) el hero es papel, no oscuro: el anillo vuelve a dorado */
+@media (max-width: 1023px) {
+  .hero.fondo-oscuro :focus-visible {
+    outline-color: var(--dorado-texto);
+  }
+}
+/* === fin M34 === */
+
 /* Las fotos con "fill" de next/image llenan su marco recortando */
 img[data-nimg="fill"] {
   object-fit: cover;
