@@ -291,7 +291,7 @@ img[data-nimg="fill"] {
 }
 @media (min-width: 1024px) {
   .cabecera {
-    margin-bottom: 72px;
+    margin-bottom: 56px; /* === M10 === la primera fila de la colección entra entera con «Colección» del menú */
   }
 }
 
@@ -778,8 +778,8 @@ img[data-nimg="fill"] {
   margin: 2px 0 0;
   font-family: var(--fuente-titulo);
   font-weight: 500;
-  font-size: 1.3rem;
-  line-height: 1.2;
+  font-size: 1.25rem; /* === M10 === */
+  line-height: 1.15;
 }
 .tarjeta__tipo {
   margin: 4px 0 10px;
@@ -788,7 +788,7 @@ img[data-nimg="fill"] {
   color: var(--tinta-suave);
 }
 .tarjeta__precios {
-  margin-top: auto; /* los precios de una fila quedan alineados abajo */
+  margin-top: 0; /* === M10 === el precio va pegado al tipo (10 px), sin flotar al fondo de la fila */
 }
 .precio__pieza {
   color: var(--gris);
@@ -798,15 +798,53 @@ img[data-nimg="fill"] {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0 8px;
+  gap: 0 6px; /* === M10 === */
   margin: 0;
 }
 .tarjeta__iva {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 0.8125rem; /* === M10 === «$980.000 IVA incluido» cabe en una línea a 360 px */
   font-weight: 400;
   line-height: 1.4;
+  letter-spacing: 0.01em;
   color: var(--gris);
+}
+
+/* === M10 Tarjetas: escala del nombre y del precio, piezas de Sernaí Silk y anclas === */
+.tarjeta .precio {
+  font-size: 0.9375rem;
+}
+/* Sernaí Silk: «Chaqueta $450.000» no se parte (tarjeta e índice de las fibras) */
+.precio__parte {
+  white-space: nowrap;
+}
+/* En el índice, si las dos piezas no caben en una línea, el precio sigue alineado a la derecha */
+.indice__precio {
+  text-align: right;
+}
+@media (min-width: 1024px) {
+  .tarjeta__nombre {
+    font-size: 1.5rem;
+  }
+}
+/* «Colección» del menú y la vuelta desde la ficha (/#slug) dejan la fila a la vista, con precios */
+@media (max-width: 1023px) {
+  #coleccion {
+    scroll-margin-top: var(--alto-encabezado);
+  }
+  .grilla-prendas > div {
+    scroll-margin-top: calc(var(--alto-encabezado) + 16px);
+  }
+}
+@media (min-width: 1024px) {
+  #coleccion,
+  #fibras,
+  #showroom {
+    scroll-margin-top: calc(48px - var(--entre-secciones));
+  }
+  .grilla-prendas > div {
+    scroll-margin-top: 16px;
+  }
 }
 
 /* ---------- Origen ---------- */
