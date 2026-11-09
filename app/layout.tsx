@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import Aparicion from "./Aparicion";
+import { IMAGEN_GENERAL } from "./compartir";
 import "./globals.css";
 
 // Títulos y wordmark: Cormorant Garamond. Texto, etiquetas, precios y botones: Instrument Sans.
@@ -32,18 +33,15 @@ const instrument = localFont({
   adjustFontFallback: "Arial",
 });
 
-// Imagen para compartir el link (1200x630, ~150 KB): WhatsApp e Instagram descartan imágenes muy pesadas.
-const OG_IMAGE = {
-  url: "/og/nirun-og.jpg",
-  width: 1200,
-  height: 630,
-  alt: "Abrigo cruzado Nirün en lana y yak, detalle del tejido",
-  type: "image/jpeg",
-};
+// Imagen para compartir el sitio (1200x630, ~150 KB): ver app/compartir.ts.
+// public/og/nirun-og.jpg (la anterior) se queda en public para no romper las vistas previas ya compartidas.
+const OG_IMAGE = IMAGEN_GENERAL;
 
 export const viewport: Viewport = {
   themeColor: "#faf8f4",
   viewportFit: "cover", // para que env(safe-area-inset-bottom) funcione en la barra fija
+  // M34: el sitio es solo claro; así el modo oscuro forzado de Android no invierte los colores.
+  colorScheme: "only light",
 };
 
 // Datos estructurados para Google: marca, sitio y showroom (sin calle exacta: no inventar datos).
@@ -55,6 +53,8 @@ const jsonLd = {
       "@type": "Organization",
       "@id": `${SITE}/#organization`,
       name: "Nirün",
+      // Sin diéresis también, para que Google no confunda la marca al autocompletar.
+      alternateName: ["Nirun", "nirun.cl"],
       url: SITE,
       logo: `${SITE}/logo.png`,
       description:
@@ -72,6 +72,7 @@ const jsonLd = {
       "@id": `${SITE}/#website`,
       url: SITE,
       name: "Nirün",
+      alternateName: ["Nirun", "nirun.cl"],
       inLanguage: "es-CL",
       publisher: { "@id": `${SITE}/#organization` },
     },
@@ -80,7 +81,7 @@ const jsonLd = {
       "@id": `${SITE}/#showroom`,
       name: "Nirün en el showroom de Landa Brands",
       url: SITE,
-      image: `${SITE}/og/nirun-og.jpg`,
+      image: `${SITE}${IMAGEN_GENERAL.url}`,
       description:
         "Prendas de cashmere, yak y baby camel de Mongolia para probar en persona en el showroom de Landa Brands, en Vitacura. Solo con cita.",
       telephone: "+56990911592",
@@ -111,7 +112,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.nirun.cl"),
   title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia en Santiago",
   description:
-    "Prendas de lujo en baby camel, cashmere, yak y seda de Mongolia. Showroom con cita en Vitacura, Santiago.",
+    "Abrigos y prendas de lujo en yak, cashmere y baby camel de Mongolia. Pruébatelos con cita en el showroom de Landa Brands, en Vitacura, Santiago.",
   keywords: [
     "cashmere Chile",
     "baby camel",
@@ -120,19 +121,17 @@ export const metadata: Metadata = {
     "showroom Vitacura",
     "Nirün",
   ],
-  alternates: {
-    canonical: "/",
-  },
+  // Sin canonical aquí: cada página declara el suyo (el inicio en app/page.tsx, las fichas en su generateMetadata).
+  // Si estuviera aquí, una página nueva heredaría el canonical del inicio y quedaría fuera de Google.
+  // Sin index/follow: es lo que Google hace por defecto, y así la 404 no queda con dos meta robots que se contradicen.
   robots: {
-    index: true,
-    follow: true,
     googleBot: { "max-image-preview": "large" },
   },
+  // Sin url en openGraph, por la misma razón que el canonical: las páginas nuevas no deben heredar la del inicio.
   openGraph: {
     title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",
     description:
-      "Prendas de lujo elaboradas con fibras naturales de Mongolia. Showroom en Vitacura, Santiago.",
-    url: "/",
+      "Abrigos y prendas en yak, cashmere y baby camel, fibras nobles de Mongolia. Pruébatelos con cita en Vitacura.",
     siteName: "Nirün",
     images: [OG_IMAGE],
     locale: "es_CL",
@@ -142,7 +141,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",
     description:
-      "Prendas de lujo elaboradas con fibras naturales de Mongolia. Showroom en Vitacura, Santiago.",
+      "Abrigos y prendas en yak, cashmere y baby camel, fibras nobles de Mongolia. Pruébatelos con cita en Vitacura.",
     images: [OG_IMAGE],
   },
 };
