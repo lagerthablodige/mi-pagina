@@ -4,10 +4,10 @@
 # Uso: python parchear_acentos.py ORIGINAL_DE_GOOGLE.woff2 salida.woff2
 #
 # IMPORTANTE: la entrada tiene que ser SIEMPRE el archivo ORIGINAL de Google Fonts, nunca el del sitio (que ya está
-# parchado). Hay una copia del original en
-#   C:\Users\benja\AppData\Local\Temp\claude\a7c387a5253f4ffc\682f0e3e-8e19-47bd-a81d-621cbb8626d2\scratchpad\rework\revision-diseno\fuente\cg-var-google.woff2
-# (SHA-256 d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235). El script revisa la é antes de tocar nada
-# y se detiene si el acento ya parece corrido.
+# parchado). El original está guardado junto a este script, en
+#   original-google/cg-var-google.woff2
+# (SHA-256 d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235). Si se perdiera, LEEME.txt explica cómo
+# volver a bajarlo. El script revisa la é antes de tocar nada y se detiene si el acento ya parece corrido.
 #
 # Corrimientos en unidades de la fuente (1000 por eme), medidos contra la letra base y contra Georgia, Garamond y
 # Book Antiqua: la á del original ya está bien (0); é, í, ó y ú quedaban corridas a la derecha.

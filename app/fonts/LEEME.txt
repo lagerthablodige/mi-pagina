@@ -25,8 +25,18 @@ la de arriba.
 
 Cómo repetirlo
 1. Partir SIEMPRE del archivo original de Google Fonts, nunca del que está en esta carpeta (ya está parchado).
-   Hay una copia del original en
-   C:\Users\benja\AppData\Local\Temp\claude\a7c387a5253f4ffc\682f0e3e-8e19-47bd-a81d-621cbb8626d2\scratchpad\rework\revision-diseno\fuente\cg-var-google.woff2
-   (SHA-256 d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235).
-2. python parchear_acentos.py cg-var-google.woff2 cormorant-garamond-latin.woff2
+   El original queda guardado en el repositorio, en original-google/cg-var-google.woff2
+   (SHA-256 d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235). El sitio no lo carga; está solo
+   para repetir el parche.
+   Si esa copia se perdiera, hay que volver a bajar Cormorant Garamond variable, subset latin, desde Google Fonts.
+   El 2026-11-08 se bajó de
+   https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2
+   Si ese enlace ya no responde, abrir https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300..700
+   en Chrome y tomar el woff2 del bloque marcado /* latin */. Después comparar su SHA-256 con el de arriba.
+   Si Google publicó otra versión, el script avisa que el SHA cambió. En ese caso conviene volver a medir los
+   acentos antes de dar el resultado por bueno.
+2. Desde esta carpeta:
+   python parchear_acentos.py original-google/cg-var-google.woff2 cormorant-garamond-latin.woff2
 El script revisa la é antes de empezar y se detiene si el acento ya está corrido, para que nunca se aplique dos veces.
+Comprobado el 2026-11-09: partiendo de original-google/ el resultado trae exactamente los mismos glifos que el archivo
+del sitio. Solo cambia la tabla head, que guarda la fecha de creación, así que el SHA del resultado no se repite.
