@@ -14,6 +14,7 @@ export default function NewsletterForm() {
   const formulario = useRef<HTMLFormElement>(null);
   const redirect = useRef<HTMLInputElement>(null);
   const gracias = useRef<HTMLParagraphElement>(null);
+  const campo = useRef<HTMLInputElement>(null);
   // Alto del formulario al cambiar al «Gracias»: el mensaje ocupa lo mismo y el pie no salta (CLS).
   const [alto, setAlto] = useState<number>();
 
@@ -38,6 +39,13 @@ export default function NewsletterForm() {
     gracias.current?.focus({ preventScroll: true });
   }, [estado]);
 
+  // Si falla, el foco vuelve al campo (el botón enfocado estaba deshabilitado y el foco caía en <body>).
+  // El mensaje se anuncia igual (role="alert").
+  function mostrarError() {
+    setEstado("error");
+    requestAnimationFrame(() => campo.current?.focus({ preventScroll: true }));
+  }
+
   async function enviar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (estado === "enviando") return;
@@ -58,10 +66,10 @@ export default function NewsletterForm() {
         setEstado("ok");
         medirPaso("newsletter_enviado", { pagina: paginaDe(location.pathname).pagina }); // nunca el correo
       } else {
-        setEstado("error");
+        mostrarError();
       }
     } catch {
-      setEstado("error");
+      mostrarError();
     }
   }
 
@@ -91,6 +99,7 @@ export default function NewsletterForm() {
         {/* Campo anti-bots de Web3Forms: una persona nunca lo ve ni lo marca. */}
         <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" style={{ display: "none" }} />
         <input
+          ref={campo}
           type="email"
           name="email"
           required

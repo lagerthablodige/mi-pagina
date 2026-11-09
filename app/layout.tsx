@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import Aparicion from "./Aparicion";
 import EtiquetasClarity from "./EtiquetasClarity";
-import { IMAGEN_GENERAL } from "./compartir";
+import { IMAGEN_GENERAL, OPEN_GRAPH_GENERAL } from "./compartir";
 import "./globals.css";
 
 // Títulos y wordmark: Cormorant Garamond. Texto, etiquetas, precios y botones: Instrument Sans.
@@ -129,15 +129,8 @@ export const metadata: Metadata = {
     googleBot: { "max-image-preview": "large" },
   },
   // Sin url en openGraph, por la misma razón que el canonical: las páginas nuevas no deben heredar la del inicio.
-  openGraph: {
-    title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",
-    description:
-      "Abrigos y prendas en yak, cashmere y baby camel, fibras nobles de Mongolia. Pruébatelos con cita en Vitacura.",
-    siteName: "Nirün",
-    images: [OG_IMAGE],
-    locale: "es_CL",
-    type: "website",
-  },
+  // El inicio declara la suya en app/page.tsx (con el mismo OPEN_GRAPH_GENERAL de app/compartir.ts).
+  openGraph: OPEN_GRAPH_GENERAL,
   twitter: {
     card: "summary_large_image",
     title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",

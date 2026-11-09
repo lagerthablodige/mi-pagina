@@ -29,7 +29,7 @@ export default function TarjetaPrenda({ producto, prioridad = false }: Props) {
       <p className="tarjeta__tipo">{tipoTarjetaDe(producto)}</p>
       <div className="tarjeta__precios">
         {/* Una sola línea de precio para todas. Sernaí Silk muestra sus dos piezas (sin "Desde": la foto es el conjunto). */}
-        <p className="tarjeta__linea-precio">
+        <p className={`tarjeta__linea-precio${producto.piezas.length > 1 ? " tarjeta__linea-precio--piezas" : ""}`}>
           <span className="precio">
             <PrecioPiezas producto={producto} />
           </span>

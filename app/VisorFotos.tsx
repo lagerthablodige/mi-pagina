@@ -214,11 +214,30 @@ export default function VisorFotos({ fotos, inicio, onClose }: Props) {
     return () => el.removeEventListener("wheel", alGirar);
   }, [ir]);
 
-  // iPhone: pellizcar no amplía la página; un pellizco hacia afuera acerca y hacia adentro aleja.
+  // Pellizcar no amplía la página; un pellizco hacia afuera acerca y hacia adentro aleja. iPhone avisa con gesture*;
+  // Android solo con touch* (dos dedos). En iPhone llegan los dos: `usado` hace que cada pellizco cuente una sola vez.
   useEffect(() => {
     const raiz = dialogo.current;
     if (!raiz) return;
     let usado = false;
+    let d0 = 0;
+    const distancia = (t: TouchList) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    const alTocar = (e: TouchEvent) => {
+      if (e.touches.length !== 2) return;
+      d0 = distancia(e.touches);
+      usado = false;
+    };
+    const alMoverDedos = (e: TouchEvent) => {
+      if (e.touches.length !== 2 || d0 <= 0 || usado) return;
+      const k = distancia(e.touches) / d0;
+      if (k > 1.15 && !zoomRef.current) {
+        usado = true;
+        acercar({ x: 0.5, y: 0.5 });
+      } else if (k < 0.85 && zoomRef.current) {
+        usado = true;
+        setZoom(false);
+      }
+    };
     const alEmpezar = (e: Event) => {
       e.preventDefault();
       usado = false;
@@ -235,9 +254,13 @@ export default function VisorFotos({ fotos, inicio, onClose }: Props) {
         setZoom(false);
       }
     };
+    raiz.addEventListener("touchstart", alTocar, { passive: true });
+    raiz.addEventListener("touchmove", alMoverDedos, { passive: true });
     raiz.addEventListener("gesturestart", alEmpezar);
     raiz.addEventListener("gesturechange", alCambiar);
     return () => {
+      raiz.removeEventListener("touchstart", alTocar);
+      raiz.removeEventListener("touchmove", alMoverDedos);
       raiz.removeEventListener("gesturestart", alEmpezar);
       raiz.removeEventListener("gesturechange", alCambiar);
     };
@@ -280,8 +303,7 @@ export default function VisorFotos({ fotos, inicio, onClose }: Props) {
                   type="button"
                   className="visor__boton"
                   tabIndex={esta ? 0 : -1}
-                  aria-pressed={acercada}
-                  aria-label={acercada ? "Alejar la foto" : "Acercar la foto"}
+                  aria-label={`${acercada ? "Alejar" : "Acercar"} la foto: ${foto.alt}`}
                   onClick={alternar}
                   style={acercada ? { width: escala, height: escala } : undefined}
                 >

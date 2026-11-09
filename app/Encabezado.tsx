@@ -51,6 +51,8 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
   const panel = useRef<HTMLDivElement>(null);
   const estabaAbierto = useRef(false);
   const saltando = useRef(0);
+  // Si la sección de destino reserva lugar para el encabezado (scroll-margin), tras el salto el encabezado se ve.
+  const mostrarTrasSalto = useRef(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -67,7 +69,7 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
       // === M09 === Justo después de saltar a una sección, el encabezado del celular queda escondido aunque el salto
       // haya sido hacia arriba: así no tapa el título de la sección.
       if (Date.now() - saltando.current < PAUSA_TRAS_SALTO_MS) {
-        setEscondido(window.innerWidth < 1024 && y >= 80);
+        setEscondido(window.innerWidth < 1024 && y >= 80 && !mostrarTrasSalto.current);
         anterior = y;
         return;
       }
@@ -137,6 +139,11 @@ export default function Encabezado({ volver, whatsappHref = WHATSAPP_HREF }: Pro
   // y el lector de pantalla siguen desde ahí.
   const saltarA = (destino: HTMLElement, suave: boolean) => {
     saltando.current = Date.now();
+    // #coleccion reserva en el celular el alto del encabezado: si el encabezado se escondiera, quedaría una franja
+    // con los botones del hero cortados. Las secciones sin reserva siguen con el encabezado escondido.
+    const reserva = parseFloat(getComputedStyle(destino).scrollMarginTop) > 0;
+    mostrarTrasSalto.current = reserva;
+    if (reserva) setEscondido(false);
     if (suave) {
       destino.scrollIntoView({ behavior: pideMenosMovimiento() ? "auto" : "smooth", block: "start" });
     } else {

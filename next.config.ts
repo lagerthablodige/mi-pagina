@@ -54,11 +54,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async rewrites() {
-    // iOS y algunos lectores piden /apple-touch-icon.png directo (hoy da 404). Se sirve el mismo ícono de app/apple-icon.png.
+  // /apple-touch-icon.png y /apple-touch-icon-precomposed.png (los pide iOS directo) son copias de app/apple-icon.png
+  // en public, con la caché normal: con un rewrite heredaban la caché «immutable» de 1 año en una URL sin hash.
+  // Si cambia app/apple-icon.png, copiarlo también a public (ver docs/COMO-EDITAR-PRENDAS.md).
+  async redirects() {
+    // Las carpetas de fotos se renombraron (M21): los enlaces viejos y Google Imágenes llegan a la foto nueva.
     return [
-      { source: "/apple-touch-icon.png", destination: "/apple-icon.png" },
-      { source: "/apple-touch-icon-precomposed.png", destination: "/apple-icon.png" },
+      { source: "/fibers/:ruta*", destination: "/fibras/:ruta*", permanent: true },
+      { source: "/hero/:ruta*", destination: "/portada/:ruta*", permanent: true },
     ];
   },
 };

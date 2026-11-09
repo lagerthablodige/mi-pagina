@@ -152,9 +152,9 @@ Estos datos no son obligatorios. Si no están, el sitio usa uno automático.
 | `tituloSeo` | Título en Google | Nombre y fibra |
 | `imagenCompartir` | Imagen al compartir por WhatsApp | `/og/prenda/<slug>.jpg`, o la imagen general |
 | `alts` | Texto que describe cada foto | «Nombre, foto 1 de 4» |
-| `descripcion` | Dos o tres líneas sobre la prenda | No aparece |
-| `calce` | Estatura y talla de la modelo | No aparece |
-| `largo`, `hechoEn`, `cuidado` | Datos de la etiqueta | No aparecen |
+| `descripcion` | Dos o tres líneas sobre la prenda | Todavía no se muestra en la ficha |
+| `calce` | Estatura y talla de la modelo | Todavía no se muestra en la ficha |
+| `largo`, `hechoEn`, `cuidado` | Datos de la etiqueta | Todavía no se muestra en la ficha |
 
 Regla de oro: **escribe solo datos reales**. Si no estás seguro de un dato, déjalo afuera.
 
@@ -172,6 +172,8 @@ Regla: **foto nueva = nombre de archivo nuevo**.
 4. Si la prenda tiene `alts` en `app/products.ts`, cambia ahí también el nombre del archivo.
 
 Las fotos grandes del inicio (`public/portada/`) siguen la misma regla. Su nombre está en `app/page.tsx` y en `app/sitemap.ts`: cámbialo en los dos.
+
+Si cambias el ícono `app/apple-icon.png`, cópialo también a `public/apple-touch-icon.png` y a `public/apple-touch-icon-precomposed.png`. El iPhone pide esos dos archivos directo.
 
 Por qué: los teléfonos y Vercel guardan las fotos en la memoria (la caché) hasta 30 días.
 Si el nombre no cambia, una clienta puede seguir viendo la foto vieja.

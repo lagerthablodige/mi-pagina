@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { imagenCompartirDe, tituloSeoDe, type Producto } from "./products";
 
 // Imágenes para compartir un enlace (WhatsApp, Instagram, iMessage): 1200x630 y livianas,
@@ -12,6 +13,18 @@ export const IMAGEN_GENERAL = {
   alt: "Tres looks de Nirün en yak y cashmere",
   type: "image/jpeg",
 };
+
+// openGraph general del sitio, SIN url: el layout lo usa tal cual (así una página nueva no hereda la url del inicio)
+// y el inicio le suma la suya. Next reemplaza openGraph entero, por eso el inicio repite todo con ...OPEN_GRAPH_GENERAL.
+export const OPEN_GRAPH_GENERAL = {
+  title: "Nirün | Cashmere, Yak y Baby Camel de Mongolia",
+  description:
+    "Abrigos y prendas en yak, cashmere y baby camel, fibras nobles de Mongolia. Pruébatelos con cita en Vitacura.",
+  siteName: "Nirün",
+  images: [IMAGEN_GENERAL],
+  locale: "es_CL",
+  type: "website",
+} satisfies Metadata["openGraph"];
 
 // Imágenes de public/og que existían al construir el sitio. La lista la arma next.config.ts (no se lee el disco aquí).
 const EXISTENTES = new Set((process.env.NIRUN_IMAGENES_OG ?? "").split(",").filter(Boolean));

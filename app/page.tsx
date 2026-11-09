@@ -8,14 +8,16 @@ import PrecioPiezas from "./PrecioPiezas";
 import TarjetaPrenda from "./TarjetaPrenda";
 import TrackedLink from "./TrackedLink";
 import ZoomableImage from "./ZoomableImage";
+import { OPEN_GRAPH_GENERAL } from "./compartir";
 import { fibers } from "./fibersData";
 import { CALENDLY_HREF, INSTAGRAM_LANDA_HREF, WHATSAPP_HREF } from "./links";
 import { articuloDe, fibraDe, nombreFibra, prendasDeFibra, productoPorSlug, productosEnOrden } from "./products";
 
 // El canonical va en cada página (el layout no lo hereda): así una página nueva no apunta al inicio por error.
-// Sin openGraph aquí, para no reemplazar el del layout.
+// openGraph completo (Next lo reemplaza entero) más la url del inicio, que el layout no lleva.
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
+  openGraph: { ...OPEN_GRAPH_GENERAL, url: "/" },
 };
 
 // Foto de ambiente de cada fibra (Pexels/Unsplash, ver docs/LICENCIAS-FOTOS.md). Solo ambiente: no son fotos de Nirün.
@@ -70,7 +72,7 @@ export default function Home() {
             <div className="hero__foto hero__foto--lateral">
               <Image
                 src="/portada/cardigan.jpg"
-                alt="Modelo con un cárdigan largo blanco y un bolso beige, de pie en una esquina de muros claros"
+                alt="Modelo con una prenda larga tejida, blanca, y un bolso beige, de pie en una esquina de muros claros"
                 fill
                 sizes="44vw"
                 quality={70}
@@ -177,10 +179,10 @@ export default function Home() {
                 Detrás de cada prenda hay manos expertas, principalmente mujeres, cuyo trabajo no solo da forma a la
                 fibra, sino que sostiene comunidades y tradiciones.
               </p>
-              <p className="origen__frase-texto origen__remate">Una suavidad que no se impone, se percibe.</p>
+              <p className="origen__frase-texto origen__remate">Una suavidad que no&nbsp;se&nbsp;impone, se&nbsp;percibe.</p>
               <p className="origen__cursiva">
-                En mongol antiguo, Nirün significa «linaje puro» o «de sangre noble». Así se conocía a la aristocracia
-                mongola.
+                En mongol antiguo, Nirün significa «linaje&nbsp;puro» o «de&nbsp;sangre&nbsp;noble». Así se conocía
+                a&nbsp;la aristocracia mongola.
               </p>
             </div>
           </div>
