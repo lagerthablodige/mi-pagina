@@ -52,6 +52,10 @@ function Dato({ etiqueta, children }: { etiqueta: string; children: React.ReactN
   );
 }
 
+// Si el dueño borra todas las tallas de una pieza (se vendieron), la ficha no muestra un selector vacío ni inventa stock:
+// la fila "Talla" invita a consultar, y el mensaje de WhatsApp ya pregunta qué tallas tienen.
+const SIN_TALLAS = "Consultar disponibilidad por WhatsApp";
+
 function Precio({ pieza }: { pieza: Pieza }) {
   return (
     <p className="ficha__precio">
@@ -94,7 +98,9 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
                   </Link>
                 )}
               </Dato>
-              {producto.piezas[0].tallas.length === 1 && <Dato etiqueta="Talla">{producto.piezas[0].tallas[0]}</Dato>}
+              {producto.piezas[0].tallas.length <= 1 && (
+                <Dato etiqueta="Talla">{producto.piezas[0].tallas[0] ?? SIN_TALLAS}</Dato>
+              )}
             </dl>
             {producto.piezas[0].tallas.length > 1 && (
               <SelectorTalla
@@ -122,7 +128,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
                   <SelectorTalla grupo={`talla-${i}`} tallas={pieza.tallas} valor={tallas[pieza.nombre]} alElegir={elegir(pieza)} />
                 ) : (
                   <dl className="datos">
-                    <Dato etiqueta="Talla">{pieza.tallas[0]}</Dato>
+                    <Dato etiqueta="Talla">{pieza.tallas[0] ?? SIN_TALLAS}</Dato>
                   </dl>
                 )}
               </section>
