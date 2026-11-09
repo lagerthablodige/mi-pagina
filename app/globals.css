@@ -1596,6 +1596,38 @@ section[tabindex="-1"]:focus {
   }
 }
 
+/* === M14 Botones que no se cortan (zoom de pantalla del iPhone, letra grande de Android, 320 px) ===
+   Si el texto no cabe, baja a una segunda línea en vez de salirse de la caja o de la pantalla.
+   Con el ancho y la letra normales todo sigue en una línea: a 390 px no cambia nada a la vista. */
+.boton {
+  white-space: normal;
+  text-wrap: balance;
+  padding-block: 10px;
+}
+/* Hero del celular: si los dos botones no caben lado a lado, WhatsApp pasa a la línea de abajo */
+.hero__botones {
+  flex-wrap: wrap;
+}
+.barra-fija__agenda {
+  flex: 1 1 0;
+}
+/* El botón chico del encabezado de PC, con el mismo espaciado que los enlaces de al lado */
+.boton--chico {
+  letter-spacing: 0.18em;
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .boton--chico {
+    letter-spacing: 0.14em;
+  }
+}
+/* A 360 px el texto largo de la ficha invadía el relleno: con 8 px sigue en una línea */
+@media (max-width: 380px) {
+  .ficha__botones .boton {
+    padding-inline: 8px;
+  }
+}
+/* === fin M14 === */
+
 /* ---------- Pantallas muy angostas ---------- */
 
 @media (max-width: 380px) {
