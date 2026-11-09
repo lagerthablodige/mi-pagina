@@ -4,10 +4,10 @@ import Encabezado from "./Encabezado";
 import TrackedLink from "./TrackedLink";
 import { WHATSAPP_HREF } from "./links";
 
-// M38: la 404 con su propio título, fuera de Google (pero sus enlaces se siguen) y sin el canonical del inicio.
+// M38: la 404 con su propio título y sin el canonical del inicio. Sin robots aquí: Next ya agrega
+// <meta name="robots" content="noindex"> a toda respuesta 404, y así queda uno solo.
 export const metadata: Metadata = {
   title: "Página no encontrada | Nirün",
-  robots: { index: false, follow: true },
   alternates: { canonical: null },
 };
 

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import TrackedLink from "./TrackedLink";
 import { CALENDLY_HREF } from "./links";
-import { WhatsAppIcon } from "./Iconos";
 
 type Props = {
   // Inicio y ficha usan la misma barra; solo cambian los bloques que, si se ven, la esconden.
@@ -109,7 +108,6 @@ export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicaci
         rel="noopener noreferrer"
         className="boton boton--contorno barra-fija__whatsapp"
       >
-        <WhatsAppIcon color="currentColor" size={20} />
         WhatsApp
       </TrackedLink>
     </div>

@@ -988,7 +988,7 @@ section[tabindex="-1"]:focus {
   color: var(--marfil);
 }
 .origen__img {
-  object-position: 80% 50%; /* en el celular la ger queda a la vista */
+  object-position: 50% 50%; /* M36: en el celular va el recorte vertical, con la ger ya centrada */
 }
 .origen__pie {
   position: absolute;
@@ -1086,10 +1086,6 @@ section[tabindex="-1"]:focus {
   aspect-ratio: 3 / 2;
   background: var(--fondo-foto);
   overflow: hidden;
-}
-/* Las fotos de banco se acercan a la paleta del sitio */
-.capitulo__marco img {
-  filter: saturate(0.72) contrast(0.96);
 }
 .capitulo__texto {
   grid-area: texto;
@@ -1472,10 +1468,6 @@ section[tabindex="-1"]:focus {
 }
 .barra-fija__whatsapp {
   flex: 0 0 auto;
-}
-/* === M03 base (ola0): el resumen de la ficha queda oculto hasta que global-barra le da su fila y la clase barra-fija--con-resumen === */
-.barra-fija__resumen {
-  display: none;
 }
 @media (min-width: 1024px) {
   .barra-fija {

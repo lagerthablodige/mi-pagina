@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import BarraFija from "./BarraFija";
 import Encabezado from "./Encabezado";
@@ -43,6 +43,21 @@ const COLLAGE = [
   { src: "/fibers/collage/sernai_silk_detail.jpg", alt: "Chaqueta Sernaí de cerca, con cuello chal y botones perlados", pos: "35% center" },
   { src: "/fibers/collage/nomin_negro_detail.jpg", alt: "Detalle del abrigo Nomín negro en yak, con el cinturón", pos: "55% center" },
 ];
+
+// M36: la ger del Origen. En PC, la foto entera; en el celular, el recorte vertical (ger-amanecer-movil.jpg, M26),
+// para no descargar la foto de 2400 px. Las dos con calidad 75.
+function FotoGer() {
+  const comun = { alt: "Una ger solitaria en la estepa de Mongolia, bajo nubes rosadas al amanecer", fill: true, quality: 75 };
+  const { props: pc } = getImageProps({ ...comun, src: "/origen/ger-amanecer.jpg", sizes: "100vw" });
+  const { props: movil } = getImageProps({ ...comun, src: "/origen/ger-amanecer-movil.jpg", sizes: "125vw" });
+  return (
+    <picture>
+      <source media="(min-width: 1024px)" srcSet={pc.srcSet} sizes="100vw" />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- el alt viene en movil (getImageProps) */}
+      <img {...movil} className="origen__img" />
+    </picture>
+  );
+}
 
 export default function Home() {
   return (
@@ -144,14 +159,7 @@ export default function Home() {
         {/* 3. Origen: el momento de impacto (la foto va limpia; la frase, debajo) */}
         <section id="origen" aria-labelledby="titulo-origen">
           <figure className="origen__foto fondo-oscuro">
-            <Image
-              src="/origen/ger-amanecer.jpg"
-              alt="Una ger solitaria en la estepa de Mongolia, bajo nubes rosadas al amanecer"
-              fill
-              sizes="(min-width: 1024px) 100vw, 250vw"
-              quality={75}
-              className="origen__img"
-            />
+            <FotoGer />
             <figcaption className="origen__pie">Mongolia</figcaption>
           </figure>
           <div className="seccion seccion--crema">

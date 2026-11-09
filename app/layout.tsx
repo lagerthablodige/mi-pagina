@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import Aparicion from "./Aparicion";
+import EtiquetasClarity from "./EtiquetasClarity";
 import { IMAGEN_GENERAL } from "./compartir";
 import "./globals.css";
 
@@ -17,7 +18,7 @@ const cormorant = localFont({
   adjustFontFallback: "Times New Roman",
 });
 
-// La cursiva solo se usa en una frase del Origen: no se precarga.
+// La cursiva se usa en el Origen y en «Sobre el …» de cada ficha (M28): no se precarga.
 const cormorantCursiva = localFont({
   src: [{ path: "./fonts/cormorant-garamond-italic-latin.woff2", weight: "400", style: "italic" }],
   variable: "--font-cormorant-cursiva",
@@ -160,6 +161,7 @@ export default function RootLayout({
         />
         {children}
         <Aparicion />
+        <EtiquetasClarity />
         <Analytics />
         <Script id="clarity-script" strategy="afterInteractive">
           {`

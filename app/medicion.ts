@@ -24,7 +24,7 @@ export function clarity(...args: unknown[]) {
 }
 
 // Fibra de cada prenda, solo para las etiquetas de Clarity (clave de fibersData).
-// Si una prenda nueva no está aquí, se mide igual, con fibra "-".
+// Una prenda que no esté aquí se mide como 404: agrégala siempre al sumar una prenda.
 const FIBRA: Record<string, string> = {
   khulan: "yak",
   "nomin-negro": "yak",
@@ -42,7 +42,8 @@ export type Pagina = { pagina: "inicio" | "ficha" | "404"; prenda: string; fibra
 export function paginaDe(ruta: string | null): Pagina {
   if (ruta === "/") return { pagina: "inicio", prenda: "-", fibra: "-" };
   const m = ruta?.match(/^\/prenda\/([a-z0-9-]+)\/?$/);
-  if (m) return { pagina: "ficha", prenda: m[1], fibra: FIBRA[m[1]] ?? "-" };
+  const fibra = m ? FIBRA[m[1]] : undefined;
+  if (m && typeof fibra === "string") return { pagina: "ficha", prenda: m[1], fibra };
   return { pagina: "404", prenda: "-", fibra: "-" };
 }
 

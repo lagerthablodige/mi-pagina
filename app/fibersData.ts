@@ -5,7 +5,7 @@ export type Fiber = {
   anchor: string;
   // Texto corto de la fibra: sale del documento "Descripción Fibras Nirün" (sin datos nuevos).
   intro: string;
-  // Carácter de la fibra, con las palabras del dueño en el mismo documento. Opcional: hoy no se muestra.
+  // Carácter de la fibra, con las palabras del dueño en el mismo documento. Se muestra en el inicio (M27) y en la ficha (M28).
   caracter?: string;
   images: FiberImage[];
 };

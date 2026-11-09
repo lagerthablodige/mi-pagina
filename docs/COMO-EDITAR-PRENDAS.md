@@ -158,7 +158,7 @@ Estos datos no son obligatorios. Si no están, el sitio usa uno automático.
 
 Regla de oro: **escribe solo datos reales**. Si no estás seguro de un dato, déjalo afuera.
 
-Opcional, para las mediciones: en `app/medicion.ts` está la lista `FIBRA`. Puedes agregar ahí el `slug` nuevo con su fibra.
+Obligatorio al agregar una prenda: en `app/medicion.ts` está la lista `FIBRA`. Agrega ahí el `slug` nuevo con su fibra. Si falta, las visitas a esa prenda se miden como página 404.
 
 ---
 
