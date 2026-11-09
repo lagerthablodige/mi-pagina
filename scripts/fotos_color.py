@@ -13,7 +13,7 @@ import io
 import struct
 
 import numpy as np
-from PIL import Image, ImageCms
+from PIL import Image, ImageCms, ImageOps
 
 
 def _perfil_srgb():
@@ -80,10 +80,12 @@ def es_srgb(icc):
 
 
 def abrir_srgb(ruta):
-    """Abre una foto y la devuelve en RGB con valores sRGB. Si trae perfil (Adobe RGB, P3...), la convierte."""
+    """Abre una foto y la devuelve en RGB con valores sRGB. Si trae perfil (Adobe RGB, P3...), la convierte.
+    Tambien la endereza segun su orientacion EXIF (fotos de camara o celular): guardar_jpg no guarda el EXIF,
+    asi que el giro tiene que quedar en los pixeles."""
     im = Image.open(ruta)
-    icc = im.info.get("icc_profile")
-    im = im.convert("RGB")
+    icc = im.info.get("icc_profile")  # antes de enderezar: exif_transpose devuelve una copia
+    im = ImageOps.exif_transpose(im).convert("RGB")
     if icc and not es_srgb(icc):
         im = ImageCms.profileToProfile(
             im, ImageCms.ImageCmsProfile(io.BytesIO(icc)), ImageCms.createProfile("sRGB"), outputMode="RGB"

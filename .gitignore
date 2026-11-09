@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# fotos de Instagram: no van en el sitio
+/public/instagram/
+/public/nirun-instagram.jpg
