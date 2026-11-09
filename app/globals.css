@@ -1002,6 +1002,12 @@ section[tabindex="-1"]:focus {
 .tarjeta__linea-precio--piezas .tarjeta__iva {
   flex-basis: 100%;
 }
+/* 320 px (zoom de pantalla del iPhone): «Chaqueta $450.000» se salía 5 px de la tarjeta */
+@media (max-width: 359px) {
+  .tarjeta .precio {
+    font-size: 0.875rem;
+  }
+}
 @media (max-width: 1279px) {
   .tarjeta .precio__parte,
   .indice__precio .precio__parte {
