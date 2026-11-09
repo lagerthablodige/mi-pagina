@@ -99,7 +99,7 @@ const jsonLd = {
         name: "Agenda tu visita al showroom",
         target: {
           "@type": "EntryPoint",
-          urlTemplate: "https://calendly.com/ventas-landabrands/visita-al-showroom-de-landa-brands-cl",
+          urlTemplate: "https://calendly.com/ventas-landabrands/agendar-visita",
           actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"],
         },
       },
