@@ -4,15 +4,16 @@ import Link from "next/link";
 import { useState } from "react";
 import BarraFija from "./BarraFija";
 import TrackedLink from "./TrackedLink";
-import { WhatsAppIcon } from "./Iconos";
 import { CALENDLY_HREF, whatsappConMensaje } from "./links";
-import { mensajeWhatsApp, precioCLP, type Pieza, type Producto } from "./products";
+import { medirPaso } from "./medicion";
+import { mensajeWhatsApp, precioCLP, precioEnLinea, type Pieza, type Producto } from "./products";
 
 type Props = {
   producto: Producto;
   fibraLabel: string; // "YAK"
   fibraNombre: string; // "Yak"
   fibraIntro: string;
+  fibraCaracter?: string; // "El lujo funcional": palabras del dueño (fibersData)
 };
 
 // Selector de talla con botones tipo radio (se maneja con teclado y lo lee el lector de pantalla).
@@ -51,6 +52,10 @@ function Dato({ etiqueta, children }: { etiqueta: string; children: React.ReactN
   );
 }
 
+// Si el dueño borra todas las tallas de una pieza (se vendieron), la ficha no muestra un selector vacío ni inventa stock:
+// la fila "Talla" invita a consultar, y el mensaje de WhatsApp ya pregunta qué tallas tienen.
+const SIN_TALLAS = "Consultar disponibilidad por WhatsApp";
+
 function Precio({ pieza }: { pieza: Pieza }) {
   return (
     <p className="ficha__precio">
@@ -61,15 +66,21 @@ function Precio({ pieza }: { pieza: Pieza }) {
 }
 
 // Datos de compra de la ficha: precio, color, talla y botones. Guarda la talla elegida y la usa en WhatsApp.
-export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIntro }: Props) {
+export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIntro, fibraCaracter }: Props) {
   const [tallas, setTallas] = useState<Record<string, string>>({});
   const unaPieza = producto.piezas.length === 1;
   const waHref = whatsappConMensaje(mensajeWhatsApp(producto, tallas));
-  const elegir = (pieza: Pieza) => (talla: string) => setTallas((t) => ({ ...t, [pieza.nombre]: talla }));
+  const elegir = (pieza: Pieza) => (talla: string) => {
+    setTallas((t) => ({ ...t, [pieza.nombre]: talla }));
+    medirPaso("talla_elegida", { prenda: producto.slug, talla: unaPieza ? talla : `${pieza.nombre} · ${talla}` });
+  };
+  // Talla elegida en una prenda de una pieza con varias tallas: el botón de WhatsApp la confirma ("Talla M por WhatsApp").
+  const tallaUna = unaPieza && producto.piezas[0].tallas.length > 1 ? tallas[producto.piezas[0].nombre] : undefined;
 
   return (
     <>
-      <div className="ficha__info">
+      {/* Celular: cartela compacta (nombre y precio en la misma fila). PC: Sernaí Silk pone sus dos piezas lado a lado. */}
+      <div id="ficha-datos" className={`ficha__info${unaPieza ? "" : " ficha__info--piezas"}`}>
         <p className="eyebrow ficha__fibra">{fibraLabel}</p>
         <h1 className="ficha__titulo">{producto.nombreCorto}</h1>
         <p className="ficha__tipo">{producto.tipo}</p>
@@ -87,7 +98,9 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
                   </Link>
                 )}
               </Dato>
-              {producto.piezas[0].tallas.length === 1 && <Dato etiqueta="Talla">{producto.piezas[0].tallas[0]}</Dato>}
+              {producto.piezas[0].tallas.length <= 1 && (
+                <Dato etiqueta="Talla">{producto.piezas[0].tallas[0] ?? SIN_TALLAS}</Dato>
+              )}
             </dl>
             {producto.piezas[0].tallas.length > 1 && (
               <SelectorTalla
@@ -115,7 +128,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
                   <SelectorTalla grupo={`talla-${i}`} tallas={pieza.tallas} valor={tallas[pieza.nombre]} alElegir={elegir(pieza)} />
                 ) : (
                   <dl className="datos">
-                    <Dato etiqueta="Talla">{pieza.tallas[0]}</Dato>
+                    <Dato etiqueta="Talla">{pieza.tallas[0] ?? SIN_TALLAS}</Dato>
                   </dl>
                 )}
               </section>
@@ -132,7 +145,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
             rel="noopener noreferrer"
             className="boton boton--tinta"
           >
-            Agenda tu visita para probártela
+            {`Agenda tu visita para probárte${producto.lo}`}
           </TrackedLink>
           <TrackedLink
             href={waHref}
@@ -142,8 +155,7 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
             rel="noopener noreferrer"
             className="boton boton--contorno"
           >
-            <WhatsAppIcon color="currentColor" size={20} />
-            Consultar por WhatsApp
+            {tallaUna ? `Talla ${tallaUna} por WhatsApp` : "Consultar por WhatsApp"}
           </TrackedLink>
         </div>
 
@@ -151,19 +163,25 @@ export default function FichaCompra({ producto, fibraLabel, fibraNombre, fibraIn
           <h2 id="como-comprar" className="eyebrow">
             Cómo comprar
           </h2>
-          <p className="parrafo">Pruébala en el showroom de Landa Brands, Vitacura, solo con cita, o escríbenos por WhatsApp.</p>
+          {/* "Pruébatelo" o "Pruébatelas" según la prenda (campo lo de products.ts). Avisa que la agenda es de Landa Brands. */}
+          <p className="parrafo">
+            Pruébate{producto.lo} en el showroom de Landa&nbsp;Brands, en Vitacura, solo con cita. Eliges día y hora en su agenda, o nos
+            escribes por WhatsApp.
+          </p>
         </section>
 
         <section className="ficha__bloque" aria-labelledby="sobre-fibra">
           <h2 id="sobre-fibra" className="eyebrow">
             Sobre el {fibraNombre}
           </h2>
+          {fibraCaracter && <p className="ficha__caracter">{fibraCaracter}.</p>}
           <p className="parrafo">{fibraIntro}</p>
         </section>
       </div>
 
       <BarraFija
         modo="ficha"
+        resumen={{ nombre: producto.nombreCorto, precio: precioEnLinea(producto) }}
         whatsappHref={waHref}
         ubicacionAgenda={`prenda_sticky_${producto.slug}`}
         ubicacionWhatsapp={`prenda_sticky_${producto.slug}`}

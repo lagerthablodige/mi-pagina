@@ -1803,16 +1803,130 @@ section[tabindex="-1"]:focus {
   .seccion--mas {
     padding-block: 112px;
   }
+  /* === M23 "Más en ...": hasta 3 en una fila; con 1 o 2 quedan al centro === */
   .grilla-prendas--mas {
-    max-width: 760px;
+    max-width: 1160px;
     margin-inline: auto;
+    justify-content: center;
     column-gap: 20px;
     row-gap: 56px;
   }
   .grilla-prendas--mas > div {
-    flex-basis: calc(50% - 10px);
+    flex-basis: calc((100% - 40px) / 3);
+  }
+  /* === fin M23 (PC) === */
+}
+
+/* === M23 "Más en ..." en el celular: solo 2 tarjetas, sin una tercera huérfana en media fila ===
+   La tercera prenda sigue a un toque en la colección. Su foto no se descarga (carga diferida y display: none). */
+@media (max-width: 1023px) {
+  .grilla-prendas--mas > div:nth-child(n + 3) {
+    display: none;
   }
 }
+/* === fin M23 (celular) === */
+
+/* === M02 Cartela compacta de la ficha ===
+   Celular: la fibra arriba; el nombre a la izquierda y el precio a la derecha en la misma fila; debajo, el tipo
+   e "IVA incluido". El HTML no cambia (la grilla reubica los mismos elementos), y la foto no se recorta.
+   PC: Sernaí Silk pone sus dos piezas lado a lado, así el botón queda sobre el pliegue y el sticky funciona. */
+@media (max-width: 1023px) {
+  .ficha__info {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    padding-top: 18px; /* el valor final de M07 */
+    scroll-margin-top: var(--alto-encabezado);
+  }
+  .ficha__info > * {
+    grid-column: 1 / -1;
+  }
+  .ficha__info > .ficha__fibra {
+    grid-row: 1;
+  }
+  .ficha__info > .ficha__titulo {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 4px 0 0;
+    align-self: baseline;
+    text-wrap: balance;
+  }
+  .ficha__info > .ficha__precio {
+    display: contents;
+  }
+  .ficha__info > .ficha__precio .precio--grande {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: baseline;
+    text-align: right;
+    font-size: 1rem; /* a 1.25rem el precio compite con el nombre */
+    line-height: 1.4;
+  }
+  .ficha__info > .ficha__precio .ficha__iva {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: baseline;
+    text-align: right;
+    font-size: 0.8125rem;
+  }
+  .ficha__info > .ficha__tipo {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 2px 0 0;
+    align-self: baseline;
+  }
+  /* Sernaí Silk: la nota de las dos piezas viene justo después del tipo; sin este aire se leen como un solo párrafo. */
+  .ficha__info--piezas > .ficha__tipo {
+    margin-bottom: 18px;
+  }
+}
+@media (min-width: 1024px) {
+  .ficha__info--piezas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 32px;
+    align-content: start;
+  }
+  .ficha__info--piezas > :not(.ficha__pieza) {
+    grid-column: 1 / -1;
+  }
+  .ficha__info--piezas .dato {
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 0;
+  }
+  .ficha__info--piezas .dato dt {
+    flex-basis: auto;
+  }
+}
+/* === fin M02 === */
+
+/* === M29 Talla elegida visible en el modo de alto contraste de Windows ===
+   Ahí el fondo tinta de la talla elegida desaparece: se marca con un contorno del color del sistema. */
+@media (forced-colors: active) {
+  .talla input:checked + span {
+    outline: 3px solid Highlight;
+    outline-offset: -5px;
+    text-decoration: underline;
+  }
+  /* Con foco, el contorno exterior vuelve a marcar el foco; el subrayado sigue marcando la talla elegida. */
+  .talla input:checked:focus-visible + span {
+    outline: 2px solid CanvasText;
+    outline-offset: 3px;
+  }
+}
+/* === fin M29 === */
+
+/* === M28 Carácter de la fibra en "Sobre el ...", con las palabras del dueño, en cursiva === */
+.ficha__caracter {
+  margin: 0 0 8px;
+  font-family: var(--fuente-cursiva);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.3;
+  color: var(--tinta);
+}
+/* === fin M28 === */
 
 /* ---------- Página 404 ---------- */
 
