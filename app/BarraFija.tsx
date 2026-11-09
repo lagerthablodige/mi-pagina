@@ -16,12 +16,27 @@ type Props = {
 };
 
 // Bloques de la página que ya tienen los mismos botones: mientras alguno se ve, la barra no se muestra.
+// .pie está aquí a propósito: su espacio de abajo ya no reserva lugar para la barra (M33). Si se saca, la barra tapa el ©.
 const BLOQUES_CON_BOTONES = [".hero__botones", ".showroom__botones", ".ficha__botones", ".pie"];
+// Estos solo cuentan si se ven enteros. Con los botones del hero cortados (iPhone chico dentro de Instagram)
+// no habría ningún botón usable: la barra aparece.
+const ENTEROS = ".hero__botones";
+// "Entero" = al menos el 99 % a la vista. El umbral del observador es el mismo, así nunca queda un estado a medias.
+const CASI_ENTERO = 0.99;
+// Lo que queda bajo el encabezado fijo del celular (56 px) no se cuenta como visto.
+const BAJO_ENCABEZADO = "-56px 0px 0px 0px";
+// El pie se cuenta desde 240 px antes de entrar: así la barra no aparece y desaparece en el tramo corto
+// entre los botones de la ficha y el pie (y no tapa «Más en…»).
+const ANTES_DEL_PIE = "0px 0px 240px 0px";
 
 // Barra fija inferior del celular: Agenda tu visita + WhatsApp. En PC no existe.
 export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicacionWhatsapp, resumen }: Props) {
-  // Antes de saber qué se ve, en la ficha ya se muestra y en el inicio no (el hero trae sus botones).
+  // Antes de saber qué se ve, en la ficha ya se muestra (sus botones quedan bajo la primera pantalla)
+  // y en el inicio no (el hero trae sus botones).
   const [visible, setVisible] = useState(modo === "ficha");
+  // El resumen solo aparece cuando el título de la ficha no se ve entero: nunca repite la cartela.
+  const [conResumen, setConResumen] = useState(false);
+  const hayResumen = Boolean(resumen);
 
   useEffect(() => {
     const bloques = BLOQUES_CON_BOTONES.flatMap((sel) => Array.from(document.querySelectorAll(sel)));
@@ -30,22 +45,46 @@ export default function BarraFija({ modo, whatsappHref, ubicacionAgenda, ubicaci
       return;
     }
     const viendose = new Set<Element>();
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        for (const entrada of entradas) {
-          if (entrada.isIntersecting) viendose.add(entrada.target);
-          else viendose.delete(entrada.target);
-        }
-        setVisible(viendose.size === 0);
-      },
-      { threshold: 0 }
-    );
-    bloques.forEach((el) => observador.observe(el));
-    return () => observador.disconnect();
+    const alCambiar: IntersectionObserverCallback = (entradas) => {
+      for (const entrada of entradas) {
+        const aLaVista = entrada.target.matches(ENTEROS)
+          ? entrada.intersectionRatio >= CASI_ENTERO
+          : entrada.isIntersecting;
+        if (aLaVista) viendose.add(entrada.target);
+        else viendose.delete(entrada.target);
+      }
+      setVisible(viendose.size === 0);
+    };
+    const general = new IntersectionObserver(alCambiar, { threshold: [0, CASI_ENTERO], rootMargin: BAJO_ENCABEZADO });
+    const pie = new IntersectionObserver(alCambiar, { threshold: 0, rootMargin: ANTES_DEL_PIE });
+    bloques.forEach((el) => (el.matches(".pie") ? pie : general).observe(el));
+    return () => {
+      general.disconnect();
+      pie.disconnect();
+    };
   }, [modo]);
 
+  // Ficha: el título no esconde la barra (los botones de la ficha quedan bajo la primera pantalla); solo decide
+  // si la barra lleva el nombre y el precio.
+  useEffect(() => {
+    if (!hayResumen) return;
+    const titulo = document.querySelector(".ficha__titulo");
+    if (!titulo) {
+      setConResumen(true);
+      return;
+    }
+    const observador = new IntersectionObserver(
+      ([entrada]) => setConResumen(entrada.intersectionRatio < CASI_ENTERO),
+      { threshold: [0, CASI_ENTERO], rootMargin: BAJO_ENCABEZADO }
+    );
+    observador.observe(titulo);
+    return () => observador.disconnect();
+  }, [hayResumen]);
+
+  const clases = `barra-fija${visible ? " barra-fija--visible" : ""}${conResumen ? " barra-fija--con-resumen" : ""}`;
+
   return (
-    <div className={`barra-fija${visible ? " barra-fija--visible" : ""}`} data-modo={modo} inert={!visible}>
+    <div className={clases} data-modo={modo} inert={!visible}>
       {resumen && (
         <p className="barra-fija__resumen" aria-hidden="true">
           <span className="barra-fija__resumen-nombre">{resumen.nombre}</span>
