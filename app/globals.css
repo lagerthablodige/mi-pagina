@@ -1245,21 +1245,160 @@ img[data-nimg="fill"] {
   background: var(--fondo-foto);
   scroll-snap-align: start;
 }
-.galeria__contador {
+/* === M07 Galería: trazos finos de progreso bajo la foto, en vez del «1 / 4» sobre la foto === */
+@media (max-width: 1023px) {
+  .galeria__progreso {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 12px var(--margen) 0;
+    list-style: none;
+  }
+  .galeria__progreso li {
+    flex: 1;
+    height: 1px;
+    background: var(--linea);
+    transition: background-color var(--dur-corta) var(--curva);
+  }
+  .galeria__progreso li[aria-current="true"] {
+    background: var(--tinta);
+  }
+  .ficha__info {
+    padding-top: 18px; /* los trazos ocupan 13 px: el nombre queda donde estaba */
+  }
+}
+@media (min-width: 1024px) {
+  .galeria__progreso {
+    display: none;
+  }
+}
+/* === fin M07 === */
+
+/* === M08 Fotos que se amplían (galería y collage) y visor de fotos === */
+.foto-zoom {
   position: absolute;
-  right: 12px;
-  top: 12px; /* arriba, para que la barra fija no lo tape */
-  bottom: auto;
-  margin: 0;
-  padding: 4px 10px;
-  background: rgba(26, 26, 26, 0.72);
-  color: var(--marfil);
-  font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  font-variant-numeric: tabular-nums;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+/* El marco de la foto recorta el anillo de afuera: se dibuja adentro, en tinta y marfil (se ve sobre foto clara u oscura) */
+.foto-zoom:focus-visible,
+.visor__boton:focus-visible {
+  outline: none;
+}
+.foto-zoom:focus-visible::after,
+.visor__boton:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 2px solid var(--tinta);
+  outline: 2px solid var(--marfil);
+  outline-offset: -4px;
   pointer-events: none;
 }
+.visor {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: var(--tinta);
+  color: var(--marfil);
+  touch-action: pan-x pan-y; /* pellizcar no amplía la página */
+  animation: zoom-entra 200ms var(--curva) both;
+}
+@keyframes zoom-entra {
+  from {
+    opacity: 0;
+  }
+}
+.visor :focus-visible {
+  outline-color: var(--marfil);
+}
+.visor__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: max(8px, env(safe-area-inset-top)) 8px 8px 16px;
+}
+.visor__contador {
+  color: var(--marfil);
+  font-variant-numeric: tabular-nums;
+}
+.visor__cerrar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(245, 240, 232, 0.45);
+  background: none;
+  color: var(--marfil);
+  cursor: pointer;
+}
+.visor__pista {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.visor__pista::-webkit-scrollbar {
+  display: none;
+}
+.visor__pista--zoom {
+  overflow-x: hidden; /* con la foto acercada no se desliza a la siguiente */
+}
+.visor__foto {
+  position: relative;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.visor__area {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+.visor__area--zoom {
+  overflow: auto; /* la foto acercada se recorre en los dos ejes */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 240, 232, 0.45) transparent;
+}
+.visor__boton {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.visor__area--zoom .visor__boton {
+  cursor: zoom-out;
+}
+.visor__previa {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* === fin M08 === */
 
 .ficha__fibra {
   color: var(--dorado-texto);
@@ -1463,9 +1602,6 @@ img[data-nimg="fill"] {
   .galeria__foto {
     flex: none;
     aspect-ratio: 2 / 3;
-  }
-  .galeria__contador {
-    display: none;
   }
   .seccion--mas {
     padding-block: 112px;
