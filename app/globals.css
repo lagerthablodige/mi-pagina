@@ -29,7 +29,7 @@
   --entre-secciones: 88px;
   --alto-encabezado: 56px;
   --alto-barra: 64px; /* barra fija del celular */
-  --ancho-texto: 34rem;
+  --ancho-texto: 30rem; /* === M25 === en PC, 60 a 65 caracteres por línea (antes 34rem, 72 a 78) */
   --ancho-max: 1440px;
 
   /* === M15 Movimiento: una curva de entrada, una de salida y pocas duraciones === */
@@ -182,6 +182,18 @@ img[data-nimg="fill"] {
   line-height: 1.65;
   color: var(--tinta-suave);
 }
+
+/* === M25 Cortes de línea: sin una palabra sola en la última línea («WhatsApp.», «oversize»).
+   Donde el navegador no lo soporta (iOS anterior a 26, Firefox) no cambia nada. === */
+.parrafo,
+.origen__parrafo,
+.origen__cursiva,
+.ficha__nota,
+.tarjeta__tipo,
+.cabecera__nota {
+  text-wrap: pretty;
+}
+/* === fin M25 cortes === */
 
 .precio {
   margin: 0;
@@ -384,6 +396,20 @@ img[data-nimg="fill"] {
   width: 32px;
   height: auto;
 }
+/* === M25 Eje del logo en el celular: la palabra NIRÜN queda en el centro de la pantalla, en el mismo eje que el
+   resto, y el nudo cuelga a su izquierda (antes el conjunto nudo + palabra corría la palabra 21 px a la derecha). === */
+@media (max-width: 1023px) {
+  .encabezado__marca {
+    position: relative;
+  }
+  .encabezado__marca img {
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+/* === fin M25 eje === */
 .encabezado__enlaces,
 .encabezado__agenda,
 .encabezado__whatsapp {
