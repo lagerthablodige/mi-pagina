@@ -1,36 +1,48 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import BarraFija from "./BarraFija";
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
+import PrecioPiezas from "./PrecioPiezas";
 import TarjetaPrenda from "./TarjetaPrenda";
 import TrackedLink from "./TrackedLink";
 import ZoomableImage from "./ZoomableImage";
 import { fibers } from "./fibersData";
-import { WhatsAppIcon } from "./Iconos";
 import { CALENDLY_HREF, INSTAGRAM_LANDA_HREF, WHATSAPP_HREF } from "./links";
-import { nombreFibra, precioCLP, prendasDeFibra, productosEnOrden, type Producto } from "./products";
+import { articuloDe, fibraDe, nombreFibra, prendasDeFibra, productoPorSlug, productosEnOrden } from "./products";
+
+// El canonical va en cada página (el layout no lo hereda): así una página nueva no apunta al inicio por error.
+// Sin openGraph aquí, para no reemplazar el del layout.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 // Foto de ambiente de cada fibra (Pexels/Unsplash, ver docs/LICENCIAS-FOTOS.md). Solo ambiente: no son fotos de Nirün.
-const FOTO_FIBRA: Record<string, { src: string; alt: string; pie: string }> = {
-  yak: { src: "/origen/yak.jpg", alt: "Un yak negro pastando junto a un río, en un valle verde", pie: "Yak" },
-  cashmere: { src: "/origen/cabras.jpg", alt: "Rebaño de cabras de cachemira en la estepa", pie: "Cabras de cachemira" },
-  "baby-camel": { src: "/origen/camellos.jpg", alt: "Manada de camellos bactrianos de pelaje claro y oscuro", pie: "Camellos bactrianos" },
+const FOTO_FIBRA: Record<string, { src: string; alt: string }> = {
+  yak: { src: "/origen/yak.jpg", alt: "Dos yaks negros pastando junto a un río, en un valle" },
+  cashmere: { src: "/origen/cabras.jpg", alt: "Rebaño de cabras en la estepa" },
+  "baby-camel": { src: "/origen/camellos.jpg", alt: "Manada de camellos bactrianos de pelaje claro y oscuro" },
 };
+
+// Alt del detalle de Záya: "Záya de cerca: el punto en relieve del <tipo> de <fibra>".
+// El tipo y la fibra salen de products.ts (el nombre de la prenda sigue pendiente del dueño).
+function altDetalleZaya(): string {
+  const zaya = productoPorSlug("zaya");
+  if (!zaya) return "Detalle de cerca del punto en relieve"; // respaldo si algún día cambia el slug
+  const tipo = zaya.tipo.split(" ")[0].toLowerCase();
+  const articulo = articuloDe(zaya);
+  const de = articulo === "el" ? "del" : `de ${articulo}`;
+  return `${zaya.nombreCorto} de cerca: el punto en relieve ${de} ${tipo} de ${nombreFibra(fibraDe(zaya)).toLowerCase()}`;
+}
 
 // Detalles del collage del showroom (con zoom). La posición enfoca lo importante al recortar en cuadrado.
 const COLLAGE = [
   { src: "/fibers/collage/khulan_detail.jpg", alt: "Detalle del abrigo Khulán en yak, con el cinturón anudado", pos: "35% center" },
-  { src: "/fibers/collage/zaya_detail.jpg", alt: "Detalle del cárdigan Záya en cashmere, de largo completo", pos: "62% center" },
-  { src: "/fibers/collage/sernai_silk_detail.jpg", alt: "Detalle de la chaqueta Sernaí Silk, con botones de perla", pos: "35% center" },
+  { src: "/fibers/collage/zaya_detail.jpg", alt: altDetalleZaya(), pos: "62% center" },
+  { src: "/fibers/collage/sernai_silk_detail.jpg", alt: "Chaqueta Sernaí de cerca, con cuello chal y botones perlados", pos: "35% center" },
   { src: "/fibers/collage/nomin_negro_detail.jpg", alt: "Detalle del abrigo Nomín negro en yak, con el cinturón", pos: "55% center" },
 ];
-
-// Precio de una prenda en el índice de las fibras ("Sernaí Silk" son dos piezas: se muestra el precio más bajo).
-function precioIndice(p: Producto): string {
-  if (p.piezas.length === 1) return precioCLP(p.piezas[0].precio);
-  return `Desde ${precioCLP(Math.min(...p.piezas.map((pz) => pz.precio)))}`;
-}
 
 export default function Home() {
   return (
@@ -79,8 +91,10 @@ export default function Home() {
             <h1 id="titulo-hero" className="titulo-hero">
               Fibras nobles de Mongolia
             </h1>
+            {/* Una sola bajada para todos los anchos. Si no cabe en una línea, se corta entre las dos frases. */}
             <p className="hero__bajada">
-              Abrigos y prendas en Yak, Cashmere y Baby Camel. Pruébalas en persona, con cita.
+              <span className="hero__frase">Yak, cashmere y baby&nbsp;camel.</span>{" "}
+              <span className="hero__frase">Solo con&nbsp;cita.</span>
             </p>
             <div className="hero__botones">
               <TrackedLink
@@ -101,7 +115,6 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="boton boton--contorno-marfil"
               >
-                <WhatsAppIcon color="currentColor" size={20} />
                 WhatsApp
               </TrackedLink>
             </div>
@@ -115,11 +128,12 @@ export default function Home() {
               <h2 id="titulo-coleccion" className="titulo-seccion">
                 La colección
               </h2>
-              <p className="cabecera__nota">Precios en pesos chilenos, IVA incluido.</p>
+              <p className="cabecera__nota">Precios en pesos chilenos.</p>
             </header>
             <div className="grilla-prendas">
+              {/* Las tarjetas siempre se ven (sin aparición). El id permite volver desde la ficha a /#slug. */}
               {productosEnOrden.map((producto) => (
-                <div key={producto.slug} className="aparece">
+                <div key={producto.slug} id={producto.slug}>
                   <TarjetaPrenda producto={producto} />
                 </div>
               ))}
@@ -142,21 +156,23 @@ export default function Home() {
           </figure>
           <div className="seccion seccion--crema">
             <div className="contenedor contenedor--texto aparece">
+              {/* Ancla del sitio anterior (/#lujo-silencioso), sin efecto visual */}
+              <span id="lujo-silencioso" aria-hidden="true" />
               <h2 id="titulo-origen" className="eyebrow eyebrow--dorado">
                 Lujo silencioso
               </h2>
               <p className="origen__frase-texto">
-                En las estepas de Mongolia, donde el clima alcanza extremos y la naturaleza define el ritmo de la vida, nace
-                una de las fibras más nobles del mundo.
+                En las estepas de Mongolia, donde&nbsp;el clima alcanza extremos y la naturaleza define el ritmo de la vida,
+                nacen&nbsp;algunas de las fibras más nobles del mundo.
               </p>
               <p className="origen__parrafo">
                 Detrás de cada prenda hay manos expertas, principalmente mujeres, cuyo trabajo no solo da forma a la
-                fibra, sino que sostiene comunidades y tradiciones. Cada pieza es ligera, cálida y duradera: una suavidad
-                que no se impone, se percibe.
+                fibra, sino que sostiene comunidades y tradiciones.
               </p>
+              <p className="origen__frase-texto origen__remate">Una suavidad que no se impone, se percibe.</p>
               <p className="origen__cursiva">
-                Nirün, en el antiguo idioma mongol, significa «linaje puro». En la cultura mongol, los Nirün eran la
-                aristocracia.
+                En mongol antiguo, Nirün significa «linaje puro» o «de sangre noble». Así se conocía a la aristocracia
+                mongola.
               </p>
             </div>
           </div>
@@ -187,13 +203,19 @@ export default function Home() {
                       {String(i + 1).padStart(2, "0")} / {String(fibers.length).padStart(2, "0")}
                     </p>
                     <h3 className="capitulo__nombre">{nombre}</h3>
+                    {fibra.caracter && <p className="capitulo__caracter">{fibra.caracter}.</p>}
                     <p className="parrafo">{fibra.intro}</p>
                   </div>
                   <figure className="capitulo__foto aparece">
                     <div className="capitulo__marco">
-                      <Image src={foto.src} alt={foto.alt} fill sizes="(min-width: 1024px) 46vw, 100vw" quality={75} />
+                      <Image
+                        src={foto.src}
+                        alt={foto.alt}
+                        fill
+                        sizes="(min-width: 1024px) 54vw, calc(100vw - 40px)"
+                        quality={75}
+                      />
                     </div>
-                    <figcaption>{foto.pie}</figcaption>
                   </figure>
                   <div className="capitulo__indice aparece">
                     <ul className="indice" aria-label={`Prendas en ${nombre}`}>
@@ -201,7 +223,9 @@ export default function Home() {
                         <li key={p.slug}>
                           <Link href={`/prenda/${p.slug}`} className="indice__fila">
                             <span className="indice__nombre">{p.nombreCorto}</span>
-                            <span className="precio">{precioIndice(p)}</span>
+                            <span className="precio indice__precio">
+                              <PrecioPiezas producto={p} />
+                            </span>
                           </Link>
                         </li>
                       ))}
@@ -215,6 +239,8 @@ export default function Home() {
 
         {/* 5. Showroom */}
         <section id="showroom" className="seccion seccion--crema" aria-labelledby="titulo-showroom">
+          {/* Ancla del sitio anterior (/#landa), sin efecto visual */}
+          <span id="landa" aria-hidden="true" />
           <div className="contenedor showroom">
             <div className="showroom__texto aparece">
               <p className="eyebrow eyebrow--dorado">Nirün × Landa Brands</p>
@@ -227,9 +253,15 @@ export default function Home() {
               </p>
               <p className="showroom__datos" data-clarity-unmask="true">
                 <span className="showroom__cita">Solo con cita</span>
-                <a href={INSTAGRAM_LANDA_HREF} target="_blank" rel="noopener noreferrer">
+                <TrackedLink
+                  href={INSTAGRAM_LANDA_HREF}
+                  eventName="instagram_click"
+                  eventData={{ location: "showroom" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   @landa_brands
-                </a>
+                </TrackedLink>
               </p>
               <div className="showroom__botones">
                 <TrackedLink
@@ -250,8 +282,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="boton boton--contorno"
                 >
-                  <WhatsAppIcon color="currentColor" size={20} />
-                  Escríbenos por WhatsApp
+                  WhatsApp
                 </TrackedLink>
               </div>
             </div>

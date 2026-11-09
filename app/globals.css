@@ -973,6 +973,11 @@ img[data-nimg="fill"] {
   line-height: 1.4;
   color: var(--tinta);
 }
+/* === M36 Origen: la línea del dueño como remate, entre el párrafo y la cursiva === */
+.origen__remate {
+  margin-top: 32px;
+  font-size: clamp(1.5rem, 5.4vw, 2rem);
+}
 
 /* ---------- Las fibras ---------- */
 
@@ -994,8 +999,17 @@ img[data-nimg="fill"] {
   margin: 0 0 16px;
   font-family: var(--fuente-titulo);
   font-weight: 400;
-  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-size: clamp(1.75rem, 5vw, 2.75rem); /* === M27 === en el celular, más chico que el título de la sección */
   line-height: 1.1;
+}
+/* === M27 Carácter de cada fibra, con las palabras del dueño === */
+.capitulo__caracter {
+  margin: -8px 0 14px;
+  font-family: var(--fuente-cursiva);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.3;
+  color: var(--tinta);
 }
 .capitulo__foto {
   grid-area: foto;
@@ -1010,14 +1024,6 @@ img[data-nimg="fill"] {
 /* Las fotos de banco se acercan a la paleta del sitio */
 .capitulo__marco img {
   filter: saturate(0.72) contrast(0.96);
-}
-.capitulo__foto figcaption {
-  margin-top: 10px;
-  font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gris);
 }
 .capitulo__texto {
   grid-area: texto;
@@ -1057,18 +1063,23 @@ img[data-nimg="fill"] {
 }
 
 @media (min-width: 1024px) {
+  /* === M27 === la foto toma 7 de 12 columnas y deja de verse chica */
   .capitulo {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     grid-template-areas: "foto texto" "foto indice";
     grid-template-rows: auto auto;
-    column-gap: 96px;
+    column-gap: 80px;
     row-gap: 0;
   }
   .capitulo--invertido {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     grid-template-areas: "texto foto" "indice foto";
   }
   .capitulo + .capitulo {
-    margin-top: 128px;
+    margin-top: 144px;
+  }
+  .capitulo__marco {
+    aspect-ratio: 4 / 3;
   }
   .capitulo__texto {
     align-self: end;
