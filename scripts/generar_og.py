@@ -25,7 +25,7 @@ PANEL = (W - 2 * FILETE) // 3  # 398
 TOPE = 150_000  # bytes
 
 # izquierda, centro (portada), derecha. Rutas relativas a public/.
-F = "fibers"
+F = "fibras"
 PRENDAS = {
     "khulan": [f"{F}/yak/khulan/_84A5147.jpg", f"{F}/yak/khulan/_84A5137.jpg", f"{F}/yak/khulan/_84A5228.jpg"],
     "nomin-azul-oscuro": [f"{F}/yak/nomin-azul/_84A4609.jpg", f"{F}/yak/nomin-azul/playa-portada.jpg", f"{F}/yak/nomin-azul/_84A4773.jpg"],
@@ -37,7 +37,7 @@ PRENDAS = {
     "sernai-silk": [f"{F}/baby-camel/sernai-silk/_84A6029.jpg", f"{F}/baby-camel/sernai-silk/_84A5995.jpg", f"{F}/baby-camel/sernai-silk/_84A6248.jpg"],
 }
 # Inicio: las mismas tres fotos del hero de PC, en el mismo orden.
-INICIO = ["hero/cardigan.jpg", "hero/columnas.jpg", "hero/rocas.jpg"]
+INICIO = ["portada/cardigan.jpg", "portada/columnas.jpg", "portada/rocas.jpg"]
 
 
 def panel(public, ruta):

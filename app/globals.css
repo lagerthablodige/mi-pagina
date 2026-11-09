@@ -794,7 +794,7 @@ section[tabindex="-1"]:focus {
 
 /* === M04 Hero: foto más grande en el celular (también dentro de Instagram), bajada de una línea === */
 .hero__foto {
-  background: #cdc9c8; /* gris del muro de hero/columnas.jpg: mientras carga no queda un hueco color papel */
+  background: #cdc9c8; /* gris del muro de portada/columnas.jpg: mientras carga no queda un hueco color papel */
 }
 .hero__bajada {
   text-wrap: balance;

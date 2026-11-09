@@ -30,7 +30,7 @@ Las copias del sitio se redimensionaron (2400 px de lado largo el paisaje, 1600 
 
 ## Fotos de las prendas (sesión de estudio)
 
-Son fotos propias de Nirün (`public/hero/` y `public/fibers/`). En noviembre de 2026 el muro gris del estudio, que se veía lila, pasó a gris cálido. Solo cambiaron los grises con tinte lila: el color de las prendas quedó igual (diferencia media menor a 1 ΔE, medida dentro de cada prenda). Algún accesorio de la producción con tono lila, como el pañuelo celeste o la cartera de cocodrilo, puede verse un poco más cálido en las sombras. Las portadas de Nomín negro (`_84A6395.jpg`) y Sernaí Silk (`_84A5995.jpg`) se recortaron un poco para sacar la junta oscura del muro del borde de arriba. La portada de Bolomaa (`_84A5651.jpg`) se recortó para acercarla un poco (1,12 veces), sin cortar los pies. La portada de playa de Nomín azul oscuro solo bajó el cielo quemado.
+Son fotos propias de Nirün (`public/portada/` y `public/fibras/`). En noviembre de 2026 el muro gris del estudio, que se veía lila, pasó a gris cálido. Solo cambiaron los grises con tinte lila: el color de las prendas quedó igual (diferencia media menor a 1 ΔE, medida dentro de cada prenda). Algún accesorio de la producción con tono lila, como el pañuelo celeste o la cartera de cocodrilo, puede verse un poco más cálido en las sombras. Las portadas de Nomín negro (`_84A6395.jpg`) y Sernaí Silk (`_84A5995.jpg`) se recortaron un poco para sacar la junta oscura del muro del borde de arriba. La portada de Bolomaa (`_84A5651.jpg`) se recortó para acercarla un poco (1,12 veces), sin cortar los pies. La portada de playa de Nomín azul oscuro solo bajó el cielo quemado.
 
 ## Regla de color
 

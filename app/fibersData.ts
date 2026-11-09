@@ -11,7 +11,7 @@ export type Fiber = {
 };
 
 // Carpeta de las fotos de las prendas dentro de public/. Si algún día se renombra, se cambia solo aquí.
-const CARPETA_FOTOS = "/fibers";
+const CARPETA_FOTOS = "/fibras";
 
 const g = (fiber: string, garment: string, slug: string, ids: number[]): FiberImage[] =>
   ids.map((id) => ({ src: `${CARPETA_FOTOS}/${fiber}/${slug}/_84A${id}.jpg`, garment }));

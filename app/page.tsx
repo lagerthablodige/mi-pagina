@@ -38,10 +38,10 @@ function altDetalleZaya(): string {
 
 // Detalles del collage del showroom (con zoom). La posición enfoca lo importante al recortar en cuadrado.
 const COLLAGE = [
-  { src: "/fibers/collage/khulan_detail.jpg", alt: "Detalle del abrigo Khulán en yak, con el cinturón anudado", pos: "35% center" },
-  { src: "/fibers/collage/zaya_detail.jpg", alt: altDetalleZaya(), pos: "62% center" },
-  { src: "/fibers/collage/sernai_silk_detail.jpg", alt: "Chaqueta Sernaí de cerca, con cuello chal y botones perlados", pos: "35% center" },
-  { src: "/fibers/collage/nomin_negro_detail.jpg", alt: "Detalle del abrigo Nomín negro en yak, con el cinturón", pos: "55% center" },
+  { src: "/fibras/collage/khulan_detail.jpg", alt: "Detalle del abrigo Khulán en yak, con el cinturón anudado", pos: "35% center" },
+  { src: "/fibras/collage/zaya_detail.jpg", alt: altDetalleZaya(), pos: "62% center" },
+  { src: "/fibras/collage/sernai_silk_detail.jpg", alt: "Chaqueta Sernaí de cerca, con cuello chal y botones perlados", pos: "35% center" },
+  { src: "/fibras/collage/nomin_negro_detail.jpg", alt: "Detalle del abrigo Nomín negro en yak, con el cinturón", pos: "55% center" },
 ];
 
 // M36: la ger del Origen. En PC, la foto entera; en el celular, el recorte vertical (ger-amanecer-movil.jpg, M26),
@@ -69,7 +69,7 @@ export default function Home() {
           <div className="hero__fotos">
             <div className="hero__foto hero__foto--lateral">
               <Image
-                src="/hero/cardigan.jpg"
+                src="/portada/cardigan.jpg"
                 alt="Modelo con un cárdigan largo blanco y un bolso beige, de pie en una esquina de muros claros"
                 fill
                 sizes="44vw"
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
             <div className="hero__foto hero__foto--centro">
               <Image
-                src="/hero/columnas.jpg"
+                src="/portada/columnas.jpg"
                 alt="Modelo con un abrigo largo negro con cinturón, frente a un muro claro"
                 fill
                 priority
@@ -91,7 +91,7 @@ export default function Home() {
             </div>
             <div className="hero__foto hero__foto--lateral">
               <Image
-                src="/hero/rocas.jpg"
+                src="/portada/rocas.jpg"
                 alt="Modelo con un abrigo gris con cinturón y botines, frente a un muro claro"
                 fill
                 sizes="44vw"

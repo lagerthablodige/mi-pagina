@@ -72,8 +72,8 @@ Si vuelve a llegar una talla, escríbela otra vez en la lista, entre comillas.
 
 ### Paso 1: las fotos
 
-1. Las fotos van en `public/fibers/<fibra>/<prenda>/`.
-   Por ejemplo: `public/fibers/yak/khulan/_84A5137.jpg`.
+1. Las fotos van en `public/fibras/<fibra>/<prenda>/`.
+   Por ejemplo: `public/fibras/yak/khulan/_84A5137.jpg`.
 2. Usa 4 fotos verticales (2:3), en formato `.jpg` y en color sRGB.
 
 ### Paso 2: avisar dónde están las fotos
@@ -171,7 +171,7 @@ Regla: **foto nueva = nombre de archivo nuevo**.
 3. Cambia el número en `app/fibersData.ts`.
 4. Si la prenda tiene `alts` en `app/products.ts`, cambia ahí también el nombre del archivo.
 
-Las fotos grandes del inicio (`public/hero/`) siguen la misma regla. Su nombre está en `app/page.tsx` y en `app/sitemap.ts`: cámbialo en los dos.
+Las fotos grandes del inicio (`public/portada/`) siguen la misma regla. Su nombre está en `app/page.tsx` y en `app/sitemap.ts`: cámbialo en los dos.
 
 Por qué: los teléfonos y Vercel guardan las fotos en la memoria (la caché) hasta 30 días.
 Si el nombre no cambia, una clienta puede seguir viendo la foto vieja.

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { fotosDe, productos, SITE } from "./products";
 
 // Las tres fotos del hero del inicio. Si cambian de nombre o de carpeta, cambiarlas también aquí.
-const FOTOS_INICIO = ["/hero/columnas.jpg", "/hero/cardigan.jpg", "/hero/rocas.jpg"];
+const FOTOS_INICIO = ["/portada/columnas.jpg", "/portada/cardigan.jpg", "/portada/rocas.jpg"];
 
 // Cada página con sus fotos, para que Google las encuentre.
 // Sin lastModified (una fecha que nadie actualiza engaña a Google), sin changeFrequency ni priority (Google los ignora).
