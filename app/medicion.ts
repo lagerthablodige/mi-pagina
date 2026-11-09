@@ -5,13 +5,22 @@
 // No importa products.ts a propósito: este archivo va en todas las páginas y el catálogo no debe pesar en ellas.
 import { track } from "@vercel/analytics";
 
-type FnClarity = (...args: unknown[]) => void;
+type FnClarity = ((...args: unknown[]) => void) & { q?: unknown[][] };
 
 // Clarity solo existe en *.nirun.cl (ver layout.tsx). En localhost y en los previews no hace nada.
+// Su script se inserta después de la hidratación, así que las etiquetas de la primera página llegarían antes que él.
+// Por eso, en nirun.cl, se deja la misma cola que crea su propio snippet (c[a]=c[a]||…): al cargar, Clarity la lee.
 export function clarity(...args: unknown[]) {
   if (typeof window === "undefined") return;
-  const c = (window as unknown as { clarity?: FnClarity }).clarity;
-  if (typeof c === "function") c(...args);
+  const w = window as unknown as { clarity?: FnClarity };
+  if (typeof w.clarity !== "function") {
+    if (!location.hostname.endsWith("nirun.cl")) return;
+    const cola: FnClarity = (...a: unknown[]) => {
+      (cola.q ??= []).push(a);
+    };
+    w.clarity = cola;
+  }
+  w.clarity(...args);
 }
 
 // Fibra de cada prenda, solo para las etiquetas de Clarity (clave de fibersData).
@@ -37,11 +46,12 @@ export function paginaDe(ruta: string | null): Pagina {
   return { pagina: "404", prenda: "-", fibra: "-" };
 }
 
+// Nombres que usa TrackedLink hoy. Se aceptan otros para no romper llamadas nuevas, pero conviene no inventar más.
 export type EventoCta = "calendly_click" | "whatsapp_click" | "instagram_click";
 
-// Clic en un botón de contacto.
-export function medirCta(evento: EventoCta, location: string, prenda: string) {
-  track(evento, { location, prenda });
+// Clic en un botón de contacto. `datos` es el eventData de la llamada (hoy solo { location }).
+export function medirCta(evento: EventoCta | (string & {}), location: string, prenda: string, datos: Record<string, string> = {}) {
+  track(evento, { ...datos, location, prenda });
   clarity("event", evento);
   clarity("set", evento, location); // etiqueta, por ejemplo whatsapp_click = prenda_khulan
   if (prenda !== "-") clarity("set", "prenda_cta", prenda);
