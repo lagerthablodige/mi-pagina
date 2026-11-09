@@ -92,13 +92,18 @@ function datosEstructurados(p: Producto, fotos: string[]) {
   }));
 }
 
+// [a, b, c, d] rotado en 1 -> [b, c, d, a]
+const rotar = (a: string[], k: number) => a.map((_, i) => a[(i + k) % a.length]);
+
 export default async function PaginaPrenda({ params }: Props) {
   const { slug } = await params;
   const producto = productoPorSlug(slug);
   if (!producto) notFound();
 
   const fibra = fibraDe(producto);
-  const fotos = fotosDe(producto);
+  // La galería abre con la foto de la tarjeta (portada). Se rota, en vez de solo adelantarla, para mantener la secuencia
+  // de la sesión. La primera foto del JSON-LD también pasa a ser la portada.
+  const fotos = rotar(fotosDe(producto), producto.portada);
   // Si la fibra no tiene más prendas (Záya), se muestran prendas de otras fibras.
   const masDeLaFibra = masEnLaFibra(producto);
   const otras = masDeLaFibra.length > 0 ? masDeLaFibra : otrasPrendas(producto);
@@ -124,7 +129,7 @@ export default async function PaginaPrenda({ params }: Props) {
         </div>
 
         <div className="ficha">
-          <GaleriaPrenda fotos={fotos.map((src, n) => ({ src, alt: altDeFoto(producto, n, fotos.length) }))} />
+          <GaleriaPrenda fotos={fotos.map((src, n) => ({ src, alt: altDeFoto(producto, src, n, fotos.length) }))} />
           <FichaCompra
             producto={producto}
             fibraLabel={fibra.label}
