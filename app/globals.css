@@ -1187,6 +1187,10 @@ img[data-nimg="fill"] {
 .barra-fija__whatsapp {
   flex: 0 0 auto;
 }
+/* === M03 base (ola0): el resumen de la ficha queda oculto hasta que global-barra le da su fila y la clase barra-fija--con-resumen === */
+.barra-fija__resumen {
+  display: none;
+}
 @media (min-width: 1024px) {
   .barra-fija {
     display: none;

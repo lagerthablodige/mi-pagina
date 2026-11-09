@@ -234,7 +234,7 @@ export const productos: Producto[] = [
     alts: {
       "_84A5968.jpg": "{prenda} beige cruzado, con el cinturón anudado y bolsillos de parche",
       "_84A6153.jpg": "{prenda} beige abierto y en movimiento, en una escalera exterior",
-      "_84A6178.jpg": "{prenda} beige abierto, apoyada en un muro",
+      "_84A6178.jpg": "{prenda} beige abierto, con la modelo apoyada en un muro",
       "_84A6318.jpg": "{prenda} beige visto de espalda, con el cinturón atrás",
     },
   }),
@@ -252,10 +252,10 @@ export const productos: Producto[] = [
     tallas: ["XS", "S", "M"],
     precio: 200000,
     alts: {
-      "_84A5826.jpg": "{prenda} beige de pierna ancha, sentada en una escalera",
+      "_84A5826.jpg": "Modelo sentada en una escalera con el {prenda} beige de pierna ancha",
       "_84A5841.jpg": "Detalle del {prenda} beige, de la rodilla al botín",
       "_84A5860.jpg": "Modelo sentada con el {prenda} beige y una chaqueta burdeo",
-      "_84A5877.jpg": "{prenda} beige de cuerpo entero, sentada en una escalera",
+      "_84A5877.jpg": "Modelo sentada en una escalera con el {prenda} beige, de cuerpo entero",
     },
   }),
   {
