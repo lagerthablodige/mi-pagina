@@ -1402,6 +1402,23 @@ img[data-nimg="fill"] {
   height: 100%;
   object-fit: contain;
 }
+/* Con la foto acercada, el botón es más grande que la pantalla y sus bordes quedan fuera de la vista:
+   el anillo se dibuja en el marco de la foto, que no se desplaza */
+@supports selector(:has(*)) {
+  .visor__boton:focus-visible::after {
+    content: none;
+  }
+  .visor__foto:has(.visor__boton:focus-visible)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border: 2px solid var(--tinta);
+    outline: 2px solid var(--marfil);
+    outline-offset: -4px;
+    pointer-events: none;
+  }
+}
 /* === fin M08 === */
 
 .ficha__fibra {

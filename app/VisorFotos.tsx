@@ -197,6 +197,23 @@ export default function VisorFotos({ fotos, inicio, onClose }: Props) {
     return () => document.removeEventListener("keydown", alTeclear);
   }, [cerrar, ir]);
 
+  // PC con mouse: la rueda pasa de foto (sin zoom). Un giro seguido, o el deslizamiento con inercia del trackpad,
+  // cuenta una sola vez: hace falta una pausa para pasar a la siguiente. El deslizamiento horizontal sigue siendo nativo.
+  useEffect(() => {
+    const el = pista.current;
+    if (!el) return;
+    let ultimo = -Infinity;
+    const alGirar = (e: WheelEvent) => {
+      if (zoomRef.current || e.ctrlKey || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      const seguido = e.timeStamp - ultimo < 300;
+      ultimo = e.timeStamp;
+      if (!seguido) ir(actualRef.current + (e.deltaY > 0 ? 1 : -1));
+    };
+    el.addEventListener("wheel", alGirar, { passive: false });
+    return () => el.removeEventListener("wheel", alGirar);
+  }, [ir]);
+
   // iPhone: pellizcar no amplía la página; un pellizco hacia afuera acerca y hacia adentro aleja.
   useEffect(() => {
     const raiz = dialogo.current;
