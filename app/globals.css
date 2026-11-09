@@ -104,7 +104,9 @@ img[data-nimg="fill"] {
   color: var(--marfil);
   font-size: 0.875rem;
 }
-.saltar:focus {
+/* === M01 === :focus-visible y no :focus: al navegar, Next pone el foco en este enlace y con :focus tapaba la flecha
+   «Colección» del celular. Con el teclado (Tab) sigue apareciendo. */
+.saltar:focus-visible {
   left: 8px;
 }
 
